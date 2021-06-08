@@ -1,9 +1,9 @@
 <template>
-  <view class="flex flex-col border-4 border-solid shadow-md rounded-2xl mb-6 relative overflow-hidden"
+  <navigator :url="url" class="flex flex-col border-4 border-solid shadow-xl rounded-2xl mb-6 relative overflow-hidden"
      :class="[colorClass.bg, colorClass.border]">
     <view class="absolute top-0 left-0" v-if="isLock">
-      <view class="px-3 rounded-br-2xl border-t-0 border-l-0 border-r-4 border-b-4  border-solid bg-orange-900 text-white font-bold leading-5" :class="[colorClass.border]">VIP</view>  
-    </view> 
+      <view class="-ml-px px-3 rounded-br-2xl border-t-0 border-l-0 border-r-4 border-b-4  border-solid bg-orange-900 text-white font-bold leading-6 text-sm" :class="[colorClass.border]">未解锁</view>
+    </view>
     <view class="p-6 flex items-center">
       <view class="flex-1 px-2">
         <view class="text-3xl text-gray-900 font-bold">{{ name }}</view>
@@ -15,11 +15,12 @@
         </view>
       </view>
     </view>
-  </view>
+  </navigator>
 </template>
 
 <script>
-import grapeIcon from '../../assets/img/fruits/grape.svg'
+import Taro from "@tarojs/taro"
+import grapeIcon from "../../assets/img/fruits/grape.svg"
 
 const colorMap = {
   gray: {
@@ -34,7 +35,7 @@ const colorMap = {
     badgeBg: 'bg-yellow-900',
     iconBg: 'bg-yellow-50'
   },
-  yellow: {
+  red: {
     bg: 'bg-red-100',
     border: 'border-red-900',
     badgeBg: 'bg-red-800',
@@ -91,7 +92,8 @@ export default {
     englishName: String,
     color: { default: 'gray', type: String },
     icon: String,
-    isLock: { default: false, type: Boolean }
+    isLock: { default: false, type: Boolean },
+    url: String
   },
   data () {
     return {
@@ -101,6 +103,16 @@ export default {
   computed: {
     colorClass() {
       return colorMap[this.color || 'gray']
+    }
+  },
+  methods: {
+    handle(e) {
+      console.log('xxxxx')
+      if(this.url) {
+        Taro.navigateTo({
+          url: url
+        })
+      }
     }
   }
 }

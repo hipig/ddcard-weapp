@@ -1,7 +1,7 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  
+
   darkMode: false,
   corePlugins: {
     preflight: false,
@@ -73,6 +73,7 @@ module.exports = {
       72: '18rem',
       80: '20rem',
       96: '24rem',
+      128: '32rem',
       '1_2': '50%',
       '1_3': '33.333333%',
       '2_3': '66.666667%',
@@ -123,6 +124,21 @@ module.exports = {
     maxWidth: (theme) => theme('spacing'),
     height: (theme) => theme('width'),
     maxHeight: (theme) => theme('spacing'),
+    scale: {
+      '0': '0',
+      '25': '.25',
+      '50': '.5',
+      '75': '.75',
+      '85': '.85',
+      '90': '.9',
+      '95': '.95',
+      '100': '1',
+      '105': '1.05',
+      '110': '1.1',
+      '125': '1.25',
+      '150': '1.5',
+      '200': '2',
+    },
     screens: {},
   },
   variants: {},
