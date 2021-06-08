@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   
   darkMode: false,
@@ -17,6 +19,24 @@ module.exports = {
   },
   separator: '_',
   theme: {
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+
+      black: colors.black,
+      white: colors.white,
+
+      gray: colors.coolGray,
+      red: colors.red,
+      orange: colors.orange,
+      yellow: colors.yellow,
+      green: colors.emerald,
+      teal: colors.teal,
+      blue: colors.blue,
+      indigo: colors.indigo,
+      purple: colors.purple,
+      pink: colors.pink,
+    },
     spacing: {
       px: '1px',
       0: '0',
@@ -59,10 +79,10 @@ module.exports = {
       '1_4': '25%',
       '2_4': '50%',
       '3_4': '75%',
-      '1_5': '20%',
-      '2_5': '40%',
-      '3_5': '60%',
-      '4_5': '80%',
+      '1__5': '20%',
+      '2__5': '40%',
+      '3__5': '60%',
+      '4__5': '80%',
       '1_6': '16.666667%',
       '2_6': '33.333333%',
       '3_6': '50%',
@@ -89,6 +109,7 @@ module.exports = {
       '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
+      'yellow': '8px 8px #FDE047',
     },
     lineHeight: (theme) => theme('spacing'),
     translate: (theme) => theme('spacing'),
