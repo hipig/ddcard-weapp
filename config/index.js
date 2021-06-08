@@ -21,6 +21,10 @@ const config = {
   framework: 'vue',
   mini: {
     postcss: {
+      tailwindcss: {
+        enable: true,
+        config: {}
+      },
       pxtransform: {
         enable: true,
         config: {

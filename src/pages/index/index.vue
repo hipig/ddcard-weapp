@@ -1,5 +1,5 @@
 <template>
-  <view class="index">
+  <view class="index mt-10">
     <NumberDisplay/>
     <NumberSubmit/>
   </view>
