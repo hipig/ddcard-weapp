@@ -1,12 +1,12 @@
 export default {
   pages: [
     'pages/index/index',
-    'pages/study/index'
+    'pages/study/index',
   ],
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#FFFBEB',
-    navigationBarTitleText: 'WeChat',
+    navigationBarTitleText: '简单识字卡',
     navigationBarTextStyle: 'black'
   }
 }

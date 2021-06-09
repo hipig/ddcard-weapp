@@ -11,9 +11,9 @@
           :zhSpell="item.zh_spell"
           :enSpell="item.en_spell"
           :color="item.color"
+          :index="index"
           :current-index="currentIndex"
-          :total="cards.length"
-          :class="[index === currentIndex ? 'scale-100' : 'scale-90']"/>
+          :total="cards.length"/>
       </swiper-item>
     </swiper>
 </template>
@@ -67,9 +67,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  swiper-item {
-    box-sizing: border-box;
-  }
-</style>
