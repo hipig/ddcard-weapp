@@ -4,22 +4,6 @@
       colorClass.bg,
       index === currentIndex ? 'scale-100' : 'scale-90'
     ]">
-    <view class="flex-shrink-0">
-      <view class="p-4 flex items-center justify-between">
-        <view class="flex">
-          <view class="ml-2 leading-0" @tap="handleCollect">
-            <image :src="starFillIcon" v-if="isCollect" class="w-8 h-8"/>
-            <image :src="starIcon" v-else class="w-8 h-8"/>
-          </view>
-          <view class="ml-5 leading-0">
-            <image :src="shareFillIcon" class="w-8 h-8"/>
-          </view>
-        </view>
-        <view @tap="handleSwitchMode" class="w-9 h-9 rounded-md inline-flex items-center justify-center bg-white text-gray-800 text-lg font-bold">
-          {{ modeText }}
-        </view>
-      </view>
-    </view>
     <view class="flex-1 flex flex-col items-center justify-center">
       <view @tap="handlePlay" :animation="animationData">
         <image :src="grapeIcon" class="w-48 h-48"/>
@@ -30,12 +14,15 @@
       </view>
     </view>
     <view class="flex-shrink-0">
-      <view class="p-5 text-center relative">
-        <view class="absolute top-0 bottom-0 right-0 mr-4 flex items-center" @tap="handleStop">
+      <view class="py-6 flex flex-col items-center">
+        <view class="py-2_5 w-4__5 rounded-full text-center text-gray-900 bg-white text-lg font-bold">学会了</view>
+        <view class="text-gray-900 text-sm mt-2">查看答案</view>
+      </view>
+      <view class="relative">
+        <view class="absolute bottom-0 right-0 mb-4 mr-4 flex items-center" @tap="handleStop">
           <image :src="volumeUpIcon" v-show="isVolumeUp" class="w-7 h-7"/>
           <image :src="volumeDownIcon" v-show="!isVolumeUp" class="w-7 h-7"/>
         </view>
-        <view class="text-lg">{{ currentIndex + 1 }} / {{ total }}</view>
       </view>
     </view>
   </view>

@@ -6,25 +6,26 @@
       :circular="true"
       @change="handleChange">
       <swiper-item v-for="(item, index) in cards" :key="item.id">
-        <card-item :zhName="item.zh_name"
+        <study-item :zhName="item.zh_name"
           :enName="item.en_name"
           :zhSpell="item.zh_spell"
           :enSpell="item.en_spell"
           :color="item.color"
           :index="index"
           :current-index="currentIndex"
-          :total="cards.length"/>
+          :total="total"/>
       </swiper-item>
     </swiper>
 </template>
 
 <script>
-import CardItem from '../../components/card/Item.vue'
+import Taro from "@tarojs/taro"
+import StudyItem from '../../components/study/Item.vue'
 
 export default {
   name: "CardList",
   components: {
-    CardItem
+    StudyItem
   },
   data () {
     return {
@@ -57,12 +58,24 @@ export default {
           icon: '',
           color: 'orange'
         }
-      ]
+      ],
+      total: 0
     }
+  },
+  created () {
+    this.total = this.cards.length
+    this.setNavigationBarTitle()
   },
   methods: {
     handleChange(e) {
       this.currentIndex = e.detail.current
+
+      this.setNavigationBarTitle()
+    },
+    setNavigationBarTitle() {
+      Taro.setNavigationBarTitle({
+        title: parseInt(this.currentIndex + 1) + ' / ' + this.total
+      })
     }
   }
 }

@@ -2,7 +2,12 @@
   <navigator :url="url" class="flex flex-col border-4 border-solid shadow-xl rounded-2xl mb-6 relative overflow-hidden"
      :class="[colorClass.bg, colorClass.border]">
     <view class="absolute top-0 left-0" v-if="isLock">
-      <view class="-ml-px px-3 rounded-br-2xl border-t-0 border-l-0 border-r-4 border-b-4  border-solid bg-orange-900 text-white font-bold leading-6 text-sm" :class="[colorClass.border]">未解锁</view>
+      <view class="-ml-px py-0_5 px-2_5 rounded-br-2xl border-t-0 border-l-0 border-r-4 border-b-4  border-solid bg-orange-900 text-white font-bold text-sm leading-0" :class="[colorClass.border]">
+        <view class="flex items-center">
+          <image :src="lockFillIcon" class="w-5 h-5"/>
+          <text>未解锁</text>
+        </view>
+      </view>
     </view>
     <view class="p-6 flex items-center">
       <view class="flex-1 px-2">
@@ -21,6 +26,8 @@
 <script>
 import Taro from "@tarojs/taro"
 import grapeIcon from "../../assets/img/fruits/grape.svg"
+
+import lockFillIcon from "../../assets/img/icon/lock-fill.svg"
 
 const colorMap = {
   gray: {
@@ -97,7 +104,8 @@ export default {
   },
   data () {
     return {
-      grapeIcon: grapeIcon
+      grapeIcon,
+      lockFillIcon
     }
   },
   computed: {
