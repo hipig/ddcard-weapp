@@ -26,7 +26,7 @@
       </view>
       <view class="text-center">
         <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
-        <view class="text-4xl text-gray-900 font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
+        <view class="text-4xl text-black font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
       </view>
     </view>
     <view class="flex-shrink-0">
@@ -54,7 +54,7 @@ import volumeUpIcon from "../../assets/img/icon/volume-up.svg"
 const colorMap = {
   gray: {
     bg: 'from-gray-200 to-gray-400',
-    spellText: 'text-gray-900'
+    spellText: 'text-black'
   },
   yellow: {
     bg: 'from-yellow-200 to-yellow-400',

@@ -1,11 +1,13 @@
 <template>
   <view class="flex flex-col">
-    <view class="py-8 px-6">
-      <view class="flex items-center bg-white border-2 border-solid border-black rounded-xl p-1_5 shadow">
-        <view class="w-1_2 text-center rounded-lg px-3 py-1 text-lg text-black font-bold" :class="{'bg-yellow-400': !isNotStudied}" @tap="handleFilter">全部</view>
-        <view class="w-1_2 text-center rounded-lg px-3 py-1 text-lg text-black font-bold" :class="{'bg-yellow-400': isNotStudied}" @tap="handleFilter">未学会</view>
+    <view class="mt-2 mb-6 px-8">
+      <view class="flex items-center justify-end">
+        <view class="flex items-center" @tap="handleFilter">
+          <image :src="checkOnIcon" v-if="isNotStudied" class="w-7 h-7" />
+          <image :src="checkIcon" v-else class="w-7 h-7" />
+          <text class="ml-2 text-lg text-black font-bold">仅看未学会</text>
+        </view>
       </view>
-      
     </view>
     <view class="flex-1">
       <study-list :data="cards"></study-list>
@@ -20,6 +22,9 @@ import StudyList from "../../components/study/List.vue"
 import switchOffIcon from "../../assets/img/icon/switch-off.svg"
 import switchOnIcon from "../../assets/img/icon/switch-on.svg"
 
+import checkIcon from "../../assets/img/icon/check.svg"
+import checkOnIcon from "../../assets/img/icon/check-on.svg"
+
 export default {
   name: "Study",
   components: {
@@ -29,6 +34,8 @@ export default {
     return {
       switchOffIcon,
       switchOnIcon,
+      checkIcon,
+      checkOnIcon,
       isNotStudied: false,
       cards: [],
       allCards: []

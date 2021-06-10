@@ -10,13 +10,13 @@
       </view>
       <view class="text-center">
         <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
-        <view class="text-4xl text-gray-900 font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
+        <view class="text-4xl text-black font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
       </view>
     </view>
     <view class="flex-shrink-0">
       <view class="py-8 h-24 flex flex-col items-center justify-between">
-        <view class="py-3 w-2_3 rounded-full text-center text-gray-900 bg-white text-lg font-bold" @tap="isStudied = !isStudied">{{ isStudied ? '忘记了' : '学会了' }}</view>
-        <view class="text-gray-900 text-sm" v-if="!isStudied" @tap="handleShowAnswer">{{ isShowAnswer ? '隐藏答案' : '查看答案' }}</view>
+        <view class="py-3 w-2_3 rounded-full text-center text-black bg-white text-lg font-bold" @tap="isStudied = !isStudied">{{ isStudied ? '忘记了' : '学会了' }}</view>
+        <view class="text-black text-sm" v-if="!isStudied" @tap="handleShowAnswer">{{ isShowAnswer ? '隐藏答案' : '查看答案' }}</view>
       </view>
       <view class="absolute bottom-0 right-0 mb-4 mr-4" v-if="isShowAnswer">
         <image :src="volumeUpIcon" v-if="isVolumeUp" class="w-7 h-7"/>
@@ -43,7 +43,7 @@ import medalIcon from "../../assets/img/icon/medal.svg"
 const colorMap = {
   gray: {
     bg: 'from-gray-200 to-gray-400',
-    spellText: 'text-gray-900'
+    spellText: 'text-black'
   },
   yellow: {
     bg: 'from-yellow-200 to-yellow-400',

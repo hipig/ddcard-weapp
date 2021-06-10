@@ -16,7 +16,6 @@ module.exports = {
     placeholderOpacity: false,
     ringWidth: false,
     boxShadow: false,
-    animation: false,
     container: false,
   },
   separator: '_',
@@ -142,13 +141,35 @@ module.exports = {
       '200': '2',
     },
     screens: {},
+    extend: {
+      animation: {
+        fadeInUp: 'fadeInUp 1s infinite',
+      },
+      keyframes: {
+        fadeInUp: {
+         'from': {
+           transform: 'translate3d(0, 100%, 0)',
+           opacity: 0
+          },
+          'to': {
+            transform: 'translate3d(0, 0, 0)',
+            opacity: 1
+           },
+       }
+      }
+    }
   },
   variants: {},
   plugins: [
     plugin(function({ addUtilities, theme, e }) {
       const newUtilities = _.map(theme('boxShadow'), (value, key) => {
+        let prefix = 'shadow-'
+        if(key === 'DEFAULT' ) {
+          key = ''
+          prefix = 'shadow'
+        }
         return {
-          [`.${e(`shadow-${key}`)}`]: {
+          [`.${e(`${prefix}${key}`)}`]: {
             boxShadow: `${value}`
           }
         }

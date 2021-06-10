@@ -5,12 +5,12 @@
     </view>
     <view class="flex items-end justify-center">
       <view class="relative">
-        <view @tap="handleDropShow" class="inline-flex items-center font-bold border-2 border-solid border-black text-black bg-yellow-400 rounded-lg shadow-yellow py-1 px-4 text-xl">
+        <view @tap="handleDropShow" class="inline-flex items-center font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-lg shadow-yellow py-1 px-4 text-xl">
           <text class="mr-0_5">测一测</text>
           <image :src="arrowUpFillIcon" class="w-6 h-6 -mr-1" />
         </view>
-        <view class="absolute origin-center bottom-full right-1_2 transform translate-x-1_2 mb-4" v-show="dropShow">
-          <view class="w-36 rounded-xl border-2 border-solid border-black bg-white text-black text-center font-bold relative drop-menu">
+        <view class="absolute origin-center bottom-full right-1_2 transform translate-x-1_2 mb-4 z-50" v-show="dropShow">
+          <view class="w-36 rounded-xl border-2 border-solid border-black text-black bg-white text-center font-bold relative drop-menu">
             <navigator url="/pages/study/index?mode=zh" class="py-3">中文</navigator>
             <view class="border border-solid border-black"></view>
             <navigator url="/pages/study/index?mode=en" class="py-3">英文</navigator>

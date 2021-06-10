@@ -11,7 +11,7 @@
     </view>
     <view class="p-6 flex items-center">
       <view class="flex-1 px-2">
-        <view class="text-3xl text-gray-900 font-bold">{{ name }}</view>
+        <view class="text-3xl text-black font-bold">{{ name }}</view>
         <view class="text-lg text-gray-700">{{ englishName }}</view>
       </view>
       <view class="flex-shrink-0">
