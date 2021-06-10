@@ -1,4 +1,6 @@
+const _ = require('lodash')
 const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
 
@@ -100,6 +102,7 @@ module.exports = {
       '9_12': '75%',
       '10_12': '83.333333%',
       '11_12': '91.666667%',
+      'full': '100%'
     },
     boxShadow: {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -110,7 +113,7 @@ module.exports = {
       '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
-      'yellow': '8px 8px #FDE047',
+      'yellow': '6px 6px #FBBF24',
     },
     lineHeight: (theme) => theme('spacing'),
     translate: (theme) => theme('spacing'),
@@ -118,7 +121,6 @@ module.exports = {
     width: (theme) => ({
       ...theme('spacing'),
       auto: 'auto',
-      full: '100%',
       screen: '100vw',
     }),
     maxWidth: (theme) => theme('spacing'),
@@ -142,4 +144,17 @@ module.exports = {
     screens: {},
   },
   variants: {},
+  plugins: [
+    plugin(function({ addUtilities, theme, e }) {
+      const newUtilities = _.map(theme('boxShadow'), (value, key) => {
+        return {
+          [`.${e(`shadow-${key}`)}`]: {
+            boxShadow: `${value}`
+          }
+        }
+      })
+
+      addUtilities(newUtilities)
+    })
+  ]
 };

@@ -3,9 +3,10 @@
       class="w-full h-128"
       previous-margin="30px"
       next-margin="30px"
+      :current="currentIndex"
       :circular="true"
       @change="handleChange">
-      <swiper-item v-for="(item, index) in cards" :key="item.id">
+      <swiper-item v-for="(item, index) in data" :key="item.id">
         <study-item :zhName="item.zh_name"
           :enName="item.en_name"
           :zhSpell="item.zh_spell"
@@ -13,57 +14,35 @@
           :color="item.color"
           :index="index"
           :current-index="currentIndex"
-          :total="total"/>
+          :total="data.length"/>
       </swiper-item>
     </swiper>
 </template>
 
 <script>
 import Taro from "@tarojs/taro"
-import StudyItem from '../../components/study/Item.vue'
+import StudyItem from "../../components/study/Item.vue"
 
 export default {
   name: "CardList",
   components: {
     StudyItem
   },
+  props: {
+    data: Array
+  },
   data () {
     return {
-      currentIndex: 0,
-      cards: [
-        {
-          id: 1,
-          zh_name: '苹果',
-          zh_spell: 'píng guǒ',
-          en_name: 'apple',
-          en_spell: '[ˈæpl]',
-          icon: '',
-          color: 'red'
-        },
-        {
-          id: 2,
-          zh_name: '梨',
-          zh_spell: 'lí',
-          en_name: 'pear',
-          en_spell: '[per]',
-          icon: '',
-          color: 'yellow'
-        },
-        {
-          id: 3,
-          zh_name: '橙子',
-          zh_spell: 'chéng zi',
-          en_name: 'orange',
-          en_spell: `['ɔrɪndʒ]`,
-          icon: '',
-          color: 'orange'
-        }
-      ],
-      total: 0
+      currentIndex: 0
+    }
+  },
+  watch: {
+    data() {
+      this.currentIndex = 0
+      this.setNavigationBarTitle()
     }
   },
   created () {
-    this.total = this.cards.length
     this.setNavigationBarTitle()
   },
   methods: {
@@ -74,7 +53,7 @@ export default {
     },
     setNavigationBarTitle() {
       Taro.setNavigationBarTitle({
-        title: parseInt(this.currentIndex + 1) + ' / ' + this.total
+        title: parseInt(this.currentIndex + 1) + ' / ' + this.data.length
       })
     }
   }

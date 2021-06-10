@@ -1,28 +1,29 @@
 <template>
-  <view class="mx-auto h-full flex flex-col bg-gradient-to-b text-white rounded-xl transform duration-200"
+  <view class="mx-auto h-full flex flex-col bg-gradient-to-b text-white rounded-xl transform duration-200 relative"
     :class="[
       colorClass.bg,
       index === currentIndex ? 'scale-100' : 'scale-90'
     ]">
     <view class="flex-1 flex flex-col items-center justify-center">
-      <view @tap="handlePlay" :animation="animationData">
+      <view class="mb-8" v-if="isShowAnswer" @tap="handlePlay" :animation="animationData">
         <image :src="grapeIcon" class="w-48 h-48"/>
       </view>
-      <view class="mt-8">
-        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ modeText == 'Aa' ? zhSpell : enSpell }}</view>
-        <view class="text-4xl text-gray-900 font-bold capitalize">{{ modeText == 'Aa' ? zhName : enName }}</view>
+      <view class="text-center">
+        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
+        <view class="text-4xl text-gray-900 font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
       </view>
     </view>
     <view class="flex-shrink-0">
-      <view class="py-6 flex flex-col items-center">
-        <view class="py-2_5 w-4__5 rounded-full text-center text-gray-900 bg-white text-lg font-bold">学会了</view>
-        <view class="text-gray-900 text-sm mt-2">查看答案</view>
+      <view class="py-8 h-24 flex flex-col items-center justify-between">
+        <view class="py-3 w-2_3 rounded-full text-center text-gray-900 bg-white text-lg font-bold" @tap="isStudied = !isStudied">{{ isStudied ? '忘记了' : '学会了' }}</view>
+        <view class="text-gray-900 text-sm" v-if="!isStudied" @tap="handleShowAnswer">{{ isShowAnswer ? '隐藏答案' : '查看答案' }}</view>
       </view>
-      <view class="relative">
-        <view class="absolute bottom-0 right-0 mb-4 mr-4 flex items-center" @tap="handleStop">
-          <image :src="volumeUpIcon" v-show="isVolumeUp" class="w-7 h-7"/>
-          <image :src="volumeDownIcon" v-show="!isVolumeUp" class="w-7 h-7"/>
-        </view>
+      <view class="absolute bottom-0 right-0 mb-4 mr-4" v-if="isShowAnswer">
+        <image :src="volumeUpIcon" v-if="isVolumeUp" class="w-7 h-7"/>
+        <image :src="volumeDownIcon" v-else class="w-7 h-7"/>
+      </view>
+      <view class="absolute top-0 left-0 mt-4 ml-4" v-if="isStudied">
+        <image :src="medalIcon" class="w-12 h-12"/>
       </view>
     </view>
   </view>
@@ -37,6 +38,7 @@ import starFillIcon from "../../assets/img/icon/star-fill.svg"
 import shareFillIcon from "../../assets/img/icon/share-fill.svg"
 import volumeDownIcon from "../../assets/img/icon/volume-down.svg"
 import volumeUpIcon from "../../assets/img/icon/volume-up.svg"
+import medalIcon from "../../assets/img/icon/medal.svg"
 
 const colorMap = {
   gray: {
@@ -102,11 +104,13 @@ export default {
       shareFillIcon,
       volumeDownIcon,
       volumeUpIcon,
+      medalIcon,
       animationData: null,
-      isCollect: false,
-      modeText: 'Aa',
+      mode: 'en',
       isVolumeUp: true,
-      timer: null
+      timer: null,
+      isStudied: false,
+      isShowAnswer: false
     }
   },
   computed: {
@@ -115,9 +119,11 @@ export default {
     }
   },
   watch: {
-    currentIndex(val) {
-      if(this.index === val) {
-        this.handlePlay()
+    isStudied(val) {
+      this.isShowAnswer = val
+      if(val) {
+        this.animationData = null
+        setTimeout(this.handlePlay, 100)
       }
     }
   },
@@ -132,11 +138,6 @@ export default {
         icon: 'none',
         duration: 2000
       })
-    },
-    handleSwitchMode() {
-      this.modeText = this.modeText == 'Aa' ? '中' : 'Aa'
-
-      this.handlePlay()
     },
     handlePlay() {
       let animation = Taro.createAnimation({
@@ -154,6 +155,13 @@ export default {
     handleStop() {
       clearInterval(this.timer)
       this.isVolumeUp = true
+    },
+    handleShowAnswer() {
+      this.isShowAnswer = !this.isShowAnswer
+      if(this.isShowAnswer) {
+        this.animationData = null
+        setTimeout(this.handlePlay, 100)
+      }
     },
     initInterval() {
       this.timer = setInterval(() => {

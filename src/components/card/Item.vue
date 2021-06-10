@@ -1,5 +1,5 @@
 <template>
-  <view class="mx-auto h-full flex flex-col bg-gradient-to-b text-white rounded-xl transform duration-200"
+  <view class="mx-auto h-full flex flex-col bg-gradient-to-b text-white rounded-xl transform duration-200 relative"
     :class="[
       colorClass.bg,
       index === currentIndex ? 'scale-100' : 'scale-90'
@@ -16,26 +16,26 @@
           </view>
         </view>
         <view @tap="handleSwitchMode" class="w-9 h-9 rounded-md inline-flex items-center justify-center bg-white text-gray-800 text-lg font-bold">
-          {{ modeText }}
+          {{ mode === 'zh' ? 'Aa' : '中' }}
         </view>
       </view>
     </view>
     <view class="flex-1 flex flex-col items-center justify-center">
-      <view @tap="handlePlay" :animation="animationData">
+      <view class="mb-8" @tap="handlePlay" :animation="animationData">
         <image :src="grapeIcon" class="w-48 h-48"/>
       </view>
-      <view class="mt-8">
-        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ modeText == 'Aa' ? zhSpell : enSpell }}</view>
-        <view class="text-4xl text-gray-900 font-bold capitalize">{{ modeText == 'Aa' ? zhName : enName }}</view>
+      <view class="text-center">
+        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
+        <view class="text-4xl text-gray-900 font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
       </view>
     </view>
     <view class="flex-shrink-0">
       <view class="p-5 text-center relative">
-        <view class="absolute top-0 bottom-0 right-0 mr-4 flex items-center" @tap="handleStop">
-          <image :src="volumeUpIcon" v-show="isVolumeUp" class="w-7 h-7"/>
-          <image :src="volumeDownIcon" v-show="!isVolumeUp" class="w-7 h-7"/>
-        </view>
         <view class="text-lg">{{ currentIndex + 1 }} / {{ total }}</view>
+      </view>
+      <view class="absolute bottom-0 right-0 mb-4 mr-4 flex items-center">
+        <image :src="volumeUpIcon" v-if="isVolumeUp" class="w-7 h-7"/>
+        <image :src="volumeDownIcon" v-else class="w-7 h-7"/>
       </view>
     </view>
   </view>
@@ -117,7 +117,7 @@ export default {
       volumeUpIcon,
       animationData: null,
       isCollect: false,
-      modeText: 'Aa',
+      mode: 'zh',
       isVolumeUp: true,
       timer: null
     }
@@ -134,6 +134,11 @@ export default {
       }
     }
   },
+  created () {
+    if(this.index === 0) {
+      setTimeout(this.handlePlay, 100)
+    }
+  },
   beforeDestroy() {
     this.handleStop()
   },
@@ -147,7 +152,7 @@ export default {
       })
     },
     handleSwitchMode() {
-      this.modeText = this.modeText == 'Aa' ? '中' : 'Aa'
+      this.mode = this.mode === 'zh' ? 'en' : 'zh'
 
       this.handlePlay()
     },
