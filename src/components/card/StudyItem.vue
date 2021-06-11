@@ -6,7 +6,7 @@
     ]">
     <view class="flex-1 flex flex-col items-center justify-center">
       <view class="mb-8" v-if="isShowAnswer" @tap="handlePlay" :animation="animationData">
-        <image :src="grapeIcon" class="w-48 h-48"/>
+        <image :src="icon" class="w-48 h-48"/>
       </view>
       <view class="text-center">
         <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
@@ -31,11 +31,7 @@
 
 <script>
 import Taro from "@tarojs/taro"
-import grapeIcon from "../../assets/img/fruits/grape.svg"
 
-import starIcon from "../../assets/img/icon/star.svg"
-import starFillIcon from "../../assets/img/icon/star-fill.svg"
-import shareFillIcon from "../../assets/img/icon/share-fill.svg"
 import volumeDownIcon from "../../assets/img/icon/volume-down.svg"
 import volumeUpIcon from "../../assets/img/icon/volume-up.svg"
 import medalIcon from "../../assets/img/icon/medal.svg"
@@ -84,7 +80,7 @@ const colorMap = {
 }
 
 export default {
-  name: "CardItem",
+  name: "StudyItem",
   props: {
     zhName: String,
     enName: String,
@@ -92,21 +88,17 @@ export default {
     enSpell: String,
     color: { default: 'gray', type: String },
     icon: String,
+    mode: { default: 'zh', type: String },
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
     total: Number
   },
   data () {
     return {
-      grapeIcon,
-      starIcon,
-      starFillIcon,
-      shareFillIcon,
       volumeDownIcon,
       volumeUpIcon,
       medalIcon,
       animationData: null,
-      mode: 'en',
       isVolumeUp: true,
       timer: null,
       isStudied: false,

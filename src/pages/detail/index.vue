@@ -1,7 +1,24 @@
 <template>
   <view class="flex flex-col">
     <view class="flex-1 py-12">
-      <card-list></card-list>
+      <swiper
+        class="h-128"
+        previous-margin="30px"
+        next-margin="30px"
+        :circular="true"
+        @change="handleChange">
+        <swiper-item v-for="(item, index) in cards" :key="item.id">
+          <card-item :zh-name="item.zh_name"
+            :en-name="item.en_name"
+            :zh-spell="item.zh_spell"
+            :en-spell="item.en_spell"
+            :color="item.color"
+            :icon="item.icon"
+            :index="index"
+            :current-index="currentIndex"
+            :total="cards.length"/>
+        </swiper-item>
+      </swiper>
     </view>
     <view class="flex items-end justify-center">
       <view class="relative">
@@ -11,9 +28,9 @@
         </view>
         <view class="absolute origin-center bottom-full right-1_2 transform translate-x-1_2 mb-4 z-50" v-show="dropShow">
           <view class="w-36 rounded-xl border-2 border-solid border-black text-black bg-white text-center font-bold relative drop-menu">
-            <navigator url="/pages/study/index?mode=zh" class="py-3">中文</navigator>
+            <view class="py-3" @tap="handleTo('zh')">中文</view>
             <view class="border border-solid border-black"></view>
-            <navigator url="/pages/study/index?mode=en" class="py-3">英文</navigator>
+            <view class="py-3" @tap="handleTo('en')">英文</view>
           </view>
         </view>
       </view>
@@ -41,18 +58,50 @@
 
 <script>
 import Taro from "@tarojs/taro"
-import CardList from "../../components/card/List.vue"
+import CardItem from "../../components/card/Item.vue"
+
+import grapeIcon from "../../assets/img/fruits/grape.svg"
 
 import arrowUpFillIcon from "../../assets/img/icon/arrow-up-fill.svg"
 
 export default {
   name: 'Detail',
   components: {
-    CardList
+    CardItem
   },
   data () {
     return {
       arrowUpFillIcon,
+      currentIndex: 0,
+      cards: [
+        {
+          id: 1,
+          zh_name: '苹果',
+          zh_spell: 'píng guǒ',
+          en_name: 'apple',
+          en_spell: '[ˈæpl]',
+          icon: grapeIcon,
+          color: 'red'
+        },
+        {
+          id: 2,
+          zh_name: '梨',
+          zh_spell: 'lí',
+          en_name: 'pear',
+          en_spell: '[per]',
+          icon: grapeIcon,
+          color: 'yellow'
+        },
+        {
+          id: 3,
+          zh_name: '橙子',
+          zh_spell: 'chéng zi',
+          en_name: 'orange',
+          en_spell: `['ɔrɪndʒ]`,
+          icon: grapeIcon,
+          color: 'orange'
+        }
+      ],
       dropShow: false,
     }
   },
@@ -60,8 +109,20 @@ export default {
     this.setNavigationBar()
   },
   methods: {
+    handleChange(e) {
+      this.currentIndex = e.detail.current
+    },
     handleDropShow() {
       this.dropShow = !this.dropShow
+    },
+    handleTo(mode) {
+      Taro.navigateTo({
+        url: '/pages/study/index?mode=' + mode
+      })
+
+      setTimeout(() => {
+        this.dropShow = false
+      }, 200)
     },
     setNavigationBar() {
       Taro.setNavigationBarTitle({

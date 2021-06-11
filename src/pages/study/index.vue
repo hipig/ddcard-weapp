@@ -10,17 +10,36 @@
       </view>
     </view>
     <view class="flex-1">
-      <study-list :data="cards"></study-list>
+      <swiper
+        class="w-full h-128"
+        previous-margin="30px"
+        next-margin="30px"
+        :current="currentIndex"
+        :circular="true"
+        @change="handleChange">
+        <swiper-item v-for="(item, index) in cards" :key="item.id">
+          <study-item :zh-name="item.zh_name"
+            :en-name="item.en_name"
+            :zh-spell="item.zh_spell"
+            :en-spell="item.en_spell"
+            :color="item.color"
+            :icon="item.icon"
+            :mode="mode"
+            :index="index"
+            :current-index="currentIndex"
+            :total="cards.length"/>
+        </swiper-item>
+      </swiper>
     </view>
   </view>
 </template>
 
 <script>
 import _ from "lodash"
-import StudyList from "../../components/study/List.vue"
+import Taro from "@tarojs/taro"
+import StudyItem from "../../components/card/StudyItem.vue"
 
-import switchOffIcon from "../../assets/img/icon/switch-off.svg"
-import switchOnIcon from "../../assets/img/icon/switch-on.svg"
+import grapeIcon from "../../assets/img/fruits/grape.svg"
 
 import checkIcon from "../../assets/img/icon/check.svg"
 import checkOnIcon from "../../assets/img/icon/check-on.svg"
@@ -28,21 +47,31 @@ import checkOnIcon from "../../assets/img/icon/check-on.svg"
 export default {
   name: "Study",
   components: {
-    StudyList
+    StudyItem
   },
   data () {
     return {
-      switchOffIcon,
-      switchOnIcon,
       checkIcon,
       checkOnIcon,
       isNotStudied: false,
+      currentIndex: 0,
       cards: [],
-      allCards: []
+      allCards: [],
+      mode: 'zh'
+    }
+  },
+  watch: {
+    cards() {
+      this.setNavigationBarTitle()
+    },
+    currentIndex() {
+      this.setNavigationBarTitle()
     }
   },
   created () {
     this.getCards()
+    // 获取传过来的 mode
+    this.mode = Taro.getCurrentInstance().router.params.mode || 'zh'
   },
   methods: {
     getCards() {
@@ -53,7 +82,7 @@ export default {
           zh_spell: 'píng guǒ',
           en_name: 'apple',
           en_spell: '[ˈæpl]',
-          icon: '',
+          icon: grapeIcon,
           color: 'red',
           is_studid: true
         },
@@ -63,7 +92,7 @@ export default {
           zh_spell: 'lí',
           en_name: 'pear',
           en_spell: '[per]',
-          icon: '',
+          icon: grapeIcon,
           color: 'yellow'
         },
         {
@@ -72,13 +101,16 @@ export default {
           zh_spell: 'chéng zi',
           en_name: 'orange',
           en_spell: `['ɔrɪndʒ]`,
-          icon: '',
+          icon: grapeIcon,
           color: 'orange'
         }
       ]
 
       this.allCards = cards
       this.cards = cards
+    },
+    handleChange(e) {
+      this.currentIndex = e.detail.current
     },
     handleFilter() {
       this.isNotStudied = !this.isNotStudied
@@ -88,6 +120,12 @@ export default {
       } else {
         this.cards = this.allCards
       }
+      this.currentIndex = 0
+    },
+    setNavigationBarTitle() {
+      Taro.setNavigationBarTitle({
+        title: parseInt(this.currentIndex + 1) + ' / ' + this.cards.length
+      })
     }
   }
 }

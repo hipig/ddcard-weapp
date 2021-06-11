@@ -1,5 +1,5 @@
 <template>
-  <navigator :url="url" class="flex flex-col border-4 border-solid shadow-xl rounded-2xl mb-6 relative overflow-hidden"
+  <view class="flex flex-col border-4 border-solid shadow-xl rounded-2xl mb-6 relative overflow-hidden"
      :class="[colorClass.bg, colorClass.border]">
     <view class="absolute top-0 left-0" v-if="isLock">
       <view class="-ml-px py-0_5 px-2_5 rounded-br-2xl border-t-0 border-l-0 border-r-4 border-b-4  border-solid bg-orange-900 text-white font-bold text-sm leading-0" :class="[colorClass.border]">
@@ -11,22 +11,19 @@
     </view>
     <view class="p-6 flex items-center">
       <view class="flex-1 px-2">
-        <view class="text-3xl text-black font-bold">{{ name }}</view>
-        <view class="text-lg text-gray-700">{{ englishName }}</view>
+        <view class="text-3xl text-black font-bold">{{ zhName }}</view>
+        <view class="text-lg text-gray-700 capitalize">{{ enName }}</view>
       </view>
       <view class="flex-shrink-0">
         <view class="rounded-lg inline-flex p-2" :class="[colorClass.iconBg]">
-          <image :src="grapeIcon" class="w-16 h-16"/>
+          <image :src="icon" class="w-16 h-16"/>
         </view>
       </view>
     </view>
-  </navigator>
+  </view>
 </template>
 
 <script>
-import Taro from "@tarojs/taro"
-import grapeIcon from "../../assets/img/fruits/grape.svg"
-
 import lockFillIcon from "../../assets/img/icon/lock-fill.svg"
 
 const colorMap = {
@@ -95,32 +92,20 @@ const colorMap = {
 export default {
   name: 'GroupItem',
   props: {
-    name: String,
-    englishName: String,
+    zhName: String,
+    enName: String,
     color: { default: 'gray', type: String },
     icon: String,
-    isLock: { default: false, type: Boolean },
-    url: String
+    isLock: { default: false, type: Boolean }
   },
   data () {
     return {
-      grapeIcon,
       lockFillIcon
     }
   },
   computed: {
     colorClass() {
       return colorMap[this.color || 'gray']
-    }
-  },
-  methods: {
-    handle(e) {
-      console.log('xxxxx')
-      if(this.url) {
-        Taro.navigateTo({
-          url: url
-        })
-      }
     }
   }
 }
