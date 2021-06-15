@@ -32,7 +32,7 @@
       </view>
       <view class="w-full" v-show="isCollect">
         <view class="flex flex-wrap -mx-3">
-          <view class="w-1_2 px-3 box-border mb-6" v-for="(item, index) in collects" :key="index">
+          <view @tap="handleTo(index)" class="w-1_2 px-3 box-border mb-6" v-for="(item, index) in collects" :key="index">
             <collect-item :zh-name="item.zh_name"
               :en-name="item.en_name" 
               :icon="item.icon"
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import Taro from "@tarojs/taro"
 import ReportItem from "../../components/report/Item.vue"
 import CollectItem from "../../components/card/CollectItem.vue"
 
@@ -115,6 +116,13 @@ export default {
           color: 'orange'
         }
       ]
+    }
+  },
+  methods: {
+    handleTo(index) {
+      Taro.navigateTo({
+        url: '/pages/detail/index?type=collect&current=' + index
+      })
     }
   }
 }

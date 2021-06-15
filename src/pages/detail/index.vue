@@ -5,6 +5,7 @@
         class="h-128"
         previous-margin="30px"
         next-margin="30px"
+        :current="currentIndex"
         :circular="true"
         @change="handleChange">
         <swiper-item v-for="(item, index) in cards" :key="item.id">
@@ -14,6 +15,8 @@
             :en-spell="item.en_spell"
             :color="item.color"
             :icon="item.icon"
+            :zh-src="item.zh_src"
+            :en-src="item.en_src"
             :index="index"
             :current-index="currentIndex"
             :total="cards.length"/>
@@ -35,24 +38,6 @@
         </view>
       </view>
     </view>
-    <view class="fixed z-10 inset-0 overflow-y-auto" v-show="false">
-      <view class="flex items-center justify-center min-h-screen p-8 text-center">
-        <view class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity"></view>
-
-        <view class="flex flex-col rounded-xl shadow-sm bg-yellow-50 overflow-hidden w-full max-w-md mx-auto z-50">
-          <view class="p-6 flex-grow w-full box-border">
-            <view class="text-gray-600">
-              Content..
-            </view>
-          </view>
-          <view class="p-6 w-full box-border">
-            <button class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md shadow-yellow py-1 px-4 text-xl">
-              开始
-            </button>
-          </view>
-        </view>
-      </view>
-    </view>
   </view>
 </template>
 
@@ -63,6 +48,8 @@ import CardItem from "../../components/card/Item.vue"
 import grapeIcon from "../../assets/img/fruits/grape.svg"
 
 import arrowUpFillIcon from "../../assets/img/icon/arrow-up-fill.svg"
+
+import TestAudio from "../../assets/audio/test.mp3"
 
 export default {
   name: 'Detail',
@@ -81,7 +68,9 @@ export default {
           en_name: 'apple',
           en_spell: '[ˈæpl]',
           icon: grapeIcon,
-          color: 'red'
+          color: 'red',
+          zh_src: TestAudio,
+          en_src: TestAudio
         },
         {
           id: 2,
@@ -90,7 +79,9 @@ export default {
           en_name: 'pear',
           en_spell: '[per]',
           icon: grapeIcon,
-          color: 'yellow'
+          color: 'yellow',
+          zh_src: TestAudio,
+          en_src: TestAudio
         },
         {
           id: 3,
@@ -99,7 +90,9 @@ export default {
           en_name: 'orange',
           en_spell: `['ɔrɪndʒ]`,
           icon: grapeIcon,
-          color: 'orange'
+          color: 'orange',
+          zh_src: TestAudio,
+          en_src: TestAudio
         }
       ],
       dropShow: false,
@@ -107,6 +100,9 @@ export default {
   },
   created() {
     this.setNavigationBar()
+
+    // 获取传过来的 current
+    this.currentIndex = parseInt(Taro.getCurrentInstance().router.params.current) || 0
   },
   methods: {
     handleChange(e) {

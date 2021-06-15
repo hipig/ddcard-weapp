@@ -59,7 +59,6 @@ export default {
   },
   methods: {
     handle(item) {
-      console.log(item)
       if(!!item.is_lock) {
         return false
       }

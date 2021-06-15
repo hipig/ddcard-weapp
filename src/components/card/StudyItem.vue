@@ -88,6 +88,8 @@ export default {
     enSpell: String,
     color: { default: 'gray', type: String },
     icon: String,
+    zhSrc: String,
+    enSrc: String,
     mode: { default: 'zh', type: String },
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
@@ -102,7 +104,8 @@ export default {
       isVolumeUp: true,
       timer: null,
       isStudied: false,
-      isShowAnswer: false
+      isShowAnswer: false,
+      innerAudioContext: null
     }
   },
   computed: {
@@ -119,6 +122,9 @@ export default {
       }
     }
   },
+  created () {
+    this.initInnerAudioContext()
+  },
   beforeDestroy() {
     this.handleStop()
   },
@@ -132,17 +138,7 @@ export default {
       })
     },
     handlePlay() {
-      let animation = Taro.createAnimation({
-        duration: 200
-      })
-
-      animation.scale(1.2).step()
-      animation.scale(1).step()
-
-      this.animationData = animation
-      this.initInterval()
-
-      setTimeout(this.handleStop, 3000)
+      this.initInnerAudioContext.play()
     },
     handleStop() {
       clearInterval(this.timer)
@@ -154,6 +150,30 @@ export default {
         this.animationData = null
         setTimeout(this.handlePlay, 100)
       }
+    },
+    initInnerAudioContext() {
+      let initInnerAudioContext = Taro.createInnerAudioContext()
+      initInnerAudioContext.src = this.mode === 'zh' ? this.zhSrc : this.enSrc
+
+      initInnerAudioContext.onPlay(() => {
+        this.initImageScale()
+        this.initInterval()
+      })
+      initInnerAudioContext.onEnded(() => {
+        this.handleStop()
+      })
+
+      this.initInnerAudioContext = initInnerAudioContext
+    },
+    initImageScale() {
+      let animation = Taro.createAnimation({
+        duration: 200
+      })
+
+      animation.scale(1.2).step()
+      animation.scale(1).step()
+
+      this.animationData = animation
     },
     initInterval() {
       this.timer = setInterval(() => {

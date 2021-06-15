@@ -24,6 +24,8 @@
             :en-spell="item.en_spell"
             :color="item.color"
             :icon="item.icon"
+            :zh-src="item.zh_src"
+            :en-src="item.en_src"
             :mode="mode"
             :index="index"
             :current-index="currentIndex"
@@ -43,6 +45,8 @@ import grapeIcon from "../../assets/img/fruits/grape.svg"
 
 import checkIcon from "../../assets/img/icon/check.svg"
 import checkOnIcon from "../../assets/img/icon/check-on.svg"
+
+import TestAudio from "../../assets/audio/test.mp3"
 
 export default {
   name: "Study",
@@ -84,6 +88,8 @@ export default {
           en_spell: '[ˈæpl]',
           icon: grapeIcon,
           color: 'red',
+          zh_src: TestAudio,
+          en_src: TestAudio,
           is_studid: true
         },
         {
@@ -93,7 +99,9 @@ export default {
           en_name: 'pear',
           en_spell: '[per]',
           icon: grapeIcon,
-          color: 'yellow'
+          color: 'yellow',
+          zh_src: TestAudio,
+          en_src: TestAudio
         },
         {
           id: 3,
@@ -102,7 +110,9 @@ export default {
           en_name: 'orange',
           en_spell: `['ɔrɪndʒ]`,
           icon: grapeIcon,
-          color: 'orange'
+          color: 'orange',
+          zh_src: TestAudio,
+          en_src: TestAudio
         }
       ]
 

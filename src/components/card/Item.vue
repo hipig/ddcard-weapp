@@ -102,6 +102,8 @@ export default {
     enSpell: String,
     color: { default: 'gray', type: String },
     icon: String,
+    zhSrc: String,
+    enSrc: String,
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
     total: Number
@@ -117,7 +119,8 @@ export default {
       isCollect: false,
       mode: 'zh',
       isVolumeUp: true,
-      timer: null
+      timer: null,
+      innerAudioContext: null
     }
   },
   computed: {
@@ -133,7 +136,9 @@ export default {
     }
   },
   created () {
-    if(this.index === 0) {
+    this.initInnerAudioContext()
+
+    if(this.index === this.currentIndex) {
       setTimeout(this.handlePlay, 100)
     }
   },
@@ -155,6 +160,27 @@ export default {
       this.handlePlay()
     },
     handlePlay() {
+      this.initInnerAudioContext.play()
+    },
+    handleStop() {
+      clearInterval(this.timer)
+      this.isVolumeUp = true
+    },
+    initInnerAudioContext() {
+      let initInnerAudioContext = Taro.createInnerAudioContext()
+      initInnerAudioContext.src = this.mode === 'zh' ? this.zhSrc : this.enSrc
+
+      initInnerAudioContext.onPlay(() => {
+        this.initImageScale()
+        this.initInterval()
+      })
+      initInnerAudioContext.onEnded(() => {
+        this.handleStop()
+      })
+
+      this.initInnerAudioContext = initInnerAudioContext
+    },
+    initImageScale() {
       let animation = Taro.createAnimation({
         duration: 200
       })
@@ -163,18 +189,11 @@ export default {
       animation.scale(1).step()
 
       this.animationData = animation
-      this.initInterval()
-
-      setTimeout(this.handleStop, 3000)
-    },
-    handleStop() {
-      clearInterval(this.timer)
-      this.isVolumeUp = true
     },
     initInterval() {
       this.timer = setInterval(() => {
         this.isVolumeUp = !this.isVolumeUp
-      }, 500)
+      }, 200)
     }
   }
 }
