@@ -5,6 +5,7 @@ export default {
     'pages/study/index',
     'pages/report/index',
     'pages/my/index',
+    'pages/auth/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -1,13 +1,13 @@
 <template>
   <view class="flex flex-col">
-    <view class="bg-yellow-300 h-28 px-6">
+    <view class="bg-yellow-400 h-28 px-6">
       <view class="flex items-center pt-2 pb-4">
         <view class="flex-shrink-0 flex items-center">
           <view class="border-2 border-solid border-white leading-0 rounded-full overflow-hidden">
             <image :src="NoAvatarIcon" class="w-12 h-12" />
           </view>
         </view>
-        <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleAuthorize">
+        <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo">
           <view class="text-black text-xl font-bold">点击登录</view>
           <image :src="ChevronRightIcon" class="w-5 h-5" />
         </view>
@@ -63,9 +63,9 @@
         </view>
       </view>
     </view>
-    <view class="fixed z-10 inset-0 overflow-y-auto" v-show="authorizeDialogShow">
+    <view class="fixed z-10 inset-0 overflow-y-auto" v-show="false">
       <view class="flex items-center justify-center min-h-screen p-6 text-center">
-        <view class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" :animation="maskOpenAnimation"></view>
+        <view class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity"></view>
 
         <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-50 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-4 w-full box-border">
@@ -77,10 +77,10 @@
             </view>
           </view>
           <view class="px-6 py-4 w-full box-border">
-            <button open-type="getUserInfo" @getUserInfo="getUserInfo" class="mb-3 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
+            <button class="mb-3 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
               我知道了
             </button>
-            <button @tap="cancelAuthorize" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
+            <button class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
               取消
             </button>
           </view>
@@ -112,31 +112,13 @@ export default {
       ShareIcon,
       AboutIcon,
       MoreIcon,
-      authorizeDialogShow: false,
-      maskOpenAnimation: null,
-      bodyOpenAnimation: null
     }
   },
   methods: {
-    handleAuthorize() {
-      this.authorizeDialogShow = true
-      this.initDialogMaskOpenAnimation()
-    },
-    cancelAuthorize() {
-      this.authorizeDialogShow = false
-    },
-    getUserInfo(e) {
-      console.log(e)
-    },
-    initDialogMaskOpenAnimation() {
-      let animation = Taro.createAnimation({
-        duration: 200,
-        timingFunction: "ease-out"
+    handleTo() {
+      Taro.navigateTo({
+        url: '/pages/auth/index?redirect_url=' + encodeURIComponent('/pages/my/index')
       })
-
-      animation.opacity(1).step()
-
-      this.maskOpenAnimation = animation.export()
     }
   }
 }
