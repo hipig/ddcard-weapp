@@ -1,7 +1,23 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "http://jcard.test/api/v1/"
+const baseUrl = "http://jcard.test/api/v1"
+
+const getCurrentPageUrl = () => {
+  let pages = Taro.getCurrentPages()
+  let currentPage = pages[pages.length - 1]
+  let url = currentPage.route
+  return url
+}
+
+const pageToLogin = () => {
+  let path = getCurrentPageUrl()
+  if (!path.includes('auth')) {
+    Taro.navigateTo({
+      url: "/pages/auth/index?redirect_url=" + encodeURIComponent(path)
+    });
+  }
+}
 
 const showError = (message, icon = 'none', duration = 2000) => {
   Taro.showToast({
@@ -21,18 +37,18 @@ const statusInterceptor = (chain) => {
       case 200:
       case 201:
       case 204:
-        return res.data  
+        return res.data
       case 401:
-        const token = store.getters['user/token']
+        const token = store.getters['auth/token']
         if (token) {
           store.dispatch('user/clear')
         }
-        // TODO::跳转
+        pageToLogin()
         break;
       case 403:
         return showError('您的权限不足，拒绝访问！')
       case 429:
-        return showError('重复访问次数过多！')  
+        return showError('重复访问次数过多！')
       default:
         return showError(response.data.message || '请求出现错误或服务器异常，请稍后再试！')
     }
@@ -44,7 +60,7 @@ Taro.addInterceptor(statusInterceptor)
 const service = (params) => {
   const { url, data, method } = params
   const header = params.header || {}
-  const token = store.getters['user/token']
+  const token = store.getters['auth/token']
   if (token) {
     header['Authorization'] = 'Bearer ' + token
   }

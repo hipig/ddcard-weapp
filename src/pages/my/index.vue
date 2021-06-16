@@ -2,15 +2,28 @@
   <view class="flex flex-col">
     <view class="bg-yellow-400 h-28 px-6">
       <view class="flex items-center pt-2 pb-4">
-        <view class="flex-shrink-0 flex items-center">
-          <view class="border-2 border-solid border-white leading-0 rounded-full overflow-hidden">
-            <image :src="NoAvatarIcon" class="w-12 h-12" />
+        <template v-if="isLogin">
+          <view class="flex-shrink-0 flex items-center">
+            <view class="border-2 border-solid border-white leading-0 rounded-full overflow-hidden">
+              <image :src="userInfo.avatar" class="w-12 h-12" />
+            </view>
           </view>
-        </view>
-        <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo">
-          <view class="text-black text-xl font-bold">点击登录</view>
-          <image :src="ChevronRightIcon" class="w-5 h-5" />
-        </view>
+          <view class="ml-2 flex-1 flex items-center justify-between">
+            <view class="text-black text-xl font-bold">{{ userInfo.name }}</view>
+            <image :src="ChevronRightIcon" class="w-5 h-5" />
+          </view>
+        </template>
+        <template v-else>
+          <view class="flex-shrink-0 flex items-center">
+            <view class="border-2 border-solid border-white leading-0 rounded-full overflow-hidden">
+              <image :src="NoAvatarIcon" class="w-12 h-12" />
+            </view>
+          </view>
+          <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo">
+            <view class="text-black text-xl font-bold">点击登录</view>
+            <image :src="ChevronRightIcon" class="w-5 h-5" />
+          </view>
+        </template>
       </view>
     </view>
     <view class="px-6 -mt-8">
@@ -63,35 +76,12 @@
         </view>
       </view>
     </view>
-    <view class="fixed z-10 inset-0 overflow-y-auto" v-show="false">
-      <view class="flex items-center justify-center min-h-screen p-6 text-center">
-        <view class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity"></view>
-
-        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-50 overflow-hidden w-full max-w-md mx-auto z-50">
-          <view class="px-6 py-4 w-full box-border">
-            <text class="font-bold text-lg">需要您的授权</text>
-          </view>
-          <view class="px-6 py-4 flex-grow w-full box-border">
-            <view class="text-gray-900">
-              为了更好的提供服务，请在稍后的提示框中点击“允许”
-            </view>
-          </view>
-          <view class="px-6 py-4 w-full box-border">
-            <button class="mb-3 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
-              我知道了
-            </button>
-            <button class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
-              取消
-            </button>
-          </view>
-        </view>
-      </view>
-    </view>
   </view>
 </template>
 
 <script>
 import Taro from "@tarojs/taro"
+import { mapGetters } from "vuex"
 
 import NoAvatarIcon from "../../assets/img/icon/no-avatar.svg"
 import ChevronRightIcon from "../../assets/img/icon/chevron-right.svg"
@@ -113,6 +103,15 @@ export default {
       AboutIcon,
       MoreIcon,
     }
+  },
+  computed: {
+    ...mapGetters({
+      'token': 'auth/token',
+      'userInfo': 'auth/userInfo'
+    }),
+    isLogin() {
+      return this.token !== ''
+    },
   },
   methods: {
     handleTo() {

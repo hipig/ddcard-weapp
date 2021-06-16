@@ -20,6 +20,7 @@
 
 <script>
 import Taro from "@tarojs/taro"
+import { mapActions } from "vuex"
 
 export default {
   name: "Login",
@@ -32,19 +33,31 @@ export default {
     this.redirectUrl = Taro.getCurrentInstance().router.params.redirect_url || null
   },
   methods: {
+    ...mapActions({
+      'login': 'auth/login',
+      'getUserInfo': 'auth/getUserInfo'
+    }),
     async handleAuthorize() {
-      let profileInfo = await Taro.getUserProfile({ desc: '完善用户信息' })
-      let loginInfo = await Taro.login()
+      try {
+        let profileInfo = await Taro.getUserProfile({ desc: '完善用户信息' })
+        let loginInfo = await Taro.login()
 
-      console.log(profileInfo)
+        let params = {
+          name: profileInfo.userInfo.nickName,
+          avatar: profileInfo.userInfo.avatarUrl,
+          code: loginInfo.code
+        }
 
-      let params = {
-        name: profileInfo.userInfo.nickName,
-        avatar: profileInfo.userInfo.avatarUrl,
-        code: loginInfo.code
+        let res = await this.login(params)
+
+        await this.getUserInfo()
+
+        Taro.navigateBack()
+      } catch (error) {
+        console.log(error)
       }
 
-      console.log(params)
+
     },
     handleCancel() {
       Taro.navigateBack()
