@@ -15,19 +15,19 @@
           :is-lock="item.is_lock"/>
       </view>
     </view>
-    <view class="fixed z-10 inset-0 overflow-y-auto" v-show="true">
-      <view class="flex items-center justify-center min-h-screen p-8 text-center">
-        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity"></view>
+    <view class="fixed z-10 inset-0" v-show="lockDialogShow">
+      <view class="flex items-center justify-center min-h-screen p-12 text-center">
+        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="closeLockDialog"></view>
 
-        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
-          <view class="px-8 py-4 w-full box-border">
+        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-200 overflow-hidden w-full max-w-md mx-auto z-50">
+          <view class="px-6 py-4 w-full box-border">
             <text class="font-bold text-xl">解锁卡片</text>
           </view>
-          <view class="px-8 py-2 flex-grow w-full box-border">
+          <view class="px-6 py-2 flex-grow w-full box-border">
 
             <text class="text-yellow-900 text-xl font-bold">会员专属卡片</text>
           </view>
-          <view class="px-8 py-6 w-full box-border">
+          <view class="px-6 py-4 w-full box-border">
             <button class="mb-4 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
               赞助会员，立即查看
             </button>
@@ -77,18 +77,23 @@ export default {
           color: 'yellow',
           is_lock: true
         }
-      ]
+      ],
+      lockDialogShow: false
     }
   },
   methods: {
     handle(item) {
       if(!!item.is_lock) {
+        this.lockDialogShow = true
         return false
       }
 
       Taro.navigateTo({
         url: '/pages/detail/index?id=' + item.id
       })
+    },
+    closeLockDialog() {
+      this.lockDialogShow = false
     }
   }
 }

@@ -33,6 +33,12 @@ const statusInterceptor = (chain) => {
   const requestParams = chain.requestParams
 
   return chain.proceed(requestParams).then(res => {
+    
+    const token = res.header.Authorization
+    if (token) {
+      store.dispatch('auth/refreshToken')
+    }
+
     switch (res.statusCode) {
       case 200:
       case 201:
@@ -41,7 +47,7 @@ const statusInterceptor = (chain) => {
       case 401:
         const token = store.getters['auth/token']
         if (token) {
-          store.dispatch('user/clear')
+          store.dispatch('auth/clear')
         }
         pageToLogin()
         break;

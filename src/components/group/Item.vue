@@ -12,7 +12,7 @@
     <view class="p-6 flex items-center">
       <view class="flex-1 px-2">
         <view class="text-3xl text-black font-bold">{{ zhName }}</view>
-        <view class="text-lg text-gray-700 capitalize">{{ enName }}</view>
+        <view class="text-lg text-black capitalize">{{ enName }}</view>
       </view>
       <view class="flex-shrink-0">
         <view class="rounded-lg inline-flex p-2" :class="[colorClass.iconBg]">
