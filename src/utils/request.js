@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "http://jcard.test/api/v1"
+const baseUrl = "http://ddcard.test/api/v1"
 
 const getCurrentPageUrl = () => {
   let pages = Taro.getCurrentPages()
@@ -33,7 +33,7 @@ const statusInterceptor = (chain) => {
   const requestParams = chain.requestParams
 
   return chain.proceed(requestParams).then(res => {
-    
+
     const token = res.header.Authorization
     if (token) {
       store.dispatch('auth/refreshToken')
