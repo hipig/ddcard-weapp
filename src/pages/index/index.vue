@@ -10,16 +10,16 @@
       <view v-for="(item, index) in groups" :key="index" @tap="handle(item)">
         <group-item :zh-name="item.zh_name"
           :en-name="item.en_name"
-          :icon="item.icon"
+          :icon="item.cover_url"
           :color="item.color"
-          :is-lock="item.is_lock"/>
+          :is-lock="item.is_lock == 2"/>
       </view>
     </view>
     <view class="fixed z-10 inset-0" v-show="lockDialogShow">
       <view class="flex items-center justify-center min-h-screen p-12 text-center">
         <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="closeLockDialog"></view>
 
-        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-200 overflow-hidden w-full max-w-md mx-auto z-50">
+        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-4 w-full box-border">
             <text class="font-bold text-xl">解锁卡片</text>
           </view>
@@ -46,6 +46,8 @@ import Taro from "@tarojs/taro"
 import GroupItem from "../../components/group/Item.vue"
 
 import grapeIcon from "../../assets/img/fruits/grape.svg"
+
+import { getGroups } from "../../api/cardGroup"
 
 export default {
   name: 'Index',
@@ -78,10 +80,20 @@ export default {
           is_lock: true
         }
       ],
+      cards: [],
       lockDialogShow: false
     }
   },
+  created() {
+    this.getGroups()
+  },
   methods: {
+    getGroups() {
+      getGroups()
+        .then(res => {
+          this.groups = res
+        })
+    },
     handle(item) {
       if(!!item.is_lock) {
         this.lockDialogShow = true
