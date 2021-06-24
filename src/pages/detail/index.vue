@@ -104,6 +104,9 @@ export default {
     // 获取传过来的 current
     this.currentIndex = parseInt(Taro.getCurrentInstance().router.params.current) || 0
   },
+  onHide() {
+    this.dropShow = false
+  },
   methods: {
     handleChange(e) {
       this.currentIndex = e.detail.current
@@ -115,10 +118,6 @@ export default {
       Taro.navigateTo({
         url: '/pages/study/index?mode=' + mode
       })
-
-      setTimeout(() => {
-        this.dropShow = false
-      }, 200)
     },
     setNavigationBar() {
       Taro.setNavigationBarTitle({

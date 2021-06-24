@@ -24,7 +24,17 @@
             <text class="font-bold text-xl">解锁卡片</text>
           </view>
           <view class="px-6 py-2 flex-grow w-full box-border">
-
+            <swiper
+              class="h-28 flex items-center"
+              :autoplay="true"
+              :interval="3000"
+              :circular="true">
+              <swiper-item v-for="item in cards" :key="item.id">
+                <view class="flex items-center justify-center">
+                  <image :src="item.cover_url" class="w-24 h-24" />
+                </view>
+              </swiper-item>
+            </swiper>
             <text class="text-yellow-900 text-xl font-bold">会员专属卡片</text>
           </view>
           <view class="px-6 py-4 w-full box-border">
@@ -44,10 +54,7 @@
 <script>
 import Taro from "@tarojs/taro"
 import GroupItem from "../../components/group/Item.vue"
-
-import grapeIcon from "../../assets/img/fruits/grape.svg"
-
-import { getGroups } from "../../api/cardGroup"
+import { getGroups, previewGroup } from "../../api/cardGroup"
 
 export default {
   name: 'Index',
@@ -56,36 +63,16 @@ export default {
   },
   data () {
     return {
-      groups: [
-        {
-          id: 1,
-          zh_name: '水果',
-          en_name: 'Fruits',
-          icon: grapeIcon,
-          color: 'pink'
-        },
-        {
-          id: 2,
-          zh_name: '蔬菜',
-          en_name: 'Vegetables',
-          icon: grapeIcon,
-          color: 'green'
-        },
-        {
-          id: 3,
-          zh_name: '动物',
-          en_name: 'Animals',
-          icon: grapeIcon,
-          color: 'yellow',
-          is_lock: true
-        }
-      ],
+      groups: [],
       cards: [],
       lockDialogShow: false
     }
   },
   created() {
     this.getGroups()
+  },
+  onHide() {
+    this.lockDialogShow = false
   },
   methods: {
     getGroups() {
@@ -95,8 +82,19 @@ export default {
         })
     },
     handle(item) {
-      if(!!item.is_lock) {
-        this.lockDialogShow = true
+      if(item.is_lock == 2) {
+        Taro.showLoading({
+          title: '加载中',
+        })
+        previewGroup(item.id)
+          .then(res => {
+            this.cards = res
+            this.lockDialogShow = true
+          })
+          .finally(() => {
+            Taro.hideLoading()  
+          })
+
         return false
       }
 
