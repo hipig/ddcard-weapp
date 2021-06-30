@@ -33,7 +33,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       login(params)
         .then(res => {
-          commit("SET_TOKEN", res.access_token)
+          commit("SET_TOKEN", res.data.access_token)
           resolve(res)
         })
         .catch(error => {
@@ -46,7 +46,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       me()
         .then(res => {
-          commit("SET_USERINFO", res)
+          commit("SET_USERINFO", res.data)
           resolve(res)
         })
         .catch(error => {

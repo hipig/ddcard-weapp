@@ -50,6 +50,8 @@ import shareFillIcon from "../../assets/img/icon/share-fill.svg"
 import volumeDownIcon from "../../assets/img/icon/volume-down.svg"
 import volumeUpIcon from "../../assets/img/icon/volume-up.svg"
 
+import { storeCollectRecord, deleteCollectRecord } from "../../api/collectRecord"
+
 const colorMap = {
   gray: {
     bg: 'from-gray-200 to-gray-400',
@@ -96,6 +98,7 @@ const colorMap = {
 export default {
   name: "CardItem",
   props: {
+    id: { default: 0, type: Number },
     zhName: String,
     enName: String,
     zhSpell: String,
@@ -117,10 +120,11 @@ export default {
       volumeUpIcon,
       animationData: null,
       isCollect: false,
-      mode: 'zh',
+      mode: null,
       isVolumeUp: true,
       timer: null,
-      innerAudioContext: null
+      zhAudioContext: null,
+      enAudioContext: null
     }
   },
   computed: {
@@ -133,52 +137,77 @@ export default {
       if(this.index === val) {
         this.handlePlay()
       }
+    },
+    zhSrc(val) {
+      this.initZhAudioContext(val)
+    },
+    enSrc(val) {
+      this.initEnAudioContext(val)
+    },
+    mode(val) {
+      setTimeout(this.handlePlay, 200)
     }
   },
-  created () {
-    this.initInnerAudioContext()
+  created() {
+    this.initZhAudioContext(this.zhSrc)
+    this.initEnAudioContext(this.enSrc)
 
-    if(this.index === this.currentIndex) {
-      setTimeout(this.handlePlay, 100)
-    }
+    this.mode = 'zh'
   },
   beforeDestroy() {
     this.handleStop()
   },
   methods: {
     handleCollect() {
-      this.isCollect = !this.isCollect
-      Taro.showToast({
-        title: this.isCollect ? '收藏成功' : '取消收藏',
-        icon: 'none',
-        duration: 2000
-      })
+      let query = this.isCollect ? deleteCollectRecord(this.id) : storeCollectRecord(this.id)
+      query
+        .then((res) => {
+          if (res.statusCode === 200 || res.statusCode === 204) {
+            this.isCollect = !this.isCollect
+            Taro.showToast({
+              title: this.isCollect ? '收藏成功' : '取消收藏',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        })
     },
     handleSwitchMode() {
       this.mode = this.mode === 'zh' ? 'en' : 'zh'
-
-      this.handlePlay()
     },
     handlePlay() {
-      this.initInnerAudioContext.play()
+      let context = this.mode === 'zh' ? this.zhAudioContext : this.enAudioContext
+      context.play()
     },
     handleStop() {
       clearInterval(this.timer)
       this.isVolumeUp = true
     },
-    initInnerAudioContext() {
-      let initInnerAudioContext = Taro.createInnerAudioContext()
-      initInnerAudioContext.src = this.mode === 'zh' ? this.zhSrc : this.enSrc
+    initZhAudioContext(src) {
+      let zhAudioContext = Taro.createInnerAudioContext()
+      zhAudioContext.src = src
 
-      initInnerAudioContext.onPlay(() => {
+      zhAudioContext.onPlay(() => {
         this.initImageScale()
         this.initInterval()
       })
-      initInnerAudioContext.onEnded(() => {
+      zhAudioContext.onEnded(() => {
         this.handleStop()
       })
+      this.zhAudioContext = zhAudioContext
+    },
+    initEnAudioContext(src) {
+      let enAudioContext = Taro.createInnerAudioContext()
+      enAudioContext.src = src
 
-      this.initInnerAudioContext = initInnerAudioContext
+      enAudioContext.onPlay(() => {
+        this.initImageScale()
+        this.initInterval()
+      })
+      enAudioContext.onEnded(() => {
+        this.handleStop()
+      })
+      this.enAudioContext = enAudioContext
     },
     initImageScale() {
       let animation = Taro.createAnimation({

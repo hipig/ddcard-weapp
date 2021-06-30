@@ -43,7 +43,7 @@ const statusInterceptor = (chain) => {
       case 200:
       case 201:
       case 204:
-        return res.data
+        return Promise.resolve(res)
       case 401:
         const token = store.getters['auth/token']
         if (token) {

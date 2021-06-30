@@ -9,14 +9,15 @@
         :circular="true"
         @change="handleChange">
         <swiper-item v-for="(item, index) in cards" :key="item.id">
-          <card-item :zh-name="item.zh_name"
+          <card-item :id="item.id"
+            :zh-name="item.zh_name"
             :en-name="item.en_name"
             :zh-spell="item.zh_spell"
             :en-spell="item.en_spell"
             :color="item.color"
-            :icon="item.icon"
-            :zh-src="item.zh_src"
-            :en-src="item.en_src"
+            :icon="item.cover_url"
+            :zh-src="item.zh_audio_path_url"
+            :en-src="item.en_audio_path_url"
             :index="index"
             :current-index="currentIndex"
             :total="cards.length"/>
@@ -45,11 +46,9 @@
 import Taro from "@tarojs/taro"
 import CardItem from "../../components/card/Item.vue"
 
-import grapeIcon from "../../assets/img/fruits/grape.svg"
-
 import arrowUpFillIcon from "../../assets/img/icon/arrow-up-fill.svg"
 
-import TestAudio from "../../assets/audio/test.mp3"
+import { showGroup } from "../../api/cardGroup"
 
 export default {
   name: 'Detail',
@@ -60,46 +59,16 @@ export default {
     return {
       arrowUpFillIcon,
       currentIndex: 0,
-      cards: [
-        {
-          id: 1,
-          zh_name: '苹果',
-          zh_spell: 'píng guǒ',
-          en_name: 'apple',
-          en_spell: '[ˈæpl]',
-          icon: grapeIcon,
-          color: 'red',
-          zh_src: TestAudio,
-          en_src: TestAudio
-        },
-        {
-          id: 2,
-          zh_name: '梨',
-          zh_spell: 'lí',
-          en_name: 'pear',
-          en_spell: '[per]',
-          icon: grapeIcon,
-          color: 'yellow',
-          zh_src: TestAudio,
-          en_src: TestAudio
-        },
-        {
-          id: 3,
-          zh_name: '橙子',
-          zh_spell: 'chéng zi',
-          en_name: 'orange',
-          en_spell: `['ɔrɪndʒ]`,
-          icon: grapeIcon,
-          color: 'orange',
-          zh_src: TestAudio,
-          en_src: TestAudio
-        }
-      ],
+      groupId: 0,
+      cards: [],
       dropShow: false,
     }
   },
   created() {
     this.setNavigationBar()
+    // 获取传过来的 group_id
+    this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
+    this.showGroup()
 
     // 获取传过来的 current
     this.currentIndex = parseInt(Taro.getCurrentInstance().router.params.current) || 0
@@ -108,6 +77,12 @@ export default {
     this.dropShow = false
   },
   methods: {
+    showGroup() {
+      showGroup(this.groupId)
+        .then(res => {
+          this.cards = res.data.cards
+        })
+    },
     handleChange(e) {
       this.currentIndex = e.detail.current
     },

@@ -78,7 +78,7 @@ export default {
     getGroups() {
       getGroups()
         .then(res => {
-          this.groups = res
+          this.groups = res.data
         })
     },
     handle(item) {
@@ -88,18 +88,18 @@ export default {
         })
         previewGroup(item.id)
           .then(res => {
-            this.cards = res
+            this.cards = res.data
             this.lockDialogShow = true
           })
           .finally(() => {
-            Taro.hideLoading()  
+            Taro.hideLoading()
           })
 
         return false
       }
 
       Taro.navigateTo({
-        url: '/pages/detail/index?id=' + item.id
+        url: '/pages/detail/index?group_id=' + item.id
       })
     },
     closeLockDialog() {
