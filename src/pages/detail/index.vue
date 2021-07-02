@@ -18,6 +18,7 @@
             :icon="item.cover_url"
             :zh-src="item.zh_audio_path_url"
             :en-src="item.en_audio_path_url"
+            :collected="item.is_collect"
             :index="index"
             :current-index="currentIndex"
             :total="cards.length"/>
@@ -65,21 +66,20 @@ export default {
     }
   },
   created() {
-    this.setNavigationBar()
-    // 获取传过来的 group_id
-    this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
-    this.showGroup()
-
     // 获取传过来的 current
     this.currentIndex = parseInt(Taro.getCurrentInstance().router.params.current) || 0
+    // 获取传过来的 group_id
+    this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
+    this.getCards()
   },
   onHide() {
     this.dropShow = false
   },
   methods: {
-    showGroup() {
+    getCards() {
       showGroup(this.groupId)
         .then(res => {
+          this.setNavigationBar(res.data.zh_name)
           this.cards = res.data.cards
         })
     },
@@ -91,12 +91,12 @@ export default {
     },
     handleTo(mode) {
       Taro.navigateTo({
-        url: '/pages/study/index?mode=' + mode
+        url: '/pages/study/index?group_id=' + this.groupId +'&mode=' + mode
       })
     },
-    setNavigationBar() {
+    setNavigationBar(title) {
       Taro.setNavigationBarTitle({
-        title: '水果'
+        title: title
       })
     }
   }

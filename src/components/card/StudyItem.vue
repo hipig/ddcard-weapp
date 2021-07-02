@@ -9,21 +9,18 @@
         <image :src="icon" class="w-48 h-48"/>
       </view>
       <view class="text-center">
-        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
-        <view class="text-4xl text-black font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
+        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ spell }}</view>
+        <view class="text-4xl text-black font-bold capitalize">{{ name }}</view>
       </view>
     </view>
     <view class="flex-shrink-0">
       <view class="py-8 h-24 flex flex-col items-center justify-between">
-        <view class="py-3 w-2_3 rounded-full text-center text-black bg-white text-lg font-bold" @tap="isStudied = !isStudied">{{ isStudied ? '忘记了' : '学会了' }}</view>
+        <view class="py-3 w-2_3 rounded-full text-center text-black bg-white text-lg font-bold" @tap="handleStudied">{{ isStudied ? '忘记了' : '学会了' }}</view>
         <view class="text-black text-sm" v-if="!isStudied" @tap="handleShowAnswer">{{ isShowAnswer ? '隐藏答案' : '查看答案' }}</view>
       </view>
       <view class="absolute bottom-0 right-0 mb-4 mr-4" v-if="isShowAnswer">
         <image :src="volumeUpIcon" v-if="isVolumeUp" class="w-7 h-7"/>
         <image :src="volumeDownIcon" v-else class="w-7 h-7"/>
-      </view>
-      <view class="absolute top-0 left-0 mt-4 ml-4" v-if="isStudied">
-        <image :src="medalIcon" class="w-12 h-12"/>
       </view>
     </view>
   </view>
@@ -34,7 +31,8 @@ import Taro from "@tarojs/taro"
 
 import volumeDownIcon from "../../assets/img/icon/volume-down.svg"
 import volumeUpIcon from "../../assets/img/icon/volume-up.svg"
-import medalIcon from "../../assets/img/icon/medal.svg"
+
+import { storeLearnRecord, deleteLearnRecord } from "../../api/learnRecord"
 
 const colorMap = {
   gray: {
@@ -82,14 +80,13 @@ const colorMap = {
 export default {
   name: "StudyItem",
   props: {
-    zhName: String,
-    enName: String,
-    zhSpell: String,
-    enSpell: String,
+    id: { default: 0, type: Number },
+    name: String,
+    spell: String,
     color: { default: 'gray', type: String },
     icon: String,
-    zhSrc: String,
-    enSrc: String,
+    src: String,
+    studied: { default: false, type: Boolean },
     mode: { default: 'zh', type: String },
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
@@ -99,13 +96,12 @@ export default {
     return {
       volumeDownIcon,
       volumeUpIcon,
-      medalIcon,
       animationData: null,
       isVolumeUp: true,
       timer: null,
-      isStudied: false,
-      isShowAnswer: false,
-      innerAudioContext: null
+      isStudied: this.studied,
+      isShowAnswer: this.studied,
+      audioContext: null
     }
   },
   computed: {
@@ -116,54 +112,57 @@ export default {
   watch: {
     isStudied(val) {
       this.isShowAnswer = val
+    },
+    isShowAnswer(val) {
       if(val) {
         this.animationData = null
         setTimeout(this.handlePlay, 100)
       }
-    }
+    },
+    src(val) {
+      this.initAudioContext(val)
+    },
   },
   created () {
-    this.initInnerAudioContext()
+    this.initAudioContext(this.src)
   },
   beforeDestroy() {
     this.handleStop()
   },
   methods: {
-    handleCollect() {
-      this.isCollect = !this.isCollect
-      Taro.showToast({
-        title: this.isCollect ? '收藏成功' : '取消收藏',
-        icon: 'none',
-        duration: 2000
-      })
-    },
     handlePlay() {
-      this.initInnerAudioContext.play()
+      this.audioContext.play()
     },
     handleStop() {
       clearInterval(this.timer)
       this.isVolumeUp = true
     },
+    handleStudied() {
+      let query = this.isStudied ?
+        deleteLearnRecord(this.id, { lang: this.mode }) :
+        storeLearnRecord(this.id, { lang: this.mode })
+      query
+        .then((res) => {
+          if (res.statusCode === 201 || res.statusCode === 204) {
+            this.isStudied = !this.isStudied
+          }
+        })
+    },
     handleShowAnswer() {
       this.isShowAnswer = !this.isShowAnswer
-      if(this.isShowAnswer) {
-        this.animationData = null
-        setTimeout(this.handlePlay, 100)
-      }
     },
-    initInnerAudioContext() {
-      let initInnerAudioContext = Taro.createInnerAudioContext()
-      initInnerAudioContext.src = this.mode === 'zh' ? this.zhSrc : this.enSrc
+    initAudioContext(src) {
+      let audioContext = Taro.createInnerAudioContext()
+      audioContext.src = src
 
-      initInnerAudioContext.onPlay(() => {
+      audioContext.onPlay(() => {
         this.initImageScale()
         this.initInterval()
       })
-      initInnerAudioContext.onEnded(() => {
+      audioContext.onEnded(() => {
         this.handleStop()
       })
-
-      this.initInnerAudioContext = initInnerAudioContext
+      this.audioContext = audioContext
     },
     initImageScale() {
       let animation = Taro.createAnimation({
@@ -178,7 +177,7 @@ export default {
     initInterval() {
       this.timer = setInterval(() => {
         this.isVolumeUp = !this.isVolumeUp
-      }, 500)
+      }, 200)
     }
   }
 }

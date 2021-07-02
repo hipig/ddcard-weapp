@@ -109,6 +109,7 @@ export default {
     enSrc: String,
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
+    collected: { default: false, type: Boolean },
     total: Number
   },
   data () {
@@ -119,7 +120,7 @@ export default {
       volumeDownIcon,
       volumeUpIcon,
       animationData: null,
-      isCollect: false,
+      isCollect: this.collected,
       mode: null,
       isVolumeUp: true,
       timer: null,
@@ -159,10 +160,12 @@ export default {
   },
   methods: {
     handleCollect() {
-      let query = this.isCollect ? deleteCollectRecord(this.id) : storeCollectRecord(this.id)
+      let query = this.isCollect ?
+        deleteCollectRecord(this.id) :
+        storeCollectRecord(this.id)
       query
         .then((res) => {
-          if (res.statusCode === 200 || res.statusCode === 204) {
+          if (res.statusCode === 201 || res.statusCode === 204) {
             this.isCollect = !this.isCollect
             Taro.showToast({
               title: this.isCollect ? '收藏成功' : '取消收藏',

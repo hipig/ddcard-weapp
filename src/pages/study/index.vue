@@ -18,14 +18,13 @@
         :circular="true"
         @change="handleChange">
         <swiper-item v-for="(item, index) in cards" :key="item.id">
-          <study-item :zh-name="item.zh_name"
-            :en-name="item.en_name"
-            :zh-spell="item.zh_spell"
-            :en-spell="item.en_spell"
+          <study-item  :id="item.id"
+            :name="mode === 'zh' ? item.zh_name : item.en_name"
+            :spell="mode === 'zh' ? item.zh_spell : item.en_spell"
+            :src="mode === 'zh' ? item.zh_audio_path_url : item.en_audio_path_url"
             :color="item.color"
-            :icon="item.icon"
-            :zh-src="item.zh_src"
-            :en-src="item.en_src"
+            :icon="item.cover_url"
+            :studied="mode === 'zh' ? item.zh_is_learn : item.en_is_learn"
             :mode="mode"
             :index="index"
             :current-index="currentIndex"
@@ -48,6 +47,8 @@ import checkOnIcon from "../../assets/img/icon/check-on.svg"
 
 import TestAudio from "../../assets/audio/test.mp3"
 
+import { showGroup } from "../../api/cardGroup"
+
 export default {
   name: "Study",
   components: {
@@ -61,6 +62,7 @@ export default {
       currentIndex: 0,
       cards: [],
       allCards: [],
+      groupId: 0,
       mode: 'zh'
     }
   },
@@ -73,64 +75,37 @@ export default {
     }
   },
   created () {
-    this.getCards()
+    // 获取传过来的 group_id
+    this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
     // 获取传过来的 mode
     this.mode = Taro.getCurrentInstance().router.params.mode || 'zh'
+    this.getCards()
   },
   methods: {
-    getCards() {
-      let cards = [
-        {
-          id: 1,
-          zh_name: '苹果',
-          zh_spell: 'píng guǒ',
-          en_name: 'apple',
-          en_spell: '[ˈæpl]',
-          icon: grapeIcon,
-          color: 'red',
-          zh_src: TestAudio,
-          en_src: TestAudio,
-          is_studid: true
-        },
-        {
-          id: 2,
-          zh_name: '梨',
-          zh_spell: 'lí',
-          en_name: 'pear',
-          en_spell: '[per]',
-          icon: grapeIcon,
-          color: 'yellow',
-          zh_src: TestAudio,
-          en_src: TestAudio
-        },
-        {
-          id: 3,
-          zh_name: '橙子',
-          zh_spell: 'chéng zi',
-          en_name: 'orange',
-          en_spell: `['ɔrɪndʒ]`,
-          icon: grapeIcon,
-          color: 'orange',
-          zh_src: TestAudio,
-          en_src: TestAudio
-        }
-      ]
+    getCards(callback = null) {
+      showGroup(this.groupId)
+        .then(res => {
+          this.allCards = res.data.cards
+          this.cards = res.data.cards
 
-      this.allCards = cards
-      this.cards = cards
+          callback && callback(res)
+        })
     },
     handleChange(e) {
       this.currentIndex = e.detail.current
     },
     handleFilter() {
-      this.isNotStudied = !this.isNotStudied
-
-      if (this.isNotStudied) {
-        this.cards = _.filter(this.allCards, item => { return !item.is_studid })
-      } else {
-        this.cards = this.allCards
-      }
-      this.currentIndex = 0
+      this.getCards(() => {
+        this.isNotStudied = !this.isNotStudied
+        if (this.isNotStudied) {
+          this.cards = _.filter(this.allCards, item => {
+            return !(this.mode === 'zh' ? item.zh_is_learn : item.en_is_learn)
+          })
+        } else {
+          this.cards = this.allCards
+        }
+        this.currentIndex = 0
+      })
     },
     setNavigationBarTitle() {
       Taro.setNavigationBarTitle({
