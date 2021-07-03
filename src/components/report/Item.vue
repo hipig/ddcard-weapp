@@ -11,7 +11,7 @@
         <view>
           <view class="flex items-center justify-between">
             <view class="font-bold text-black">中文</view>
-            <view class="text-gray-400 text-sm"><text class="font-bold text-lg text-red-500 mr-1">{{ zhCount }}</text>/{{ total }}</view>
+            <view class="text-gray-400 text-sm"><text class="font-bold text-lg text-red-500 mr-1">{{ zhCount }}</text>/{{ count }}</view>
           </view>
           <view class="h-2 bg-yellow-100 rounded-full relative overflow-hidden">
             <view class="bg-yellow-500 absolute left-0 inset-y-0" :style="{ width: zhRate }"></view>
@@ -20,7 +20,7 @@
         <view class="mt-2">
           <view class="flex items-center justify-between">
             <view class="font-bold text-black">英文</view>
-            <view class="text-gray-400 text-sm flex items-center"><text class="font-bold text-lg text-red-500 mr-1">{{ enCount }}</text>/{{ total }}</view>
+            <view class="text-gray-400 text-sm flex items-center"><text class="font-bold text-lg text-red-500 mr-1">{{ enCount }}</text>/{{ count }}</view>
           </view>
           <view class="h-2 bg-yellow-100 rounded-full relative overflow-hidden">
             <view class="bg-yellow-500 absolute left-0 inset-y-0" :style="{ width: enRate }"></view>
@@ -83,7 +83,7 @@ export default {
     name: String,
     color: { default: 'gray', type: String },
     icon: String,
-    total: { default: 0, type: Number },
+    count: { default: 0, type: Number },
     zhCount: { default: 0, type: Number },
     enCount: { default: 0, type: Number }
   },
@@ -92,10 +92,10 @@ export default {
       return colorMap[this.color || 'gray']
     },
     zhRate() {
-      return (this.zhCount / this.total * 100) + '%'
+      return (this.zhCount / this.count * 100) + '%'
     },
     enRate() {
-      return (this.enCount / this.total * 100) + '%'
+      return (this.enCount / this.count * 100) + '%'
     }
   }
 }

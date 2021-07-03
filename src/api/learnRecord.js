@@ -2,9 +2,15 @@ import service from "../utils/request"
 import { sprintf } from "../utils/util"
 
 const api = {
+  index: '/records/learn',
   store: '/records/learn/%d',
   delete: '/records/learn/%d'
 }
+
+export const getLearnRecords = () => service({
+  url: api.index,
+  method: 'get'
+})
 
 export const storeLearnRecord = (id, params) => service({
   url: sprintf(api.store, id),

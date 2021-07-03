@@ -19,11 +19,11 @@
             <view class="font-bold text-xl">学习报告</view>
           </view>
           <view class="px-2">
-            <view v-for="(item, index) in reports" :key="index">
-              <report-item :name="item.name" 
-                :icon="item.icon"
+            <view v-for="(item, index) in groups" :key="index">
+              <report-item :name="item.zh_name" 
+                :icon="item.cover_url"
                 :color="item.color"
-                :total="item.total"
+                :count="item.count"
                 :zh-count="item.zh_count"
                 :en-count="item.en_count" />
             </view>
@@ -32,11 +32,11 @@
       </view>
       <view class="w-full" v-show="isCollect">
         <view class="flex flex-wrap -mx-3">
-          <view @tap="handleTo(index)" class="w-1_2 px-3 box-border mb-6" v-for="(item, index) in collects" :key="index">
-            <collect-item :zh-name="item.zh_name"
-              :en-name="item.en_name" 
-              :icon="item.icon"
-              :color="item.color" />
+          <view @tap="handleTo(item.card_id)" class="w-1_2 px-3 box-border mb-6" v-for="(item, index) in collects" :key="index">
+            <collect-item :zh-name="item.card.zh_name"
+              :en-name="item.card.en_name" 
+              :icon="item.card.cover_url"
+              :color="item.card.color" />
           </view>
         </view>
       </view>
@@ -52,6 +52,9 @@ import CollectItem from "../../components/card/CollectItem.vue"
 
 import grapeIcon from "../../assets/img/fruits/grape.svg"
 
+import { getLearnRecords } from "../../api/learnRecord"
+import { getCollectRecords } from "../../api/collectRecord"
+
 export default {
   name: "Report",
   components: {
@@ -61,6 +64,7 @@ export default {
   data () {
     return {
       isCollect: false,
+      groups: [],
       reports: [
         {
           name: '水果',
@@ -118,10 +122,26 @@ export default {
       ]
     }
   },
+  onShow() {
+    this.getGroups()
+    this.getCollectRecords()
+  },
   methods: {
-    handleTo(index) {
+    getGroups() {
+      getLearnRecords()
+        .then(res => {
+          this.groups = res.data
+        })
+    },
+    getCollectRecords() {
+      getCollectRecords()
+        .then(res => {
+          this.collects = res.data
+        })
+    },
+    handleTo(cardId) {
       Taro.navigateTo({
-        url: '/pages/detail/index?type=collect&current=' + index
+        url: '/pages/detail/index?type=collect&card_id=' + cardId
       })
     }
   }
