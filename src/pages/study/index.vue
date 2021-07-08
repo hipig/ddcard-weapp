@@ -40,12 +40,8 @@ import _ from "lodash"
 import Taro from "@tarojs/taro"
 import StudyItem from "../../components/card/StudyItem.vue"
 
-import grapeIcon from "../../assets/img/fruits/grape.svg"
-
 import checkIcon from "../../assets/img/icon/check.svg"
 import checkOnIcon from "../../assets/img/icon/check-on.svg"
-
-import TestAudio from "../../assets/audio/test.mp3"
 
 import { showGroup } from "../../api/cardGroup"
 
@@ -74,7 +70,7 @@ export default {
       this.setNavigationBarTitle()
     }
   },
-  created () {
+  onShow() {
     // 获取传过来的 group_id
     this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
     // 获取传过来的 mode

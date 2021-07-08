@@ -143,7 +143,7 @@ export default {
         storeLearnRecord(this.id, { lang: this.mode })
       query
         .then((res) => {
-          if (res.statusCode === 201 || res.statusCode === 204) {
+          if (res.statusCode === 200 || res.statusCode === 201 || res.statusCode === 204) {
             this.isStudied = !this.isStudied
           }
         })

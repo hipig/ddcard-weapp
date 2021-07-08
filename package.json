@@ -36,15 +36,16 @@
   "dependencies": {
     "@babel/runtime": "^7.7.7",
     "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@tarojs/components": "3.2.8",
     "@tarojs/runtime": "3.2.8",
     "@tarojs/taro": "3.2.8",
-    "@tarojs/components": "3.2.8",
     "autoprefixer": "^9.8.6",
+    "dayjs": "^1.10.6",
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "vuex": "^3.0.0",
+    "vue": "^2.5.0",
     "vue-template-compiler": "^2.5.0",
-    "vue": "^2.5.0"
+    "vuex": "^3.0.0"
   },
   "devDependencies": {
     "@types/webpack-env": "^1.13.6",

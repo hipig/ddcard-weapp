@@ -65,7 +65,7 @@ export default {
       dropShow: false,
     }
   },
-  created() {
+  onShow() {
     // 获取传过来的 current
     this.currentIndex = parseInt(Taro.getCurrentInstance().router.params.current) || 0
     // 获取传过来的 group_id

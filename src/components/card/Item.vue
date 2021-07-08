@@ -165,7 +165,8 @@ export default {
         storeCollectRecord(this.id)
       query
         .then((res) => {
-          if (res.statusCode === 201 || res.statusCode === 204) {
+          console.log(res)
+          if (res.statusCode === 200 || res.statusCode === 201 || res.statusCode === 204) {
             this.isCollect = !this.isCollect
             Taro.showToast({
               title: this.isCollect ? '收藏成功' : '取消收藏',

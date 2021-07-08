@@ -12,7 +12,7 @@
           :en-name="item.en_name"
           :icon="item.cover_url"
           :color="item.color"
-          :is-lock="item.is_lock == 2"/>
+          :is-lock="!item.is_unlock"/>
       </view>
     </view>
     <view class="fixed z-10 inset-0" v-show="lockDialogShow">
@@ -41,7 +41,7 @@
             <button class="mb-4 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
               赞助会员，立即查看
             </button>
-            <button class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
+            <button @tap="handleUnlock" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
               免费试用1天
             </button>
           </view>
@@ -55,6 +55,7 @@
 import Taro from "@tarojs/taro"
 import GroupItem from "../../components/group/Item.vue"
 import { getGroups, previewGroup } from "../../api/cardGroup"
+import { storeUnlockRecord } from "../../api/unlockRecord"
 
 export default {
   name: 'Index',
@@ -65,14 +66,15 @@ export default {
     return {
       groups: [],
       cards: [],
-      lockDialogShow: false
+      lockDialogShow: false,
+      currentGroup: null,
     }
   },
-  created() {
+  onShow() {
     this.getGroups()
   },
   onHide() {
-    this.lockDialogShow = false
+    this.closeLockDialog()
   },
   methods: {
     getGroups() {
@@ -82,7 +84,7 @@ export default {
         })
     },
     handle(item) {
-      if(item.is_lock == 2) {
+      if(!item.is_unlock) {
         Taro.showLoading({
           title: '加载中',
         })
@@ -90,6 +92,7 @@ export default {
           .then(res => {
             this.cards = res.data
             this.lockDialogShow = true
+            this.currentGroup = item
           })
           .finally(() => {
             Taro.hideLoading()
@@ -104,6 +107,17 @@ export default {
     },
     closeLockDialog() {
       this.lockDialogShow = false
+      this.currentGroup = null
+    },
+    handleUnlock() {
+      storeUnlockRecord(this.currentGroup.id)
+        .then(() => {
+          this.closeLockDialog()
+          this.getGroups()
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

@@ -50,8 +50,6 @@ import Taro from "@tarojs/taro"
 import ReportItem from "../../components/report/Item.vue"
 import CollectItem from "../../components/card/CollectItem.vue"
 
-import grapeIcon from "../../assets/img/fruits/grape.svg"
-
 import { getLearnRecords } from "../../api/learnRecord"
 import { getCollectRecords } from "../../api/collectRecord"
 
@@ -65,61 +63,7 @@ export default {
     return {
       isCollect: false,
       groups: [],
-      reports: [
-        {
-          name: '水果',
-          color: 'pink',
-          icon: grapeIcon,
-          total: 12,
-          zh_count: 1,
-          en_count: 0
-        },
-        {
-          name: '蔬菜',
-          color: 'green',
-          icon: grapeIcon,
-          total: 25,
-          zh_count: 0,
-          en_count: 0
-        },
-        {
-          name: '动物',
-          color: 'yellow',
-          icon: grapeIcon,
-          total: 20,
-          zh_count: 10,
-          en_count: 3
-        }
-      ],
-      collects: [
-        {
-          id: 1,
-          zh_name: '苹果',
-          zh_spell: 'píng guǒ',
-          en_name: 'apple',
-          en_spell: '[ˈæpl]',
-          icon: grapeIcon,
-          color: 'red'
-        },
-        {
-          id: 2,
-          zh_name: '梨',
-          zh_spell: 'lí',
-          en_name: 'pear',
-          en_spell: '[per]',
-          icon: grapeIcon,
-          color: 'yellow'
-        },
-        {
-          id: 3,
-          zh_name: '橙子',
-          zh_spell: 'chéng zi',
-          en_name: 'orange',
-          en_spell: `['ɔrɪndʒ]`,
-          icon: grapeIcon,
-          color: 'orange'
-        }
-      ]
+      collects: []
     }
   },
   onShow() {
