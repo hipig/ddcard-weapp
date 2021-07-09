@@ -1,20 +1,20 @@
 <template>
   <view class="flex flex-col px-6">
     <view class="fixed top-0 left-0 w-full box-border px-6 pb-2 bg-yellow-50">
-      <view class="flex items-center bg-white border-2 border-solid border-black text-black text-xl font-bold rounded-xl p-px shadow" @tap="isCollect = !isCollect">
-        <view class="w-1_2 text-center rounded-lg px-3" :class="{'bg-yellow-400': !isCollect}">学习报告</view>
-        <view class="w-1_2 text-center rounded-lg px-3" :class="{'bg-yellow-400': isCollect}">收藏</view>
+      <view class="flex items-center bg-white border-2 border-solid border-gray-900 text-gray-900 text-xl font-bold rounded-2xl overflow-hidden shadow-gray" @tap="isCollect = !isCollect">
+        <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': !isCollect}">学习报告</view>
+        <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': isCollect}">收藏</view>
       </view>
     </view>
     <view class="mt-14">
       <view class="flex flex-col" v-show="!isCollect">
         <view class="mb-8">
-          <view class="flex flex-col px-6 py-4 bg-white border-2 border-solid border-black text-black text-lg font-bold rounded-lg shadow-sm">
+          <view class="flex flex-col px-6 py-4 bg-white border-2 border-solid border-gray-900 text-gray-900 text-lg font-bold rounded-2xl shadow-gray">
             <view class="mb-2">累计使用 <text class="px-1 text-3xl text-red-500">4</text> 天</view>
             <view>今日学习 <text class="px-1 text-yellow-400">40</text> 分钟</view>
           </view>
         </view>
-        <view class="flex flex-col bg-white border-2 border-solid border-black text-black rounded-lg shadow-sm mb-8">
+        <view class="flex flex-col bg-white border-2 border-solid border-gray-900 text-gray-900 rounded-2xl shadow-gray mb-8">
           <view class="px-4 py-2_5 mb-4 border-0 border-b-2 border-solid border-black">
             <view class="font-bold text-xl">学习报告</view>
           </view>

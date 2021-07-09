@@ -1,70 +1,95 @@
 <template>
   <view class="flex flex-col min-h-screen">
-    <view class="px-6 mt-6">
-      <view class="px-4 py-3 border-2 border-solid border-black bg-yellow-400 rounded-xl">
+    <view class="px-8 py-4">
+      <view class="px-3 py-2_5 border-2 border-solid border-gray-900 bg-white rounded-2xl">
         <view class="flex items-center">
           <template v-if="isLogin">
             <view class="flex-shrink-0 flex items-center">
-              <view class="border-2 border-solid border-white leading-0 rounded-full overflow-hidden">
+              <view class="border-2 border-solid border-gray-900 leading-0 rounded-full overflow-hidden">
                 <image :src="userInfo.avatar" class="w-12 h-12" />
               </view>
             </view>
             <view class="ml-2 flex-1 flex items-center justify-between">
-              <view class="text-black text-xl font-bold">{{ userInfo.name }}</view>
-              <view class="border-2 border-solid border-black text-white bg-black rounded-lg px-2 py-0_5 shadow">赞助会员</view>
+              <view class="text-gray-900 text-xl font-bold">{{ userInfo.name }}</view>
+              <view class="border-2 border-solid border-gray-900 text-gray-900 bg-yellow-400 font-bold rounded-xl px-2 py-1 shadow-gray">赞助会员</view>
             </view>
           </template>
           <template v-else>
             <view class="flex-shrink-0 flex items-center">
-              <view class="border-2 border-solid border-white leading-0 rounded-full overflow-hidden">
+              <view class="border-2 border-solid border-gray-900 leading-0 rounded-full overflow-hidden">
                 <image :src="NoAvatarIcon" class="w-12 h-12" />
               </view>
             </view>
             <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo">
               <view class="text-black text-xl font-bold">点击登录</view>
-              <image :src="ChevronRightIcon" class="w-5 h-5" />
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
             </view>
           </template>
         </view>
       </view>
     </view>
-    <view class="px-6 mt-6">
-      <view class="flex flex-col border-2 border-solid border-black text-black bg-white rounded-lg shadow">
-        <!-- <view class="flex px-4 py-4_5 border-0 border-b-2 border-solid border-black font-bold text-black">
-          <view class="flex-1 flex items-center">
-            <image :src="VipIcon" class="w-7 h-7" />
-            <text class="ml-2">开通会员</text>
+    <view class="px-8 mt-4">
+      <view class="mb-6">
+        <view class="text-xl text-gray-800 font-bold mb-2">主要</view>
+        <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray">
+          <view class="flex px-4 py-4_5">
+            <view class="flex-1 flex items-center">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
+              <text class="ml-2">提点意见</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
           </view>
-          <view class="flex-shrink-0 flex items-center">
-            <text class="mr-1 text-sm text-gray-400">尊享多项豪华特权</text>
-            <image :src="ChevronRightIcon" class="w-4 h-4" />
-          </view>
-        </view> -->
-        <view class="flex px-4 py-4_5 border-0 border-b-2 border-solid border-black font-bold text-black">
-          <view class="flex-1 flex items-center">
-            <image :src="FeedbackIcon" class="w-7 h-7" />
-            <text class="ml-2">提点意见</text>
-          </view>
-          <view class="flex-shrink-0 flex items-center">
-            <image :src="ChevronRightIcon" class="w-4 h-4" />
-          </view>
-        </view>
-        <view class="flex px-4 py-4_5 border-0 border-b-2 border-solid border-black font-bold text-black">
-          <view class="flex-1 flex items-center">
-            <image :src="ShareIcon" class="w-7 h-7" />
-            <text class="ml-2">一起分享</text>
-          </view>
-          <view class="flex-shrink-0 flex items-center">
-            <image :src="ChevronRightIcon" class="w-4 h-4" />
+          <view class="flex px-4 py-4_5">
+            <view class="flex-1 flex items-center">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-green-400 rounded-full"></view>
+              <text class="ml-2">我要分享</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
           </view>
         </view>
-        <view class="flex px-4 py-4_5 font-bold text-black">
-          <view class="flex-1 flex items-center">
-            <image :src="AboutIcon" class="w-7 h-7" />
-            <text class="ml-2">关于我们</text>
+      </view>
+      <view class="mb-6">
+        <view class="text-xl text-gray-800 font-bold mb-2">关于我们</view>
+        <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray">
+          <view class="flex px-4 py-4_5">
+            <view class="flex-1 flex items-center">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
+              <text class="ml-2">联系我们</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
           </view>
-          <view class="flex-shrink-0 flex items-center">
-            <image :src="ChevronRightIcon" class="w-4 h-4" />
+          <view class="flex px-4 py-4_5">
+            <view class="flex-1 flex items-center">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-indigo-400 rounded-full"></view>
+              <text class="ml-2">用户协议</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
+          </view>
+          <view class="flex px-4 py-4_5">
+            <view class="flex-1 flex items-center">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
+              <text class="ml-2">隐私政策</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
+          </view>
+          <view class="flex px-4 py-4_5">
+            <view class="flex-1 flex items-center">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-pink-400 rounded-full"></view>
+              <text class="ml-2">注意事项</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
           </view>
         </view>
       </view>

@@ -47,13 +47,13 @@ const colorMap = {
   },
   red: {
     bg: 'bg-red-100',
-    border: 'border-red-900',
+    border: 'border-red-800',
     badgeBg: 'bg-red-800',
     iconBg: 'bg-red-50'
   },
   green: {
     bg: 'bg-green-100',
-    border: 'border-green-900',
+    border: 'border-green-800',
     badgeBg: 'bg-green-800',
     iconBg: 'bg-green-50'
   },
