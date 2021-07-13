@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import _ from "lodash"
 import Taro from "@tarojs/taro"
 import StudyItem from "../../components/card/StudyItem.vue"
 

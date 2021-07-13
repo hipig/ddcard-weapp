@@ -15,7 +15,7 @@
       <text class="mb-0_5">3. 新增功能优先体验，快人一步</text>
     </view>
     <view class="fixed bottom-0 inset-x-0 px-8 py-6">
-      <button class="m-0 font-bold border-2 border-solid border-black text-white bg-gray-900 rounded-xl shadow py-3_5 px-4 text-center leading-5">赞助一笔</button>
+      <button @tap="handlePay" class="m-0 font-bold border-2 border-solid border-black text-white bg-gray-900 rounded-xl shadow py-3_5 px-4 text-center leading-5">赞助一笔</button>
     </view>
   </view>
 </template>
@@ -25,6 +25,7 @@ import Taro from "@tarojs/taro"
 import PlanItem from "../../components/plan/Item.vue"
 
 import { getPlans } from "../../api/plan"
+import { storeSubscriptionRecord } from "../../api/subscriptionRecord"
 
 export default {
   components: {
@@ -54,6 +55,40 @@ export default {
     },
     handleChange(index) {
       this.currentIndex = index
+    },
+    handlePay() {
+      let plan = this.plans[this.currentIndex]
+
+      storeSubscriptionRecord(plan.id)
+        .then(res => {
+          if (res.statusCode === 200) {
+            const { data } = res
+            Taro.requestPayment({
+              timeStamp: data.timestamp,
+              nonceStr: data.nonceStr,
+              package: data.package,
+              signType: data.signType,
+              paySign: data.paySign,
+              success: function(res) {
+                Taro.showToast({
+                  icon: 'success',
+                  title: '支付成功',
+                })
+              },
+              fail: function(res) {
+                console.log('付款失败')
+                console.log(res)
+
+                if (res.errMsg == 'requestPayment:fail cancel') {
+                  Taro.showToast({
+                    icon: 'none',
+                    title: '您取消了支付'
+                  })
+                }
+              }
+            })
+          }
+        })
     }
   }
 }

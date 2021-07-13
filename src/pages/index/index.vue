@@ -3,7 +3,7 @@
     <view class="my-6">
       <view class="flex items-end justify-between">
         <view class="bg-yellow-100 text-yellow-900 rounded-md px-0_5">赞助会员，永久解锁全部卡片</view>
-        <button @tap="handleUpgrade" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-lg shadow-gray py-1 px-2 leading-5">赞助会员</button>
+        <button @tap="handleUpgrade" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-2 leading-5">赞助会员</button>
       </view>
     </view>
     <view class="flex flex-col">
