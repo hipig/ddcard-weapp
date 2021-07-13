@@ -7,6 +7,7 @@ export default {
     'pages/my/index',
     'pages/auth/index',
     'pages/vip/index',
+    'pages/feedback/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -1,5 +1,5 @@
 <template>
-  <view class="flex flex-col border-4 border-solid shadow-xl rounded-2xl mb-6 relative overflow-hidden"
+  <view class="flex flex-col border-4 border-solid shadow-xl rounded-3xl mb-6 relative overflow-hidden"
      :class="[colorClass.bg, colorClass.border]">
       <view class="absolute inset-0 bg-white bg-opacity-75 z-1 flex items-center justify-center" v-if="isLock">
         <view class="flex flex-col items-center text-black px-2 py-1 rounded-lg text-sm font-semibold">

@@ -20,7 +20,7 @@
                 <image :src="NoAvatarIcon" class="w-12 h-12" />
               </view>
             </view>
-            <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo">
+            <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo('/pages/auth/index?redirect_url=' + encodeURIComponent('/pages/my/index'))">
               <view class="text-black text-xl font-bold">点击登录</view>
               <image :src="ChevronRightIcon" class="w-4 h-4" />
             </view>
@@ -33,7 +33,7 @@
         <view class="text-xl text-gray-800 font-bold mb-2">主要</view>
         <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray">
           <view class="flex px-4 py-4_5">
-            <view class="flex-1 flex items-center">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/feedback/index')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
               <text class="ml-2">提点意见</text>
             </view>
@@ -132,9 +132,9 @@ export default {
     },
   },
   methods: {
-    handleTo() {
+    handleTo(url) {
       Taro.navigateTo({
-        url: '/pages/auth/index?redirect_url=' + encodeURIComponent('/pages/my/index')
+        url: url
       })
     }
   }

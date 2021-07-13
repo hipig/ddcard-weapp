@@ -27,7 +27,7 @@
     </view>
     <view class="flex items-end justify-center">
       <view class="relative">
-        <view @tap="handleDropShow" class="inline-flex items-center font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-lg shadow-yellow py-1 px-4 text-xl">
+        <view @tap="handleDropShow" class="inline-flex items-center font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-4 text-xl">
           <text class="mr-0_5">测一测</text>
           <image :src="arrowUpFillIcon" class="w-6 h-6 -mr-1" />
         </view>

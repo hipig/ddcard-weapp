@@ -114,7 +114,7 @@ module.exports = {
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
       'yellow': '6px 6px #FBBF24',
-      'gray': '0px 2px 0px #111827',
+      'gray': '0px 2px 0px ' + colors.coolGray[900],
     },
     lineHeight: (theme) => theme('spacing'),
     translate: (theme) => theme('spacing'),
