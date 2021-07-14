@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "http://ddcard.test/api/v1"
+const baseUrl = "http://0e6f0d92c9ab.ngrok.io/api/v1"
 
 const getCurrentPageUrl = () => {
   let pages = Taro.getCurrentPages()
@@ -25,8 +25,6 @@ const showError = (message, icon = 'none', duration = 2000) => {
     icon: icon,
     duration: duration
   })
-
-  return Promise.reject(message)
 }
 
 const statusInterceptor = (chain) => {
@@ -52,11 +50,13 @@ const statusInterceptor = (chain) => {
         pageToLogin()
         break;
       case 403:
-        return showError('您的权限不足，拒绝访问！')
+        return Promise.reject(res)
       case 429:
-        return showError('重复访问次数过多！')
+        showError('重复访问次数过多！')
+        return Promise.reject(res)
       default:
-        return showError(response.data.message || '请求出现错误或服务器异常，请稍后再试！')
+        showError(res.data.message || '请求出现错误或服务器异常，请稍后再试！')
+        return Promise.reject(res)
     }
   })
 }

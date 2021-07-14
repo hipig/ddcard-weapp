@@ -99,27 +99,17 @@
 
 <script>
 import Taro from "@tarojs/taro"
-import { mapGetters } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 
 import NoAvatarIcon from "../../assets/img/icon/no-avatar.svg"
 import ChevronRightIcon from "../../assets/img/icon/chevron-right.svg"
 
-import VipIcon from "../../assets/img/navbar/vip.svg"
-import FeedbackIcon from "../../assets/img/navbar/feedback.svg"
-import ShareIcon from "../../assets/img/navbar/share.svg"
-import AboutIcon from "../../assets/img/navbar/about.svg"
-import MoreIcon from "../../assets/img/navbar/more.svg"
 export default {
   name: "My",
   data () {
     return {
       NoAvatarIcon,
       ChevronRightIcon,
-      VipIcon,
-      FeedbackIcon,
-      ShareIcon,
-      AboutIcon,
-      MoreIcon,
     }
   },
   computed: {
@@ -132,6 +122,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      'getUserInfo': 'auth/getUserInfo'
+    }),
     handleTo(url) {
       Taro.navigateTo({
         url: url

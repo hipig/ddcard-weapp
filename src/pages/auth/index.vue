@@ -48,7 +48,7 @@ export default {
           code: loginInfo.code
         }
 
-        let res = await this.login(params)
+        await this.login(params)
 
         await this.getUserInfo()
 

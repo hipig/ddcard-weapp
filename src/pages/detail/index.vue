@@ -27,7 +27,7 @@
     </view>
     <view class="flex items-end justify-center">
       <view class="relative">
-        <view @tap="handleDropShow" class="inline-flex items-center font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-4 text-xl">
+        <view @tap="handleLearn" class="inline-flex items-center font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-4 text-xl">
           <text class="mr-0_5">测一测</text>
           <image :src="arrowUpFillIcon" class="w-6 h-6 -mr-1" />
         </view>
@@ -50,6 +50,7 @@ import CardItem from "../../components/card/Item.vue"
 import arrowUpFillIcon from "../../assets/img/icon/arrow-up-fill.svg"
 
 import { showGroup } from "../../api/cardGroup"
+import { validateGroupCanLearn } from "../../api/validation"
 
 export default {
   name: 'Detail',
@@ -86,8 +87,21 @@ export default {
     handleChange(e) {
       this.currentIndex = e.detail.current
     },
-    handleDropShow() {
-      this.dropShow = !this.dropShow
+    handleLearn() {
+      validateGroupCanLearn(this.groupId)
+        .then(res => {
+          if (res.statusCode === 200) {
+            this.dropShow = !this.dropShow
+          }
+        })
+        .catch(err => {
+          if (err.statusCode === 403) {
+            Taro.showToast({
+              title: err.data.message,
+              icon: 'none'
+            })
+          }
+        })
     },
     handleTo(mode) {
       Taro.navigateTo({

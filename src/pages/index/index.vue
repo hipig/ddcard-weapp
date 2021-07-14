@@ -2,8 +2,13 @@
   <view class="flex flex-col px-6">
     <view class="my-6">
       <view class="flex items-end justify-between">
-        <view class="bg-yellow-100 text-yellow-900 rounded-md px-0_5">赞助会员，永久解锁全部卡片</view>
-        <button @tap="handleUpgrade" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-2 leading-5">赞助会员</button>
+        <template v-if="isVip > 0">
+          <view class="bg-yellow-100 text-yellow-900 rounded-md px-0_5">卡片已全部解锁，请开始您的学习之旅！</view>
+        </template>
+        <template v-else>
+          <view class="bg-yellow-100 text-yellow-900 rounded-md px-0_5">赞助会员，永久解锁全部卡片</view>
+          <button @tap="handleUpgrade" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-2_5 leading-5">赞助会员</button>
+        </template>
       </view>
     </view>
     <view class="flex flex-col">
@@ -38,7 +43,7 @@
             <text class="text-yellow-900 text-xl font-bold">会员专属卡片</text>
           </view>
           <view class="px-6 py-4 w-full box-border">
-            <button class="mb-4 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
+            <button @tap="handleUpgrade" class="mb-4 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
               赞助会员，立即查看
             </button>
             <button @tap="handleUnlock" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
@@ -56,6 +61,7 @@ import Taro from "@tarojs/taro"
 import GroupItem from "../../components/group/Item.vue"
 import { getGroups, previewGroup } from "../../api/cardGroup"
 import { storeUnlockRecord } from "../../api/unlockRecord"
+import { validateUserIsVip } from "../../api/validation"
 
 export default {
   name: 'Index',
@@ -68,9 +74,11 @@ export default {
       cards: [],
       lockDialogShow: false,
       currentGroup: null,
+      isVip: -1,
     }
   },
   onShow() {
+    this.validateUserIsVip()
     this.getGroups()
   },
   onHide() {
@@ -81,6 +89,12 @@ export default {
       getGroups()
         .then(res => {
           this.groups = res.data
+        })
+    },
+    validateUserIsVip() {
+      validateUserIsVip()
+        .then(res => {
+          this.isVip = res.data.is_vip
         })
     },
     handle(item) {
