@@ -38,6 +38,33 @@
         <image :src="volumeDownIcon" v-else class="w-7 h-7"/>
       </view>
     </view>
+    <view class="fixed z-10 inset-0" v-show="collectDialogShow">
+      <view class="flex items-center justify-center min-h-screen p-12">
+        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="collectDialogShow = false"></view>
+        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
+          <view class="px-6 py-3 w-full box-border">
+            <text class="text-gray-900 font-bold text-xl">VIP卡片收藏</text>
+          </view>
+          <view class="px-6 py-1 flex-grow w-full box-border">
+            <text class="text-gray-900">升级VIP，解锁全部卡组，收藏卡片学习更快捷</text>
+          </view>
+          <view class="px-6 py-4 w-full box-border">
+            <view class="flex -mx-2 box-border">
+              <view class="w-1_2 px-2 box-border">
+                <button @tap="collectDialogShow = false" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-white rounded-xl py-1 px-4 text-xl">
+                  取消
+                </button>
+              </view>
+              <view class="w-1_2 px-2 box-border">
+                <button @tap="handleUpgrade" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-white border-gray-900 bg-gray-900 rounded-xl py-1 px-4 text-xl">
+                  立即升级
+                </button>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -121,11 +148,12 @@ export default {
       volumeUpIcon,
       animationData: null,
       isCollect: this.collected,
-      mode: null,
+      mode: 'zh',
       isVolumeUp: true,
       timer: null,
       zhAudioContext: null,
-      enAudioContext: null
+      enAudioContext: null,
+      collectDialogShow: false
     }
   },
   computed: {
@@ -144,19 +172,19 @@ export default {
     },
     enSrc(val) {
       this.initEnAudioContext(val)
-    },
-    mode(val) {
-      setTimeout(this.handlePlay, 200)
     }
   },
   created() {
     this.initZhAudioContext(this.zhSrc)
     this.initEnAudioContext(this.enSrc)
 
-    this.mode = 'zh'
+    if (this.index === 0) {
+      setTimeout(this.handlePlay, 200)
+    }
   },
-  beforeDestroy() {
+  onHide() {
     this.handleStop()
+    this.collectDialogShow = false
   },
   methods: {
     handleCollect() {
@@ -184,6 +212,7 @@ export default {
     },
     handleSwitchMode() {
       this.mode = this.mode === 'zh' ? 'en' : 'zh'
+      setTimeout(this.handlePlay, 200)
     },
     handlePlay() {
       let context = this.mode === 'zh' ? this.zhAudioContext : this.enAudioContext
@@ -233,6 +262,11 @@ export default {
       this.timer = setInterval(() => {
         this.isVolumeUp = !this.isVolumeUp
       }, 200)
+    },
+    handleUpgrade() {
+      Taro.navigateTo({
+        url: '/pages/vip/index'
+      })
     }
   }
 }

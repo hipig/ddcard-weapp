@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "http://0e6f0d92c9ab.ngrok.io/api/v1"
+const baseUrl = "http://ddcard.test/api/v1"
 
 const getCurrentPageUrl = () => {
   let pages = Taro.getCurrentPages()

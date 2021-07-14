@@ -40,6 +40,33 @@
         </view>
       </view>
     </view>
+    <view class="fixed z-10 inset-0" v-show="learnDialogShow">
+      <view class="flex items-center justify-center min-h-screen p-12">
+        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="learnDialogShow = false"></view>
+        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
+          <view class="px-6 py-3 w-full box-border">
+            <text class="text-gray-900 font-bold text-xl">VIP卡组测一测</text>
+          </view>
+          <view class="px-6 py-1 flex-grow w-full box-border">
+            <text class="text-gray-900">升级VIP，解锁全部卡组测试，随时随地想测就测</text>
+          </view>
+          <view class="px-6 py-4 w-full box-border">
+            <view class="flex -mx-2 box-border">
+              <view class="w-1_2 px-2 box-border">
+                <button @tap="learnDialogShow = false" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-white rounded-xl py-1 px-4 text-xl">
+                  取消
+                </button>
+              </view>
+              <view class="w-1_2 px-2 box-border">
+                <button @tap="handleUpgrade" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-white border-gray-900 bg-gray-900 rounded-xl py-1 px-4 text-xl">
+                  立即升级
+                </button>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -64,6 +91,7 @@ export default {
       groupId: 0,
       cards: [],
       dropShow: false,
+      learnDialogShow: false
     }
   },
   onShow() {
@@ -75,6 +103,7 @@ export default {
   },
   onHide() {
     this.dropShow = false
+    this.learnDialogShow = false
   },
   methods: {
     getCards() {
@@ -96,10 +125,7 @@ export default {
         })
         .catch(err => {
           if (err.statusCode === 403) {
-            Taro.showToast({
-              title: err.data.message,
-              icon: 'none'
-            })
+            this.learnDialogShow = true
           }
         })
     },
@@ -111,6 +137,11 @@ export default {
     setNavigationBar(title) {
       Taro.setNavigationBarTitle({
         title: title
+      })
+    },
+    handleUpgrade() {
+      Taro.navigateTo({
+        url: '/pages/vip/index'
       })
     }
   }
