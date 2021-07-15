@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import _ from "lodash"
 import Taro from "@tarojs/taro"
 import StudyItem from "../../components/card/StudyItem.vue"
 
@@ -104,7 +105,7 @@ export default {
     },
     setNavigationBarTitle() {
       Taro.setNavigationBarTitle({
-        title: parseInt(this.currentIndex + 1) + ' / ' + this.cards.length
+        title: parseInt(this.cards.length > 0 ? this.currentIndex + 1 : 0) + ' / ' + this.cards.length
       })
     }
   }

@@ -1,6 +1,9 @@
 <template>
   <view class="flex flex-col">
-    <scroll-view :scroll-y="true" :style="{height: 'calc('+wHeight+'px - 5rem)'}">
+    <scroll-view :scroll-y="true"
+      :style="{height: 'calc('+wHeight+'px - 5rem)'}"
+      :scroll-into-view="toView"
+      :scroll-with-animation="true">
       <view class="flex flex-col px-6 pt-4 box-border">
         <template v-if="feedbackList.length > 0">
           <view v-for="(item, index) in feedbackList"  :key="index">
@@ -38,7 +41,7 @@
     <view class="fixed bottom-0 inset-x-0 px-6 h-20 flex items-center bg-white">
       <view class="w-full flex items-center">
         <view class="flex-1">
-          <input type="text" v-model="content" :cursor-spacing="30" class="px-4 py-3 border-2 border-solid border-gray-900 text-gray-900 bg-white rounded-xl" placeholder="请填写内容..."/>
+          <input type="text" v-model="content" :cursor-spacing="30" @focus="handleFocus" class="px-4 py-3 border-2 border-solid border-gray-900 text-gray-900 bg-white rounded-xl" placeholder="请填写内容..."/>
         </view>
         <view class="flex-shrink-0 ml-4">
           <button @tap="handleSubmit" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray text-xl py-3 px-5 leading-5">发送</button>
@@ -82,14 +85,14 @@ export default {
       getFeedback()
         .then(res => {
           this.feedbackList = res.data
-          setTimeout(this.scrollBottom, 200)
+          setTimeout(this.scrollBottom, 100)
         })
         .finally(_ => {
           Taro.hideLoading()
         })
     },
     viewFeedbackReply() {
-      viewFeedbackReply()  
+      viewFeedbackReply()
     },
     handleSubmit() {
       storeFeedback({
@@ -97,6 +100,7 @@ export default {
       })
       .then(res => {
         if (res.statusCode == 200 || res.statusCode == 201) {
+          this.content = ''
           this.getFeedback()
         }
       })
@@ -107,6 +111,9 @@ export default {
     scrollBottom() {
       let maxIndex = this.feedbackList.length > 0 ? this.feedbackList.length-1 : 0
       this.toView = "feedback-" + maxIndex
+    },
+    handleFocus() {
+      setTimeout(this.scrollBottom, 100)
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <view class="h-0 pb-full rounded-lg shadow-sm bg-gradient-to-b" :class="[ colorClass.bg ]">
-    <view class="py-2 flex justify-center">
+    <view class="py-4 flex justify-center">
       <image :src="icon" class="w-20 h-20"/>
     </view>
     <view class="flex-shrink-0 flex flex-col items-center text-black font-bold">

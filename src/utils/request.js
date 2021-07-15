@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "http://a5d93280b17d.ngrok.io/api/v1"
+const baseUrl = "http://hipig.5gzvip.idcfengye.com/api/v1"
 
 const getCurrentPageUrl = () => {
   let pages = Taro.getCurrentPages()
@@ -54,7 +54,7 @@ const statusInterceptor = (chain) => {
       case 422:
         let errors = res.data.errors
         showError(errors[Object.keys(errors)[0]][0] || '请填写内容')
-        return Promise.reject(res)  
+        return Promise.reject(res)
       case 429:
         showError('重复访问次数过多！')
         return Promise.reject(res)

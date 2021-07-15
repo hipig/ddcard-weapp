@@ -12,10 +12,10 @@ dayjs.locale('zh-cn')
 const App = {
   store,
   onShow() {
-    store.dispatch('online/showOnlineRecord')
+    // store.dispatch('online/showOnlineRecord')
   },
   onHide() {
-    store.dispatch('online/updateOnlineRecord')
+    // store.dispatch('online/updateOnlineRecord')
   },
   render(h) {
     // this.$slots.default 是将要会渲染的页面
