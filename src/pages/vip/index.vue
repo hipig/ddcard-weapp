@@ -8,7 +8,7 @@
           :selected="currentIndex === index"/>
       </view>
     </view>
-    <view class="flex flex-col px-6 py-4 bg-yellow-100 text-gray-900 font-bold rounded-2xl">
+    <view class="flex flex-col px-6 py-4 bg-yellow-50 text-gray-900 font-bold rounded-2xl">
       <text class="text-xl mb-2">会员功能</text>
       <text class="mb-0_5">1. 解锁会员卡组收藏学习</text>
       <text class="mb-0_5">2. 永久去除广告和促销信息</text>

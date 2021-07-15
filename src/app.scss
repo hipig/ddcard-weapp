@@ -2,7 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-page {
-  @apply bg-yellow-50;
-}
 
+button::after {
+  display: none;
+}

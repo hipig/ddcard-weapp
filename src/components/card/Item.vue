@@ -11,7 +11,7 @@
             <image :src="starFillIcon" v-if="isCollect" class="w-8 h-8"/>
             <image :src="starIcon" v-else class="w-8 h-8"/>
           </view>
-          <view class="ml-5 leading-0">
+          <view class="ml-5 leading-0" @tap="handleShare">
             <image :src="shareFillIcon" class="w-8 h-8"/>
           </view>
         </view>
@@ -209,6 +209,12 @@ export default {
             })
           }
         })
+    },
+    handleShare() {
+      Taro.showToast({
+        title: '分享功能正在开发中...',
+        icon: 'none'
+      })
     },
     handleSwitchMode() {
       this.mode = this.mode === 'zh' ? 'en' : 'zh'

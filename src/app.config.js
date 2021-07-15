@@ -11,7 +11,7 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#FFFBEB',
+    navigationBarBackgroundColor: '#ffffff',
     navigationBarTitleText: '简单识字卡',
     navigationBarTextStyle: 'black'
   },

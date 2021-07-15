@@ -1,28 +1,15 @@
 <template>
-  <view class="flex flex-col border-4 border-solid shadow-xl rounded-3xl mb-6 relative overflow-hidden"
-     :class="[colorClass.bg, colorClass.border]">
-      <view class="absolute inset-0 bg-white bg-opacity-75 z-1 flex items-center justify-center" v-if="isLock">
-        <view class="flex flex-col items-center text-black px-2 py-1 rounded-lg text-sm font-semibold">
-          <image :src="UnlockFillIcon" class="w-8 h-8"/>
-          <text>点击解锁</text>
-        </view>
-      </view>
-    <!-- <view class="absolute top-0 left-0" v-if="isLock">
-      <view class="-ml-px py-0_5 px-2_5 rounded-br-2xl border-t-0 border-l-0 border-r-4 border-b-4  border-solid text-white font-bold text-sm leading-0" :class="[colorClass.border, colorClass.badgeBg]">
-        <view class="flex items-center">
-          <image :src="lockFillIcon" class="w-5 h-5"/>
-          <text>未解锁</text>
-        </view>
-      </view>
-    </view> -->
-    <view class="p-6 flex items-center">
+  <view class="flex flex-col border-4 border-solid border-gray-900 shadow-xl rounded-3xl mb-6 relative overflow-hidden"
+     :class="[colorClass.bg]">
+    <view v-if="isLock" class="absolute top-3 -right-8 z-10 w-32 h-7 flex items-center justify-center border-0 border-t-4 border-b-4 border-solid border-gray-900 text-gray-900 bg-yellow-400 font-bold text-2xl leading-none shadow transform rotate-45">VIP</view>
+    <view class="px-9 py-6 flex items-center">
       <view class="flex-1 px-2">
-        <view class="text-3xl text-black font-bold">{{ zhName }}</view>
-        <view class="text-lg text-black capitalize">{{ enName }}</view>
+        <view class="text-3xl text-gray-900 font-bold mb-1">{{ zhName }}</view>
+        <view class="text-lg text-gray-900 capitalize">{{ enName }}</view>
       </view>
       <view class="flex-shrink-0">
-        <view class="rounded-lg inline-flex p-2" :class="[colorClass.iconBg]">
-          <image :src="icon" class="w-16 h-16"/>
+        <view class="inline-flex">
+          <image :src="icon" class="w-18 h-18"/>
         </view>
       </view>
     </view>
@@ -30,68 +17,36 @@
 </template>
 
 <script>
-import UnlockFillIcon from "../../assets/img/icon/unlock-fill.svg"
-
 const colorMap = {
   gray: {
-    bg: 'bg-gray-100',
-    border: 'border-gray-800',
-    badgeBg: 'bg-gray-900',
-    iconBg: 'bg-gray-50'
+    bg: 'bg-gray-400',
   },
   yellow: {
-    bg: 'bg-yellow-100',
-    border: 'border-yellow-800',
-    badgeBg: 'bg-yellow-900',
-    iconBg: 'bg-yellow-50'
+    bg: 'bg-yellow-400',
   },
   red: {
-    bg: 'bg-red-100',
-    border: 'border-red-800',
-    badgeBg: 'bg-red-800',
-    iconBg: 'bg-red-50'
+    bg: 'bg-red-400',
   },
   green: {
-    bg: 'bg-green-100',
-    border: 'border-green-800',
-    badgeBg: 'bg-green-800',
-    iconBg: 'bg-green-50'
+    bg: 'bg-green-400',
   },
   blue: {
-    bg: 'bg-blue-100',
-    border: 'border-blue-800',
-    badgeBg: 'bg-blue-900',
-    iconBg: 'bg-blue-50'
+    bg: 'bg-blue-400',
   },
   orange: {
-    bg: 'bg-orange-100',
-    border: 'border-orange-800',
-    badgeBg: 'bg-orange-900',
-    iconBg: 'bg-orange-50'
+    bg: 'bg-orange-400',
   },
   teal: {
-    bg: 'bg-teal-100',
-    border: 'border-teal-800',
-    badgeBg: 'bg-teal-900',
-    iconBg: 'bg-teal-50'
+    bg: 'bg-teal-400',
   },
   indigo: {
-    bg: 'bg-indigo-100',
-    border: 'border-indigo-800',
-    badgeBg: 'bg-indigo-900',
-    iconBg: 'bg-indigo-50'
+    bg: 'bg-indigo-400',
   },
   purple: {
-    bg: 'bg-purple-100',
-    border: 'border-purple-800',
-    badgeBg: 'bg-purple-900',
-    iconBg: 'bg-purple-50'
+    bg: 'bg-purple-400',
   },
   pink: {
-    bg: 'bg-pink-100',
-    border: 'border-pink-800',
-    badgeBg: 'bg-pink-900',
-    iconBg: 'bg-pink-50'
+    bg: 'bg-pink-400',
   }
 }
 
@@ -105,9 +60,7 @@ export default {
     isLock: { default: false, type: Boolean }
   },
   data () {
-    return {
-      UnlockFillIcon
-    }
+    return {}
   },
   computed: {
     colorClass() {

@@ -1,5 +1,5 @@
 <template>
-  <view class="border-4 border-solid bg-white rounded-2xl mb-5" :class="[colorClass.border]">
+  <view class="border-4 border-solid bg-white rounded-xl mb-5" :class="[colorClass.border]">
     <view class="px-3 text-white pb-1 text-lg font-bold" :class="[colorClass.bg]">{{ name }}</view>
     <view class="p-4 flex">
       <view class="flex-shrink-0 mr-4">
@@ -14,7 +14,7 @@
             <view class="text-gray-400 text-sm"><text class="font-bold text-lg text-red-500 mr-1">{{ zhCount }}</text>/{{ count }}</view>
           </view>
           <view class="h-2 bg-yellow-100 rounded-full relative overflow-hidden">
-            <view class="bg-yellow-500 absolute left-0 inset-y-0" :style="{ width: zhRate }"></view>
+            <view class="bg-yellow-400 absolute left-0 inset-y-0" :style="{ width: zhRate }"></view>
           </view>
         </view>
         <view class="mt-2">
@@ -23,7 +23,7 @@
             <view class="text-gray-400 text-sm flex items-center"><text class="font-bold text-lg text-red-500 mr-1">{{ enCount }}</text>/{{ count }}</view>
           </view>
           <view class="h-2 bg-yellow-100 rounded-full relative overflow-hidden">
-            <view class="bg-yellow-500 absolute left-0 inset-y-0" :style="{ width: enRate }"></view>
+            <view class="bg-yellow-400 absolute left-0 inset-y-0" :style="{ width: enRate }"></view>
           </view>
         </view>
       </view>
