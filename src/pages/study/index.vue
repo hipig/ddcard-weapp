@@ -5,7 +5,7 @@
         <view class="flex items-center" @tap="handleFilter">
           <image :src="checkOnIcon" v-if="isNotStudied" class="w-7 h-7" />
           <image :src="checkIcon" v-else class="w-7 h-7" />
-          <text class="ml-2 text-lg text-black font-bold">仅看未学会</text>
+          <text class="ml-2 text-lg text-gray-900 font-bold">仅看未学会</text>
         </view>
       </view>
     </view>
@@ -44,6 +44,7 @@ import checkIcon from "../../assets/img/icon/check.svg"
 import checkOnIcon from "../../assets/img/icon/check-on.svg"
 
 import { showGroup } from "../../api/cardGroup"
+import { getCollectRecords } from "../../api/collectRecord"
 
 export default {
   name: "Study",
@@ -79,13 +80,23 @@ export default {
   },
   methods: {
     getCards(callback = null) {
-      showGroup(this.groupId)
+      if (this.groupId) {
+        showGroup(this.groupId)
         .then(res => {
           this.allCards = res.data.cards
           this.cards = res.data.cards
 
           callback && callback(res)
         })
+      } else {
+        getCollectRecords()
+          .then(res => {
+            this.allCards = res.data
+            this.cards = res.data
+
+            callback && callback(res)
+          })
+      }
     },
     handleChange(e) {
       this.currentIndex = e.detail.current

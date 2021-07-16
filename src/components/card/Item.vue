@@ -26,7 +26,7 @@
       </view>
       <view class="text-center">
         <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ mode === 'zh' ? zhSpell : enSpell }}</view>
-        <view class="text-4xl text-black font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
+        <view class="text-4xl text-gray-900 font-bold capitalize">{{ mode === 'zh' ? zhName : enName }}</view>
       </view>
     </view>
     <view class="flex-shrink-0">
@@ -41,7 +41,7 @@
     <view class="fixed z-10 inset-0" v-show="collectDialogShow">
       <view class="flex items-center justify-center min-h-screen p-12">
         <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="collectDialogShow = false"></view>
-        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
+        <view class="border-2 border-solid border-gray-900 flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-3 w-full box-border">
             <text class="text-gray-900 font-bold text-xl">VIP卡片收藏</text>
           </view>
@@ -82,7 +82,7 @@ import { storeCollectRecord, deleteCollectRecord } from "../../api/collectRecord
 const colorMap = {
   gray: {
     bg: 'from-gray-200 to-gray-400',
-    spellText: 'text-black'
+    spellText: 'text-gray-900'
   },
   yellow: {
     bg: 'from-yellow-200 to-yellow-400',

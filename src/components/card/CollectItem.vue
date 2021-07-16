@@ -1,10 +1,10 @@
 <template>
-  <view class="h-0 pb-full rounded-lg shadow-sm bg-gradient-to-b" :class="[ colorClass.bg ]">
-    <view class="py-4 flex justify-center">
+  <view class="p-4 rounded-xl shadow bg-gradient-to-b" :class="[ colorClass.bg ]">
+    <view class="mb-2 flex justify-center">
       <image :src="icon" class="w-20 h-20"/>
     </view>
-    <view class="flex-shrink-0 flex flex-col items-center text-black font-bold">
-      <view class="text-xl">{{ zhName }}</view>
+    <view class="flex flex-col items-center text-gray-900">
+      <view class="text-2xl font-bold">{{ zhName }}</view>
       <view class="capitalize">{{ enName }}</view>
     </view>
   </view>

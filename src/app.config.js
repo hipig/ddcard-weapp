@@ -8,6 +8,7 @@ export default {
     'pages/auth/index',
     'pages/vip/index',
     'pages/feedback/index',
+    'pages/about/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -44,7 +44,7 @@
           <input type="text" v-model="content" :cursor-spacing="30" @focus="handleFocus" class="px-4 py-3 border-2 border-solid border-gray-900 text-gray-900 bg-white rounded-xl" placeholder="请填写内容..."/>
         </view>
         <view class="flex-shrink-0 ml-4">
-          <button @tap="handleSubmit" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray text-xl py-3 px-5 leading-5">发送</button>
+          <button @tap="handleSubmit" class="inline-flex m-0 font-bold border-2 border-solid text-gray-900 border-gray-900 bg-yellow-400 rounded-xl shadow-gray text-xl py-3 px-5 leading-5">发送</button>
         </view>
       </view>
     </view>

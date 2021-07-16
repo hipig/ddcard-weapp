@@ -1,9 +1,9 @@
 <template>
   <view class="flex flex-col px-6">
-    <view class="fixed top-0 left-0 w-full box-border px-6 pb-2 bg-yellow-50">
-      <view class="flex items-center bg-white border-2 border-solid border-gray-900 text-gray-900 text-xl font-bold rounded-2xl overflow-hidden shadow-gray" @tap="isCollect = !isCollect">
-        <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': !isCollect}">学习报告</view>
-        <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': isCollect}">收藏</view>
+    <view class="fixed top-0 left-0 w-full box-border px-6 pb-2 bg-white z-10">
+      <view class="flex items-center bg-white border-2 border-solid border-gray-900 text-gray-900 text-xl font-bold rounded-2xl overflow-hidden shadow-gray">
+        <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': !isCollect}" @tap="isCollect = false">学习报告</view>
+        <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': isCollect}" @tap="isCollect = true">收藏</view>
       </view>
     </view>
     <view class="mt-14">
@@ -15,12 +15,12 @@
           </view>
         </view>
         <view class="flex flex-col bg-white border-2 border-solid border-gray-900 text-gray-900 rounded-2xl shadow-gray mb-8">
-          <view class="px-4 py-2_5 mb-4 border-0 border-b-2 border-solid border-black">
+          <view class="px-4 py-2_5 border-0 border-b-2 border-solid border-gray-900">
             <view class="font-bold text-xl">学习报告</view>
           </view>
-          <view class="px-2">
+          <view class="p-4 pb-2">
             <view v-for="(item, index) in groups" :key="index">
-              <report-item :name="item.zh_name" 
+              <report-item :name="item.zh_name"
                 :icon="item.cover_url"
                 :color="item.color"
                 :count="item.count"
@@ -31,17 +31,17 @@
         </view>
       </view>
       <view class="w-full" v-show="isCollect">
-        <view class="flex flex-wrap -mx-3">
-          <view @tap="handleTo(item.card_id)" class="w-1_2 px-3 box-border mb-6" v-for="(item, index) in collects" :key="index">
-            <collect-item :zh-name="item.card.zh_name"
-              :en-name="item.card.en_name" 
-              :icon="item.card.cover_url"
-              :color="item.card.color" />
+        <view class="flex flex-wrap -mx-2">
+          <view @tap="handleTo(index)" class="w-1_2 px-2 box-border mb-4" v-for="(item, index) in collectCards" :key="index">
+            <collect-item :zh-name="item.zh_name"
+              :en-name="item.en_name"
+              :icon="item.cover_url"
+              :color="item.color" />
           </view>
         </view>
       </view>
     </view>
-    
+
   </view>
 </template>
 
@@ -63,7 +63,7 @@ export default {
     return {
       isCollect: false,
       groups: [],
-      collects: []
+      collectCards: []
     }
   },
   onShow() {
@@ -80,12 +80,12 @@ export default {
     getCollectRecords() {
       getCollectRecords()
         .then(res => {
-          this.collects = res.data
+          this.collectCards = res.data
         })
     },
-    handleTo(cardId) {
+    handleTo(current) {
       Taro.navigateTo({
-        url: '/pages/detail/index?type=collect&card_id=' + cardId
+        url: '/pages/detail/index?current=' + current
       })
     }
   }

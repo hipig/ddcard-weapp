@@ -15,7 +15,7 @@
       <text class="mb-0_5">3. 新增功能优先体验，快人一步</text>
     </view>
     <view class="fixed bottom-0 inset-x-0 px-8 py-6">
-      <button @tap="handlePay" class="m-0 font-bold border-2 border-solid border-black text-white bg-gray-900 rounded-xl shadow py-3_5 px-4 text-center leading-5">赞助一笔</button>
+      <button @tap="handlePay" class="m-0 font-bold border-2 border-solid border-gray-900 text-white bg-gray-900 rounded-xl shadow py-3_5 px-4 text-center leading-5">赞助一笔</button>
     </view>
   </view>
 </template>

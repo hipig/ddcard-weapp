@@ -21,7 +21,7 @@
               </view>
             </view>
             <view class="ml-2 flex-1 flex items-center justify-between" @tap="handleTo('/pages/auth/index?redirect_url=' + encodeURIComponent('/pages/my/index'))">
-              <view class="text-black text-xl font-bold">点击登录</view>
+              <view class="text-gray-900 text-xl font-bold">点击登录</view>
               <image :src="ChevronRightIcon" class="w-4 h-4" />
             </view>
           </template>
@@ -56,7 +56,7 @@
         <view class="text-xl text-gray-800 font-bold mb-2">关于我们</view>
         <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray overflow-hidden">
           <view class="flex px-6 py-4_5">
-            <view class="flex-1 flex items-center">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/about/index?key=contract')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
               <text class="ml-2">联系我们</text>
             </view>
@@ -65,7 +65,7 @@
             </view>
           </view>
           <view class="flex px-6 py-4_5">
-            <view class="flex-1 flex items-center">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/about/index?key=agreement')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-indigo-400 rounded-full"></view>
               <text class="ml-2">用户协议</text>
             </view>
@@ -74,7 +74,7 @@
             </view>
           </view>
           <view class="flex px-6 py-4_5">
-            <view class="flex-1 flex items-center">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/about/index?key=privacy')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
               <text class="ml-2">隐私政策</text>
             </view>
@@ -83,7 +83,7 @@
             </view>
           </view>
           <view class="flex px-6 py-4_5">
-            <view class="flex-1 flex items-center">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/about/index?key=attention')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-pink-400 rounded-full"></view>
               <text class="ml-2">注意事项</text>
             </view>

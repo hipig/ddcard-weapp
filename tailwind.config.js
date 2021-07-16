@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 
@@ -188,13 +189,8 @@ module.exports = {
   plugins: [
     plugin(function({ addUtilities, theme, e }) {
       const newUtilities = _.map(theme('boxShadow'), (value, key) => {
-        let prefix = 'shadow-'
-        if(key === 'DEFAULT' ) {
-          key = ''
-          prefix = 'shadow'
-        }
         return {
-          [`.${e(`${prefix}${key}`)}`]: {
+          [key === 'DEFAULT' ? `.shadow` : `.shadow-${key}`]: {
             boxShadow: `${value}`
           }
         }

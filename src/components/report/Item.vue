@@ -1,5 +1,5 @@
 <template>
-  <view class="border-4 border-solid bg-white rounded-xl mb-5" :class="[colorClass.border]">
+  <view class="border-4 border-solid bg-white rounded-xl mb-3" :class="[colorClass.border]">
     <view class="px-3 text-white pb-1 text-lg font-bold" :class="[colorClass.bg]">{{ name }}</view>
     <view class="p-4 flex">
       <view class="flex-shrink-0 mr-4">
@@ -10,20 +10,20 @@
       <view class="flex-1 flex flex-col">
         <view>
           <view class="flex items-center justify-between">
-            <view class="font-bold text-black">中文</view>
+            <view class="font-bold text-gray-900">中文</view>
             <view class="text-gray-400 text-sm"><text class="font-bold text-lg text-red-500 mr-1">{{ zhCount }}</text>/{{ count }}</view>
           </view>
           <view class="h-2 bg-yellow-100 rounded-full relative overflow-hidden">
-            <view class="bg-yellow-400 absolute left-0 inset-y-0" :style="{ width: zhRate }"></view>
+            <view class="bg-yellow-400 absolute left-0 inset-y-0 rounded-r-full" :style="{ width: zhRate }"></view>
           </view>
         </view>
         <view class="mt-2">
           <view class="flex items-center justify-between">
-            <view class="font-bold text-black">英文</view>
+            <view class="font-bold text-gray-900">英文</view>
             <view class="text-gray-400 text-sm flex items-center"><text class="font-bold text-lg text-red-500 mr-1">{{ enCount }}</text>/{{ count }}</view>
           </view>
           <view class="h-2 bg-yellow-100 rounded-full relative overflow-hidden">
-            <view class="bg-yellow-400 absolute left-0 inset-y-0" :style="{ width: enRate }"></view>
+            <view class="bg-yellow-400 absolute left-0 inset-y-0 rounded-r-full" :style="{ width: enRate }"></view>
           </view>
         </view>
       </view>

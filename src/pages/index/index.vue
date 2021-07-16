@@ -7,7 +7,7 @@
         </template>
         <template v-else>
           <view class="bg-yellow-100 text-yellow-900 rounded-md px-0_5">赞助会员，永久解锁全部卡片</view>
-          <button @tap="handleUpgrade" class="inline-flex m-0 font-bold border-2 border-solid text-black border-black bg-yellow-400 rounded-xl shadow-gray py-1 px-2_5 leading-5">赞助会员</button>
+          <button @tap="handleUpgrade" class="inline-flex m-0 font-bold border-2 border-solid text-gray-900 border-gray-900 bg-yellow-400 rounded-xl shadow-gray py-1 px-2_5 leading-5">赞助会员</button>
         </template>
       </view>
     </view>
@@ -23,7 +23,7 @@
     <view class="fixed z-10 inset-0" v-show="lockDialogShow">
       <view class="flex items-center justify-center min-h-screen p-12 text-center">
         <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="closeLockDialog"></view>
-        <view class="border-2 border-solid border-black flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
+        <view class="border-2 border-solid border-gray-900 flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-4 w-full box-border">
             <text class="font-bold text-xl">解锁卡片</text>
           </view>
@@ -42,10 +42,10 @@
             <text class="text-yellow-900 text-xl font-bold">会员专属卡片</text>
           </view>
           <view class="px-6 py-4 w-full box-border">
-            <button @tap="handleUpgrade" class="mb-4 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-yellow-400 rounded-md py-1 px-4 text-xl">
+            <button @tap="handleUpgrade" class="mb-4 inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-yellow-400 rounded-md py-1 px-4 text-xl">
               赞助会员，立即查看
             </button>
-            <button @tap="handleUnlock" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-black border-black bg-white rounded-md py-1 px-4 text-xl">
+            <button @tap="handleUnlock" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-white rounded-md py-1 px-4 text-xl">
               免费试用1天
             </button>
           </view>
