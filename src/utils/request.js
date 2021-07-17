@@ -34,7 +34,7 @@ const statusInterceptor = (chain) => {
 
     const token = res.header.Authorization
     if (token) {
-      store.dispatch('auth/refreshToken')
+      store.dispatch('auth/refreshToken', token)
     }
 
     switch (res.statusCode) {
@@ -59,7 +59,7 @@ const statusInterceptor = (chain) => {
         showError('重复访问次数过多！')
         return Promise.reject(res)
       default:
-        showError(res.data.message || '请求出现错误或服务器异常，请稍后再试！')
+        showError('请求出现错误或服务器异常，请稍后再试！')
         return Promise.reject(res)
     }
   })

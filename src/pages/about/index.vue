@@ -1,6 +1,6 @@
 <template>
-  <view class="prose p-6">
-    <view v-html="about.content"></view>
+  <view class="p-6">
+    <view class="prose" v-html="about.content"></view>
   </view>
 </template>
 

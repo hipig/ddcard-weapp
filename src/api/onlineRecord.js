@@ -1,17 +1,18 @@
 import service from "../utils/request"
+import { sprintf } from "../utils/util"
 
 const api = {
-  show: '/records/online',
-  update: '/records/online',
+  store: '/records/online',
+  update: '/records/online/%d',
 }
 
-export const showOnlineRecord = () => service({
-  url: api.show,
-  method: 'get'
+export const storeOnlineRecord = () => service({
+  url: api.store,
+  method: 'post'
 })
 
-export const updateOnlineRecord = (params) => service({
-  url: api.update,
+export const updateOnlineRecord = (id, params) => service({
+  url: sprintf(api.update, id),
   method: 'put',
   data: params
 })

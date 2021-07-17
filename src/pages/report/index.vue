@@ -10,8 +10,8 @@
       <view class="flex flex-col" v-show="!isCollect">
         <view class="mb-8">
           <view class="flex flex-col px-6 py-4 bg-white border-2 border-solid border-gray-900 text-gray-900 text-lg font-bold rounded-2xl shadow-gray">
-            <view class="mb-2">累计使用 <text class="px-1 text-3xl text-red-500">4</text> 天</view>
-            <view>今日学习 <text class="px-1 text-yellow-400">40</text> 分钟</view>
+            <view class="mb-2">累计使用 <text class="px-1 text-3xl text-red-500">{{ cumulativeTimes }}</text> 天</view>
+            <view>今日学习 <text class="px-1 text-yellow-400">{{ duration+pastMinute }}</text> 分钟</view>
           </view>
         </view>
         <view class="flex flex-col bg-white border-2 border-solid border-gray-900 text-gray-900 rounded-2xl shadow-gray mb-8">
@@ -46,7 +46,10 @@
 </template>
 
 <script>
+import _ from "lodash"
 import Taro from "@tarojs/taro"
+import { mapGetters } from "vuex"
+import * as dayjs from 'dayjs'
 import ReportItem from "../../components/report/Item.vue"
 import CollectItem from "../../components/card/CollectItem.vue"
 
@@ -63,12 +66,25 @@ export default {
     return {
       isCollect: false,
       groups: [],
-      collectCards: []
+      collectCards: [],
+      pastMinute: 0,
+      timer: null
     }
+  },
+  computed: {
+    ...mapGetters({
+      'cumulativeTimes': 'online/cumulativeTimes',
+      'duration': 'online/duration',
+      'startedAt': 'online/startedAt'
+    })
   },
   onShow() {
     this.getGroups()
     this.getCollectRecords()
+    this.timer = setInterval(this.timing, 1000)
+  },
+  onHide() {
+    clearInterval(this.timer)
   },
   methods: {
     getGroups() {
@@ -80,13 +96,16 @@ export default {
     getCollectRecords() {
       getCollectRecords()
         .then(res => {
-          this.collectCards = res.data
+          this.collectCards = _.map(res.data, 'card')
         })
     },
     handleTo(current) {
       Taro.navigateTo({
         url: '/pages/detail/index?current=' + current
       })
+    },
+    timing() {
+      this.pastMinute = dayjs().subtract(dayjs(this.startedAt)).minute()
     }
   }
 }

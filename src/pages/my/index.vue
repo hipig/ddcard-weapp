@@ -11,7 +11,7 @@
             </view>
             <view class="ml-2 flex-1 flex items-center justify-between">
               <view class="text-gray-900 text-xl font-bold">{{ userInfo.name }}</view>
-              <view class="border-2 border-solid border-gray-900 text-gray-900 bg-yellow-400 font-bold rounded-xl px-2 py-1 shadow-gray">赞助会员</view>
+              <view class="border-2 border-solid border-gray-900 text-gray-900 bg-yellow-400 font-bold rounded-xl px-2 py-1 shadow-gray" @tap="handleTo('/pages/vip/index')">赞助会员</view>
             </view>
           </template>
           <template v-else>

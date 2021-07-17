@@ -70,6 +70,7 @@ export default {
               signType: data.signType,
               paySign: data.paySign,
               success: function(res) {
+                Taro.navigateBack()
                 Taro.showToast({
                   icon: 'success',
                   title: '支付成功',

@@ -91,8 +91,8 @@ export default {
       } else {
         getCollectRecords()
           .then(res => {
-            this.allCards = res.data
-            this.cards = res.data
+            this.allCards = _.map(res.data, 'card')
+            this.cards = _.map(res.data, 'card')
 
             callback && callback(res)
           })

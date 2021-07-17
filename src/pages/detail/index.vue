@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import _ from "lodash"
 import Taro from "@tarojs/taro"
 import arrowUpFillIcon from "../../assets/img/icon/arrow-up-fill.svg"
 
@@ -120,7 +121,7 @@ export default {
         getCollectRecords()
           .then(res => {
             this.setNavigationBar('我的收藏')
-            this.cards = res.data
+            this.cards = _.map(res.data, 'card')
           })
       }
     },
