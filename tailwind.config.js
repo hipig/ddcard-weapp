@@ -18,6 +18,7 @@ module.exports = {
     ringWidth: false,
     boxShadow: false,
     container: false,
+    borderColor: false,
   },
   separator: '_',
   theme: {
@@ -79,18 +80,6 @@ module.exports = {
       96: '24rem',
       128: '32rem',
       full: '100%',
-    },
-    boxShadow: {
-      sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-      DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-      md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-      xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-      '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-      inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-      none: 'none',
-      'yellow': '6px 6px #FBBF24',
-      'gray': '0px 2px 0px ' + colors.coolGray[900],
     },
     height: (theme) => ({
       auto: 'auto',
@@ -168,6 +157,9 @@ module.exports = {
         '85': '.85',
         '200': '2',
       },
+      boxShadow: {
+        'gray': '0px 2px 0px ' + colors.coolGray[900],
+      },
       animation: {
         fadeInUp: 'fadeInUp 1s infinite',
       },
@@ -188,7 +180,32 @@ module.exports = {
   variants: {},
   plugins: [
     plugin(function({ addUtilities, theme }) {
-      const newUtilities = _.map(theme('boxShadow'), (value, key) => {
+      const flattenColorPalette = (colors) =>
+        Object.assign(
+          {},
+          ...Object.entries(colors).flatMap(([color, values]) =>
+            typeof values == 'object'
+              ? Object.entries(flattenColorPalette(values)).map(([number, hex]) => ({
+                  [color + (number === 'DEFAULT' ? '' : `-${number}`)]: hex,
+                }))
+              : [{ [`${color}`]: values }]
+          )
+        )
+
+      const colors = flattenColorPalette(theme('borderColor'))
+
+      const utilities = _.map(colors, (value, key) => {
+        return {
+          [key === 'DEFAULT' ? `.border` : `.border-${key}`]: {
+            borderColor: `${value}`
+          }
+        }
+      })
+
+      addUtilities(utilities)
+    }),
+    plugin(function({ addUtilities, theme }) {
+      const utilities = _.map(theme('boxShadow'), (value, key) => {
         return {
           [key === 'DEFAULT' ? `.shadow` : `.shadow-${key}`]: {
             boxShadow: `${value}`
@@ -196,7 +213,7 @@ module.exports = {
         }
       })
 
-      addUtilities(newUtilities)
+      addUtilities(utilities)
     }),
     plugin(function({ addComponents, theme }) {
       const round = (num) =>
@@ -206,7 +223,7 @@ module.exports = {
           .replace(/\.0$/, '')
       const rem = (px) => `${round(px / 16)}rem`
       const em = (px, base) => `${round(px / base)}em`
-      
+
       const prose = {
         '.prose': _.merge(
             {},

@@ -35,7 +35,8 @@ export default {
   methods: {
     ...mapActions({
       'login': 'auth/login',
-      'getUserInfo': 'auth/getUserInfo'
+      'getUserInfo': 'auth/getUserInfo',
+      'storeOnlineRecord': 'online/storeOnlineRecord'
     }),
     async handleAuthorize() {
       try {
@@ -51,6 +52,8 @@ export default {
         await this.login(params)
 
         await this.getUserInfo()
+
+        await this.storeOnlineRecord()
 
         Taro.navigateBack()
       } catch (error) {
