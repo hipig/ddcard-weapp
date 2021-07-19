@@ -15,7 +15,7 @@ export const getFeedback = () => service({
 export const storeFeedback = (params) => service({
   url: api.store,
   method: 'post',
-  data: params
+  data: Object.assign({}, params, { auth_redirect: true })
 })
 
 export const viewFeedbackReply = () => service({

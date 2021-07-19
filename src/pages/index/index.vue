@@ -120,8 +120,18 @@ export default {
     handleUnlock() {
       storeUnlockRecord(this.currentGroup.id)
         .then(() => {
-          this.closeLockDialog()
           this.getGroups()
+        })
+        .catch(err => {
+          if (err.statusCode == 403) {
+            Taro.showToast({
+              title: err.data.message,
+              icon: 'none'
+            })
+          }
+        })
+        .finally(_ => {
+          this.closeLockDialog()
         })
     },
     handleUpgrade() {

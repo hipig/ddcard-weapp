@@ -30,7 +30,7 @@
     </view>
     <view class="px-8 mt-4">
       <view class="mb-6">
-        <view class="text-xl text-gray-800 font-bold mb-2">主要</view>
+        <view class="text-xl text-gray-800 font-bold mb-2">基础</view>
         <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray overflow-hidden">
           <view class="flex px-6 py-4_5">
             <view class="flex-1 flex items-center" @tap="handleTo('/pages/feedback/index')">

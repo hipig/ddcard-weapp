@@ -16,7 +16,7 @@
                   </view>
                 </view>
                 <view class="flex-shrink-0 ml-4">
-                  <image :src="userInfo.avatar" class="w-10 h-10 border-2 border-solid border-gray-900 rounded-full" />
+                  <image :src="item.user.avatar" class="w-10 h-10 border-2 border-solid border-gray-900 rounded-full" />
                 </view>
               </view>
             </view>
@@ -65,11 +65,6 @@ export default {
       toView: null,
       content: ''
     }
-  },
-  computed: {
-    ...mapGetters({
-      'userInfo': 'auth/userInfo'
-    }),
   },
   created() {
     this.getWindowHeight()
