@@ -6,7 +6,7 @@
         <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': isCollect}" @tap="isCollect = true">收藏</view>
       </view>
     </view>
-    <view class="mt-14">
+    <view class="my-14">
       <view class="flex flex-col" v-show="!isCollect">
         <view class="mb-8">
           <view class="flex flex-col px-6 py-4 bg-white border-2 border-solid border-gray-900 text-gray-900 text-lg font-bold rounded-2xl shadow-gray">
@@ -31,7 +31,7 @@
         </view>
       </view>
       <view class="w-full" v-show="isCollect">
-        <view class="flex flex-wrap -mx-2">
+        <view class="flex flex-wrap -mx-2" v-if="collectCards.length > 0">
           <view @tap="handleTo(index)" class="w-1_2 px-2 box-border mb-4" v-for="(item, index) in collectCards" :key="index">
             <collect-item :zh-name="item.zh_name"
               :en-name="item.en_name"
@@ -39,9 +39,10 @@
               :color="item.color" />
           </view>
         </view>
+        <view class="py-4 text-center text-gray-700" v-else>还没有收藏卡片哦~</view>
       </view>
     </view>
-
+    <auth-alert/>
   </view>
 </template>
 
@@ -50,6 +51,7 @@ import _ from "lodash"
 import Taro from "@tarojs/taro"
 import { mapGetters } from "vuex"
 import * as dayjs from 'dayjs'
+import AuthAlert from "../../components/auth/Alert.vue"
 import ReportItem from "../../components/report/Item.vue"
 import CollectItem from "../../components/card/CollectItem.vue"
 
@@ -59,6 +61,7 @@ import { getCollectRecords } from "../../api/collectRecord"
 export default {
   name: "Report",
   components: {
+    AuthAlert,
     ReportItem,
     CollectItem
   },

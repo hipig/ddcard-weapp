@@ -35,7 +35,6 @@ export default {
   methods: {
     ...mapActions({
       'login': 'auth/login',
-      'getUserInfo': 'auth/getUserInfo',
       'storeOnlineRecord': 'online/storeOnlineRecord'
     }),
     async handleAuthorize() {
@@ -50,8 +49,6 @@ export default {
         }
 
         await this.login(params)
-
-        await this.getUserInfo()
 
         await this.storeOnlineRecord()
 

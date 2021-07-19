@@ -47,7 +47,8 @@ const statusInterceptor = (chain) => {
         if (token) {
           store.dispatch('auth/clear')
         }
-        pageToLogin()
+
+        requestParams.data.hasOwnProperty('auth_redirect') && pageToLogin()
         break;
       case 403:
         return Promise.reject(res)

@@ -164,7 +164,7 @@ export default {
   watch: {
     currentIndex(val) {
       if(this.index === val) {
-        this.handlePlay()
+        setTimeout(this.handlePlay, 350)
       }
     },
     zhSrc(val) {
@@ -177,9 +177,10 @@ export default {
   created() {
     this.initZhAudioContext(this.zhSrc)
     this.initEnAudioContext(this.enSrc)
-
-    if (this.index === 0) {
-      setTimeout(this.handlePlay, 200)
+  },
+  mounted() {
+    if (this.index == 0) {
+      setTimeout(this.handlePlay, 800)
     }
   },
   onHide() {
@@ -218,11 +219,11 @@ export default {
     },
     handleSwitchMode() {
       this.mode = this.mode === 'zh' ? 'en' : 'zh'
-      setTimeout(this.handlePlay, 200)
+      setTimeout(this.handlePlay, 350)
     },
     handlePlay() {
       let context = this.mode === 'zh' ? this.zhAudioContext : this.enAudioContext
-      context.play()
+      context.src && context.play()
     },
     handleStop() {
       clearInterval(this.timer)

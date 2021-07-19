@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     showAbout() {
-      console.log(this.key)
       showAbout(this.key)
         .then(res => {
           this.setNavigationBar(res.data.name)

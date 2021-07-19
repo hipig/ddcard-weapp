@@ -7,5 +7,6 @@ const api = {
 
 export const storeSubscriptionRecord = (id) => service({
   url: sprintf(api.store, id),
-  method: 'post'
+  method: 'post',
+  data: { auth_redirect: true }
 })

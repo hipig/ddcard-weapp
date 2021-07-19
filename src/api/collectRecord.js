@@ -14,10 +14,12 @@ export const getCollectRecords = () => service({
 
 export const storeCollectRecord = (id) => service({
   url: sprintf(api.store, id),
-  method: 'post'
+  method: 'post',
+  data: { auth_redirect: true }
 })
 
 export const deleteCollectRecord = (id) => service({
   url: sprintf(api.delete, id),
-  method: 'delete'
+  method: 'delete',
+  data: { auth_redirect: true }
 })

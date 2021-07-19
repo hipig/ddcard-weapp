@@ -9,7 +9,7 @@
         :circular="true"
         @change="handleChange">
         <swiper-item v-for="(item, index) in cards" :key="item.id">
-          <card-item :id="item.id"
+          <card-item v-if="item.id" :id="item.id"
             :zh-name="item.zh_name"
             :en-name="item.en_name"
             :zh-spell="item.zh_spell"
@@ -110,19 +110,15 @@ export default {
     this.getCards()
   },
   methods: {
-    getCards() {
+    async getCards() {
       if (this.groupId) {
-        showGroup(this.groupId)
-          .then(res => {
-            this.setNavigationBar(res.data.zh_name)
-            this.cards = res.data.cards
-          })
+        const { data } = await showGroup(this.groupId)
+        this.setNavigationBar(data.zh_name)
+        this.cards = data.cards
       } else {
-        getCollectRecords()
-          .then(res => {
-            this.setNavigationBar('我的收藏')
-            this.cards = _.map(res.data, 'card')
-          })
+        const { data } = getCollectRecords()
+        this.setNavigationBar('我的收藏')
+        this.cards = _.map(res.data, 'card')
       }
     },
     handleChange(e) {
@@ -154,6 +150,12 @@ export default {
       Taro.navigateTo({
         url: '/pages/vip/index'
       })
+    },
+    initAudioContext(src) {
+      let audioContext = Taro.createInnerAudioContext()
+      audioContext.src = src
+
+      return audioContext
     },
     setNavigationBar(title) {
       Taro.setNavigationBarTitle({

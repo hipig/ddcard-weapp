@@ -123,9 +123,6 @@ export default {
           this.closeLockDialog()
           this.getGroups()
         })
-        .catch(err => {
-          console.log(err)
-        })
     },
     handleUpgrade() {
       Taro.navigateTo({

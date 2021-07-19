@@ -116,7 +116,7 @@ export default {
     isShowAnswer(val) {
       if(val) {
         this.animationData = null
-        setTimeout(this.handlePlay, 100)
+        setTimeout(this.handlePlay, 350)
       }
     },
     src(val) {

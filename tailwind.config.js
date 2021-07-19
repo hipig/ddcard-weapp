@@ -196,7 +196,7 @@ module.exports = {
 
       const utilities = _.map(colors, (value, key) => {
         return {
-          [key === 'DEFAULT' ? `.border` : `.border-${key}`]: {
+          [`.border-${key}`]: {
             borderColor: `${value}`
           }
         }

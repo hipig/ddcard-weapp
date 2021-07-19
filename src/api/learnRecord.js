@@ -15,11 +15,13 @@ export const getLearnRecords = () => service({
 export const storeLearnRecord = (id, params) => service({
   url: sprintf(api.store, id),
   method: 'post',
-  data: params
+  data: params,
+  data: { auth_redirect: true }
 })
 
 export const deleteLearnRecord = (id, params) => service({
   url: sprintf(api.delete, id),
   method: 'delete',
-  data: params
+  data: params,
+  data: { auth_redirect: true }
 })

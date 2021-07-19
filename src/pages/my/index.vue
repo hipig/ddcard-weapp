@@ -99,7 +99,7 @@
 
 <script>
 import Taro from "@tarojs/taro"
-import { mapGetters } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 
 import NoAvatarIcon from "../../assets/img/icon/no-avatar.svg"
 import ChevronRightIcon from "../../assets/img/icon/chevron-right.svg"
@@ -111,6 +111,9 @@ export default {
       NoAvatarIcon,
       ChevronRightIcon,
     }
+  },
+  onShow() {
+    this.getUserInfo()
   },
   onShareAppMessage() {
     return {
@@ -129,6 +132,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      'getUserInfo': 'auth/getUserInfo'
+    }),
     handleTo(url) {
       Taro.navigateTo({
         url: url
