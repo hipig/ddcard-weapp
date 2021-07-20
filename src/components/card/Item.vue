@@ -15,7 +15,7 @@
             <image :src="shareFillIcon" class="w-8 h-8"/>
           </view>
         </view>
-        <view @tap="handleSwitchMode" class="w-9 h-9 rounded-md inline-flex items-center justify-center bg-white text-gray-800 text-lg font-bold">
+        <view @tap="handleSwitchMode" class="w-9 h-9 rounded-lg inline-flex items-center justify-center bg-white text-gray-800 text-lg font-bold">
           {{ mode === 'zh' ? 'Aa' : '中' }}
         </view>
       </view>

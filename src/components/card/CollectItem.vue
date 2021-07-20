@@ -1,7 +1,7 @@
 <template>
   <view class="p-4 rounded-xl shadow bg-gradient-to-b" :class="[ colorClass.bg ]">
     <view class="mb-2 flex justify-center">
-      <image :src="icon" class="w-20 h-20"/>
+      <image :src="icon" class="w-18 h-18"/>
     </view>
     <view class="flex flex-col items-center text-gray-900">
       <view class="text-2xl font-bold">{{ zhName }}</view>
@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Taro from "@tarojs/taro"
 
 const colorMap = {
   gray: {
