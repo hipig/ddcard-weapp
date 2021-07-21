@@ -1,10 +1,11 @@
 <template>
   <view class="flex flex-col px-6">
-    <view class="flex justify-center mt-16 mb-10">
-      <view class="w-20 h-20 rounded-full bg-yellow-400 text-lg text-gray-900 font-bold flex items-center justify-center">LOGO</view>
+    <view class="text-center mt-16 mb-10">
+      <image :src="Logo" class="w-20 h-20 rounded-full" /> 
+      <view class="mt-1 text-xl text-gray-900 font-bold">嘟嘟早教卡</view>
     </view>
     <view class="py-12 border-0 border-t border-solid border-yellow-100">
-      <view class="text-xl text-gray-900 font-bold mb-2">申请获取以下权限</view>
+      <view class="text-lg text-gray-900 font-bold mb-2">申请获取以下权限</view>
       <view class="text-gray-400">获得你的公开信息（昵称、头像等）</view>
     </view>
     <view class="px-2">
@@ -22,10 +23,13 @@
 import Taro from "@tarojs/taro"
 import { mapActions } from "vuex"
 
+import Logo from "../../assets/img/logo.png"
+
 export default {
   name: "Login",
   data () {
     return {
+      Logo,
       redirectUrl: null
     }
   },

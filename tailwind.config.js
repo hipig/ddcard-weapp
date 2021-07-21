@@ -161,19 +161,39 @@ module.exports = {
         'gray': '0px 2px 0px ' + colors.coolGray[900],
       },
       animation: {
-        fadeInUp: 'fadeInUp 1s infinite',
+        fade: 'fade 0.2s ease-in',
+        popup: 'popup 0.2s ease-in',
+        slideUp: 'slideUp 0.1s ease-in'
       },
       keyframes: {
-        fadeInUp: {
-         'from': {
-           transform: 'translate3d(0, 100%, 0)',
-           opacity: 0
+        slideUp: {
+          'from': {
+            transform: 'translateY(1.5rem)',
+            opacity: 0
           },
           'to': {
-            transform: 'translate3d(0, 0, 0)',
+            transform: 'translateY(0)',
             opacity: 1
-           },
-       }
+          },
+        },
+        fade: {
+          'from': {
+            opacity: 0
+          },
+          'to': {
+            opacity: 1
+          },
+        },
+        popup: {
+          'from': {
+            transform: 'scale(1.25, 1.25)',
+            opacity: 0
+          },
+          'to': {
+            transform: 'scale(1, 1)',
+            opacity: 1
+          },
+        }
       }
     }
   },
@@ -242,21 +262,6 @@ module.exports = {
                 },
                 '.ol > .li': {
                   position: 'relative',
-                },
-                '.ol > .li::before': {
-                  content: 'counter(list-item, var(--list-counter-style, decimal)) "."',
-                  position: 'absolute',
-                  fontWeight: '400',
-                  color: theme('colors.gray.500', defaultTheme.colors.gray[500]),
-                },
-                '.ul > .li': {
-                  position: 'relative',
-                },
-                '.ul > .li::before': {
-                  content: '""',
-                  position: 'absolute',
-                  backgroundColor: theme('colors.gray.300', defaultTheme.colors.gray[300]),
-                  borderRadius: '50%',
                 },
                 '.hr': {
                   borderColor: theme('colors.gray.200', defaultTheme.colors.gray[200]),
@@ -328,29 +333,6 @@ module.exports = {
                 '.pre .code::after': {
                   content: 'none',
                 },
-                '.table': {
-                  width: '100%',
-                  tableLayout: 'auto',
-                  textAlign: 'left',
-                  marginTop: em(32, 16),
-                  marginBottom: em(32, 16),
-                },
-                '.thead': {
-                  color: theme('colors.gray.900', defaultTheme.colors.gray[900]),
-                  fontWeight: '600',
-                  borderBottomWidth: '1px',
-                  borderBottomColor: theme('colors.gray.300', defaultTheme.colors.gray[300]),
-                },
-                '.thead .th': {
-                  verticalAlign: 'bottom',
-                },
-                '.tbody .tr': {
-                  borderBottomWidth: '1px',
-                  borderBottomColor: theme('colors.gray.200', defaultTheme.colors.gray[200]),
-                },
-                '.tbody .td': {
-                  verticalAlign: 'top',
-                },
               },
               {
                 fontSize: rem(16),
@@ -420,56 +402,10 @@ module.exports = {
                   paddingBottom: em(12, 14),
                   paddingLeft: em(16, 14),
                 },
-                '.ol': {
-                  marginTop: em(20, 16),
-                  marginBottom: em(20, 16),
-                },
-                '.ul': {
-                  marginTop: em(20, 16),
-                  marginBottom: em(20, 16),
-                },
-                '.li': {
-                  marginTop: em(8, 16),
-                  marginBottom: em(8, 16),
-                },
-                '.ol > .li': {
-                  paddingLeft: em(28, 16),
-                },
-                '.ol > .li::before': {
-                  left: '0',
-                },
-                '.ul > .li': {
-                  paddingLeft: em(28, 16),
-                },
-                '.ul > .li::before': {
-                  width: em(6, 16),
-                  height: em(6, 16),
-                  top: `calc(${em(28 / 2, 16)} - ${em(3, 16)})`,
-                  left: em(4, 16),
-                },
-                '.ul .ul, .ul .ol, .ol .ul, .ol .ol': {
-                  marginTop: em(12, 16),
-                  marginBottom: em(12, 16),
-                },
                 '.hr': {
                   marginTop: em(48, 16),
                   marginBottom: em(48, 16),
-                },
-                '.table': {
-                  fontSize: em(14, 16),
-                  lineHeight: round(24 / 14),
-                },
-                '.thead .th': {
-                  paddingRight: em(8, 14),
-                  paddingBottom: em(8, 14),
-                  paddingLeft: em(8, 14),
-                },
-                '.tbody .td': {
-                  paddingTop: em(8, 14),
-                  paddingRight: em(8, 14),
-                  paddingBottom: em(8, 14),
-                  paddingLeft: em(8, 14),
-                },
+                }
               }
             ])
           )

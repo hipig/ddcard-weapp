@@ -6,7 +6,7 @@
         <view class="w-1_2 text-center rounded-xl px-3" :class="{'bg-yellow-400': isCollect}" @tap="isCollect = true">收藏</view>
       </view>
     </view>
-    <view class="mt-14 mb-16">
+    <view class="mt-14">
       <view class="flex flex-col" v-show="!isCollect">
         <view class="mb-8">
           <view class="flex flex-col px-6 py-4 bg-white border-2 border-solid border-gray-900 text-gray-900 text-lg font-bold rounded-2xl shadow-gray">

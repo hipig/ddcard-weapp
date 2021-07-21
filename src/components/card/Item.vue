@@ -38,8 +38,8 @@
         <image :src="volumeDownIcon" v-else class="w-7 h-7"/>
       </view>
     </view>
-    <view class="fixed z-10 inset-0" v-show="collectDialogShow">
-      <view class="flex items-center justify-center min-h-screen p-12">
+    <view class="fixed z-10 inset-0 animate-fade" v-show="collectDialogShow">
+      <view class="flex items-center justify-center min-h-screen p-12 animate-popup">
         <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="collectDialogShow = false"></view>
         <view class="border-2 border-solid border-gray-900 flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-3 w-full box-border">

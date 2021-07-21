@@ -110,6 +110,9 @@ export default {
     }
   },
   watch: {
+    studied(val) {
+      this.isStudied = val
+    },
     isStudied(val) {
       this.isShowAnswer = val
     },

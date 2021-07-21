@@ -32,7 +32,7 @@
           <image :src="arrowUpFillIcon" class="w-6 h-6 -mr-1" />
         </view>
         <view class="absolute origin-center bottom-full right-1_2 transform translate-x-1_2 mb-4 z-50" v-show="dropShow">
-          <view class="w-36 rounded-xl border-2 border-solid border-gray-900 text-gray-900 bg-white text-center font-bold relative drop-menu">
+          <view class="w-36 rounded-xl border-2 border-solid border-gray-900 text-gray-900 bg-white text-center font-bold relative drop-menu animate-slideUp">
             <view class="py-3" @tap="handleTo('zh')">中文</view>
             <view class="border border-solid border-gray-900"></view>
             <view class="py-3" @tap="handleTo('en')">英文</view>
@@ -40,8 +40,8 @@
         </view>
       </view>
     </view>
-    <view class="fixed z-10 inset-0" v-show="learnDialogShow">
-      <view class="flex items-center justify-center min-h-screen p-12">
+    <view class="fixed z-10 inset-0 animate-fade" v-show="learnDialogShow">
+      <view class="flex items-center justify-center min-h-screen p-12 animate-popup">
         <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="learnDialogShow = false"></view>
         <view class="border-2 border-solid border-gray-900 flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-3 w-full box-border">
@@ -93,6 +93,7 @@ export default {
       currentIndex: 0,
       collectCurrentIndex: 0,
       groupId: 0,
+      title: '',
       cards: [],
       dropShow: false,
       learnDialogShow: false,
@@ -109,16 +110,21 @@ export default {
     this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
     this.getCards()
   },
+  watch: {
+    title(val) {
+      this.setNavigationBar(val)
+    }
+  },
   methods: {
     async getCards() {
       if (this.groupId) {
         const { data } = await showGroup(this.groupId)
-        this.setNavigationBar(data.zh_name)
+        this.title = data.zh_name
         this.cards = data.cards
       } else {
-        const { data } = getCollectRecords()
-        this.setNavigationBar('我的收藏')
-        this.cards = _.map(res.data, 'card')
+        const { data } = await getCollectRecords()
+        this.title = '我的收藏'
+        this.cards = _.map(data, 'card')
       }
     },
     handleChange(e) {
