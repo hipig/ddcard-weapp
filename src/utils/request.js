@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "http://hipig.5gzvip.idcfengye.com/api/v1"
+const baseUrl = "https://duducard.cn/api/v1"
 
 const getCurrentPageUrl = () => {
   let pages = Taro.getCurrentPages()

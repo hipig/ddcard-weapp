@@ -9,8 +9,14 @@
         <image :src="icon" class="w-48 h-48"/>
       </view>
       <view class="text-center">
-        <view class="text-sm mb-2" :class="[colorClass.spellText]">{{ spell }}</view>
-        <view class="text-4xl text-gray-900 font-bold capitalize">{{ name }}</view>
+        <template v-if="mode === 'zh'">
+          <view class="mb-2" :class="[colorClass.spellText]">{{ spell }}</view>
+          <view class="text-4xl text-gray-900 font-bold capitalize">{{ name }}</view>
+        </template>
+        <template v-else>
+          <view class="mb-2 text-4xl text-gray-900 font-bold capitalize">{{ name }}</view>
+          <view class="font-bold" :class="[colorClass.spellText]">{{ spell }}</view>
+        </template>
       </view>
     </view>
     <view class="flex-shrink-0">
@@ -46,6 +52,10 @@ const colorMap = {
   red: {
     bg: 'from-red-200 to-red-400',
     spellText: 'text-red-900'
+  },
+  lime: {
+    bg: 'from-lime-200 to-lime-400',
+    spellText: 'text-lime-900'
   },
   green: {
     bg: 'from-green-200 to-green-400',

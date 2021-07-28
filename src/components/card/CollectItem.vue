@@ -22,6 +22,9 @@ const colorMap = {
   red: {
     bg: 'from-red-200 to-red-400'
   },
+  lime: {
+    bg: 'from-lime-200 to-lime-400'
+  },
   green: {
     bg: 'from-green-200 to-green-400'
   },

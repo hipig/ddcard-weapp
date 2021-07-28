@@ -47,6 +47,10 @@ const colorMap = {
     bg: 'bg-red-700',
     border: 'border-red-700',
   },
+  lime: {
+    bg: 'bg-lime-700',
+    border: 'border-lime-700',
+  },
   green: {
     bg: 'bg-green-700',
     border: 'border-green-700',
