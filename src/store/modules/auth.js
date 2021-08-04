@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro"
 import * as types from "../mutation-types"
-import { login, me } from "../../api/auth"
+import { login, logout, me } from "../../api/auth"
 
 // state
 export const state = {
@@ -57,6 +57,20 @@ export const actions = {
 
   refreshToken({ commit }, token) {
     commit('SET_TOKEN', token)
+  },
+
+  logout({ commit }) {
+    return new Promise((resolve, reject) => {
+      logout()
+        .then(res => {
+          commit("SET_TOKEN", "")
+          commit("SET_USERINFO", {})
+          resolve(res)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
   },
 
   clear({ commit }) {

@@ -11,7 +11,7 @@
             </view>
             <view class="ml-2 flex-1 flex items-center justify-between">
               <view class="text-gray-900 text-xl font-bold">{{ userInfo.name }}</view>
-              <view class="border-2 border-solid border-gray-900 text-gray-900 bg-yellow-400 font-bold rounded-xl px-2 py-1 shadow-gray" @tap="handleTo('/pages/vip/index')">赞助会员</view>
+              <view class="border-2 border-solid border-gray-900 text-gray-900 bg-yellow-400 font-bold rounded-xl px-2_5 py-1 shadow-gray" @tap="handleTo('/pages/setting/index')">个人设置</view>
             </view>
           </template>
           <template v-else>
@@ -33,8 +33,17 @@
         <view class="text-xl text-gray-800 font-bold mb-2">基础</view>
         <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray overflow-hidden">
           <view class="flex px-6 py-4_5">
-            <view class="flex-1 flex items-center" @tap="handleTo('/pages/feedback/index')">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/vip/index')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
+              <text class="ml-2">我的会员</text>
+            </view>
+            <view class="flex-shrink-0 flex items-center">
+              <image :src="ChevronRightIcon" class="w-4 h-4" />
+            </view>
+          </view>
+          <view class="flex px-6 py-4_5">
+            <view class="flex-1 flex items-center" @tap="handleTo('/pages/feedback/index')">
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-green-400 rounded-full"></view>
               <text class="ml-2">提点意见</text>
             </view>
             <view class="flex-shrink-0 flex items-center">
@@ -43,7 +52,7 @@
           </view>
           <button open-type="share" class="flex px-6 py-4_5 rounded-0 leading-none bg-white text-gray-900">
             <view class="flex-1 flex items-center">
-              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-green-400 rounded-full"></view>
+              <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
               <text class="ml-2">我要分享</text>
             </view>
             <view class="flex-shrink-0 flex items-center">

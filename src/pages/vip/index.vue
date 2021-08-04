@@ -1,5 +1,9 @@
 <template>
-  <view class="flex flex-col px-8 pt-6 pb-28">
+  <view class="flex flex-col px-8 pb-28">
+    <view class="py-4 text-gray-900">
+      <text>到期时间：</text>
+      <text class="font-bold">{{ expiredText }}</text>
+    </view>
     <view class="flex flex-col">
       <view v-for="(item, index) in plans" :key="index" @tap="handleChange(index)">
         <plan-item :price="item.price"
@@ -22,10 +26,14 @@
 
 <script>
 import Taro from "@tarojs/taro"
+import { mapGetters, mapActions } from "vuex"
 import PlanItem from "../../components/plan/Item.vue"
 
 import { getPlans } from "../../api/plan"
 import { storeSubscriptionRecord } from "../../api/subscriptionRecord"
+import dayjs from 'dayjs'
+
+const INFINITE_TIME = '9999-12-31 23:59:59'
 
 export default {
   components: {
@@ -39,8 +47,32 @@ export default {
   },
   onShow() {
     this.getPlans()
+    this.getUserInfo()
+  },
+  computed: {
+    ...mapGetters({
+      'userInfo': 'auth/userInfo'
+    }),
+    expiredText() {
+      let expiredText = '还不是会员'
+      let expiredAt = this.userInfo.vip_expired_at
+      if (expiredAt) {
+        expiredText = '您的会员已过期'
+        if (dayjs(expiredAt).isAfter(dayjs())) {
+          expiredText = expiredAt
+          if (dayjs(expiredAt).isSame(dayjs(INFINITE_TIME))) {
+            expiredText = '永久会员'
+          }
+        }
+      }
+
+      return expiredText
+    }
   },
   methods: {
+    ...mapActions({
+      'getUserInfo': 'auth/getUserInfo'
+    }),
     getPlans() {
       Taro.showLoading({
         title: '加载中',

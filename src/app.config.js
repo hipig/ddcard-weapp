@@ -5,6 +5,7 @@ export default {
     'pages/study/index',
     'pages/report/index',
     'pages/my/index',
+    'pages/setting/index',
     'pages/auth/index',
     'pages/vip/index',
     'pages/feedback/index',

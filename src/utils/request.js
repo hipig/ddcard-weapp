@@ -1,7 +1,10 @@
 import Taro from "@tarojs/taro"
 import store from "../store"
 
-const baseUrl = "https://duducard.cn/api/v1"
+let baseUrl = "https://duducard.cn/api/v1"
+if (process.env.NODE_ENV === 'development') {
+  baseUrl = "http://ddcard.test/api/v1"
+}
 
 const getCurrentPageUrl = () => {
   let pages = Taro.getCurrentPages()
