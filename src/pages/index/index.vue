@@ -52,10 +52,10 @@
 
 <script>
 import Taro from "@tarojs/taro"
+import { mapGetters, mapActions } from "vuex"
 import GroupItem from "../../components/group/Item.vue"
 import { getGroups, previewGroup } from "../../api/cardGroup"
 import { storeUnlockRecord } from "../../api/unlockRecord"
-import { validateUserIsVip } from "../../api/validation"
 
 export default {
   name: 'Index',
@@ -68,27 +68,33 @@ export default {
       cards: [],
       lockDialogShow: false,
       currentGroup: null,
-      isVip: -1,
     }
   },
   onShow() {
-    this.validateUserIsVip()
     this.getGroups()
   },
   onHide() {
     this.closeLockDialog()
   },
-  methods: {
-    getGroups() {
-      getGroups()
-        .then(res => {
-          this.groups = res.data
-        })
+  computed: {
+    ...mapGetters({
+      'userInfo': 'auth/userInfo'
+    }),
+    isVip() {
+      return this.userInfo.is_vip || -1
     },
-    validateUserIsVip() {
-      validateUserIsVip()
-        .then(res => {
-          this.isVip = res.data.is_vip
+  },
+  methods: {
+    ...mapActions({
+      'getUserInfo': 'auth/getUserInfo'
+    }),
+    getGroups() {
+      this.getUserInfo()
+        .finally(_ => {
+          getGroups()
+            .then(res => {
+              this.groups = res.data
+            })
         })
     },
     handle(item) {
