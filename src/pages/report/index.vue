@@ -49,7 +49,7 @@
 <script>
 import _ from "lodash"
 import Taro from "@tarojs/taro"
-import { mapGetters } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 import * as dayjs from 'dayjs'
 import AuthAlert from "../../components/auth/Alert.vue"
 import ReportItem from "../../components/report/Item.vue"
@@ -82,6 +82,7 @@ export default {
     })
   },
   onShow() {
+    this.getCumulativeTimes()
     this.getGroups()
     this.getCollectRecords()
     this.timer = setInterval(this.timing, 1000)
@@ -90,6 +91,9 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
+    ...mapActions({
+      'getCumulativeTimes': 'online/getCumulativeTimes'
+    }),
     getGroups() {
       getLearnRecords()
         .then(res => {

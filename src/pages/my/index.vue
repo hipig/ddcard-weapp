@@ -32,7 +32,7 @@
       <view class="mb-6">
         <view class="text-xl text-gray-800 font-bold mb-2">基础</view>
         <view class="py-1 border-2 border-solid border-gray-900 text-gray-900 bg-white text-lg font-bold rounded-2xl shadow-gray overflow-hidden">
-          <view class="flex px-6 py-4_5">
+          <view v-if="vipShow" class="flex px-6 py-4_5">
             <view class="flex-1 flex items-center" @tap="handleTo('/pages/vip/index')">
               <view class="w-5 h-5 border-2 border-solid border-gray-900 bg-yellow-400 rounded-full"></view>
               <text class="ml-2">我的会员</text>
@@ -122,6 +122,7 @@ export default {
     }
   },
   onShow() {
+    this.getSettings()
     this.getUserInfo()
   },
   onShareAppMessage() {
@@ -134,7 +135,8 @@ export default {
   computed: {
     ...mapGetters({
       'token': 'auth/token',
-      'userInfo': 'auth/userInfo'
+      'userInfo': 'auth/userInfo',
+      'vipShow': 'setting/vipShow'
     }),
     isLogin() {
       return this.token !== ''
@@ -142,7 +144,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      'getUserInfo': 'auth/getUserInfo'
+      'getUserInfo': 'auth/getUserInfo',
+      'getSettings': 'setting/getGeneralSettings'
     }),
     handleTo(url) {
       Taro.navigateTo({

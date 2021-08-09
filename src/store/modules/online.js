@@ -1,7 +1,6 @@
 import * as types from "../mutation-types"
-import { storeOnlineRecord, updateOnlineRecord } from "../../api/onlineRecord"
+import { storeOnlineRecord, updateOnlineRecord, getCumulativeTimes } from "../../api/onlineRecord"
 import * as dayjs from "dayjs"
-import { formats } from "dayjs/locale/zh-cn"
 
 // state
 export const state = {
@@ -41,7 +40,6 @@ export const actions = {
     return new Promise((resolve, reject) => {
       storeOnlineRecord()
         .then(res => {
-          commit("SET_CUMULATIVETIMES", res.data.cumulative_times || 1)
           commit("SET_DURATION", res.data.duration || 0)
           commit("SET_STARTEDAT", dayjs().format('YYYY-MM-DD HH:mm:ss'))
           commit("SET_RECORDID", res.data.id)
@@ -53,12 +51,25 @@ export const actions = {
     })
   },
 
-  updateOnlineRecord({ commit, getters }, ) {
+  updateOnlineRecord({ commit, getters }) {
     return new Promise((resolve, reject) => {
       updateOnlineRecord(getters.recordId, {
         started_at: getters.startedAt
       })
         .then(res => {
+          resolve(res)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+
+  getCumulativeTimes({ commit }) {
+    return new Promise((resolve, reject) => {
+      getCumulativeTimes()
+        .then(res => {
+          commit("SET_CUMULATIVETIMES", res.data.cumulative_times || 1)
           resolve(res)
         })
         .catch(error => {
