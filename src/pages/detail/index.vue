@@ -16,11 +16,11 @@
             :en-spell="item.en_spell"
             :color="item.color"
             :icon="item.cover_url"
-            :zh-src="item.zh_audio_path_url"
-            :en-src="item.en_audio_path_url"
             :collected="item.is_collect"
             :index="index"
             :current-index="currentIndex"
+            :mode="item.mode"
+            :play-status="item.playStatus || false"
             :total="cards.length"/>
         </swiper-item>
       </swiper>
@@ -40,20 +40,20 @@
         </view>
       </view>
     </view>
-    <view class="fixed z-10 inset-0 animate-fade" v-show="learnDialogShow">
+    <view class="fixed z-10 inset-0 animate-fade" v-show="dialogShow">
       <view class="flex items-center justify-center min-h-screen p-12 animate-popup">
-        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="learnDialogShow = false"></view>
+        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="dialogShow = false"></view>
         <view class="border-2 border-solid border-gray-900 flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
           <view class="px-6 py-3 w-full box-border">
-            <text class="text-gray-900 font-bold text-xl">VIP卡组测一测</text>
+            <text class="text-gray-900 font-bold text-xl">{{ dialogTitle }}</text>
           </view>
           <view class="px-6 py-1 flex-grow w-full box-border">
-            <text class="text-gray-900">升级VIP，解锁全部卡组测试，随时随地想测就测</text>
+            <text class="text-gray-900">{{ dialogContent }}</text>
           </view>
           <view class="px-6 py-4 w-full box-border">
             <view class="flex -mx-2 box-border">
               <view class="w-1_2 px-2 box-border">
-                <button @tap="learnDialogShow = false" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-white rounded-xl py-1 px-4 text-xl">
+                <button @tap="dialogShow = false" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-white rounded-xl py-1 px-4 text-xl">
                   取消
                 </button>
               </view>
@@ -73,6 +73,7 @@
 <script>
 import _ from "lodash"
 import Taro from "@tarojs/taro"
+import { mapGetters, mapActions } from "vuex"
 import arrowUpFillIcon from "../../assets/img/icon/arrow-up-fill.svg"
 
 import CardItem from "../../components/card/Item.vue"
@@ -81,6 +82,7 @@ import { showGroup } from "../../api/cardGroup"
 import { getCollectRecords } from "../../api/collectRecord"
 import { validateGroupCanLearn } from "../../api/validation"
 
+const audioContext = Taro.createInnerAudioContext()
 
 export default {
   name: 'Detail',
@@ -96,12 +98,20 @@ export default {
       title: '',
       cards: [],
       dropShow: false,
-      learnDialogShow: false,
+      dialogShow: false,
+      dialogTitle: '',
+      dialogContent: ''
     }
+  },
+  computed: {
+    ...mapGetters({
+      'vipShow': 'setting/vipShow'
+    }),
   },
   onHide() {
     this.dropShow = false
-    this.learnDialogShow = false
+    this.dialogShow = false
+    audioContext.destroy()
   },
   onShow() {
     // 获取传过来的 current
@@ -109,6 +119,29 @@ export default {
     // 获取传过来的 group_id
     this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
     this.getCards()
+    this.getSettings()
+  },
+  mounted() {
+    Taro.eventCenter.on('playAudio', () => {
+      this.playAudio()
+    })
+    Taro.eventCenter.on('switchMode', () => {
+      let currentCard = this.cards[this.currentIndex]
+      this.$set(currentCard, 'mode', currentCard.mode === 'zh' ? 'en' : 'zh')
+      this.playAudio()
+    })
+    Taro.eventCenter.on('showDialog', (message, type) => {
+      if (this.vipShow) {
+        this.dialogTitle = type === 'learn' ? 'VIP测一测' : 'VIP卡片收藏'
+        this.dialogContent = message
+        this.dialogShow = true
+      } else {
+        Taro.showToast({
+          title: message,
+          icon: 'none'
+        })
+      }
+    })
   },
   watch: {
     title(val) {
@@ -116,19 +149,39 @@ export default {
     }
   },
   methods: {
-    async getCards() {
+    ...mapActions({
+      'getSettings': 'setting/getGeneralSettings'
+    }),
+    getCards() {
       if (this.groupId) {
-        const { data } = await showGroup(this.groupId)
-        this.title = data.zh_name
-        this.cards = data.cards
+        showGroup(this.groupId)
+          .then(res => {
+            const { data } = res
+            this.cards = _.map(data.cards, (item) => {
+              item.playStatus = false
+              item.mode = 'zh'
+              return item
+            })
+            this.playAudio()
+          })
       } else {
-        const { data } = await getCollectRecords()
-        this.title = '我的收藏'
-        this.cards = _.map(data, 'card')
+        getCollectRecords()
+          .then(res => {
+            const { data } = res
+            this.title = '我的收藏'
+            this.cards = _.map(data, (item) => {
+              let card = item.card
+              card.playStatus = false
+              card.mode = 'zh'
+              return card
+            })
+            this.playAudio()
+          })
       }
     },
     handleChange(e) {
       this.currentIndex = e.detail.current
+      this.playAudio()
     },
     handleLearn() {
       if (this.groupId) {
@@ -140,7 +193,7 @@ export default {
         })
         .catch(err => {
           if (err.statusCode === 403) {
-            this.learnDialogShow = true
+            Taro.eventCenter.trigger('showDialog', err.data.message, 'learn')
           }
         })
       } else {
@@ -157,16 +210,39 @@ export default {
         url: '/pages/vip/index'
       })
     },
-    initAudioContext(src) {
-      let audioContext = Taro.createInnerAudioContext()
-      audioContext.src = src
-
-      return audioContext
-    },
     setNavigationBar(title) {
       Taro.setNavigationBarTitle({
         title: title
       })
+    },
+    playAudio() {
+      let currentCard = this.cards[this.currentIndex]
+      let src = currentCard.mode === 'en' ? currentCard.en_audio_path_url : currentCard.zh_audio_path_url
+      audioContext.src = src
+
+      let that = this
+      audioContext.offPlay()
+      audioContext.onPlay(() => {
+        that.$set(that.cards[that.currentIndex], 'playStatus', true)
+      })
+
+      audioContext.offStop()
+      audioContext.onStop(() => {
+        that.$set(that.cards[that.currentIndex], 'playStatus', false)
+      })
+
+      audioContext.offEnded()
+      audioContext.onEnded(() => {
+        that.$set(that.cards[that.currentIndex], 'playStatus', false)
+      })
+
+      audioContext.onError(res => {
+        console.log(res)
+      })
+
+      setTimeout(() => {
+        audioContext.play()
+      }, 200)
     }
   }
 }

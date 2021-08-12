@@ -164,7 +164,8 @@ module.exports = {
       animation: {
         fade: 'fade 0.2s ease-in',
         popup: 'popup 0.2s ease-in',
-        slideUp: 'slideUp 0.1s ease-in'
+        slideUp: 'slideUp 0.1s ease-in',
+        scale: 'scale 0.5s ease-in',
       },
       keyframes: {
         slideUp: {
@@ -194,6 +195,14 @@ module.exports = {
             transform: 'scale(1, 1)',
             opacity: 1
           },
+        },
+        scale: {
+          '0%, 100%': {
+            transform: 'scale(1, 1)'
+          },
+          '50%': {
+            transform: 'scale(1.2, 1.2)'
+          }
         }
       }
     }

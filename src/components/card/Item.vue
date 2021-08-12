@@ -21,7 +21,7 @@
       </view>
     </view>
     <view class="flex-1 flex flex-col items-center justify-center">
-      <view class="mb-8" @tap="handlePlay" :animation="animationData">
+      <view class="mb-8" :animation="animationData" @tap="handlePlay">
         <image :src="icon" class="w-48 h-48"/>
       </view>
       <view class="text-center">
@@ -37,38 +37,11 @@
     </view>
     <view class="flex-shrink-0">
       <view class="p-5 text-center relative">
-        <view class="text-lg">{{ currentIndex + 1 }} / {{ total }}</view>
+        <view class="text-lg">{{ index + 1 }} / {{ total }}</view>
       </view>
       <view class="absolute bottom-0 right-0 mb-4 mr-4 flex items-center">
         <image :src="volumeUpIcon" v-if="isVolumeUp" class="w-7 h-7"/>
         <image :src="volumeDownIcon" v-else class="w-7 h-7"/>
-      </view>
-    </view>
-    <view class="fixed z-10 inset-0 animate-fade" v-show="collectDialogShow">
-      <view class="flex items-center justify-center min-h-screen p-12 animate-popup">
-        <view class="fixed inset-0 bg-gray-700 bg-opacity-50 transition-opacity" @tap="collectDialogShow = false"></view>
-        <view class="border-2 border-solid border-gray-900 flex flex-col rounded-xl shadow-sm bg-yellow-100 overflow-hidden w-full max-w-md mx-auto z-50">
-          <view class="px-6 py-3 w-full box-border">
-            <text class="text-gray-900 font-bold text-xl">VIP卡片收藏</text>
-          </view>
-          <view class="px-6 py-1 flex-grow w-full box-border">
-            <text class="text-gray-900">升级VIP，解锁全部卡组，收藏卡片学习更快捷</text>
-          </view>
-          <view class="px-6 py-4 w-full box-border">
-            <view class="flex -mx-2 box-border">
-              <view class="w-1_2 px-2 box-border">
-                <button @tap="collectDialogShow = false" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-gray-900 border-gray-900 bg-white rounded-xl py-1 px-4 text-xl">
-                  取消
-                </button>
-              </view>
-              <view class="w-1_2 px-2 box-border">
-                <button @tap="handleUpgrade" class="inline-flex justify-center items-center box-border font-bold w-full border-2 border-solid text-white border-gray-900 bg-gray-900 rounded-xl py-1 px-4 text-xl">
-                  立即升级
-                </button>
-              </view>
-            </view>
-          </view>
-        </view>
       </view>
     </view>
   </view>
@@ -142,10 +115,10 @@ export default {
     enSpell: String,
     color: { default: 'gray', type: String },
     icon: String,
-    zhSrc: String,
-    enSrc: String,
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
+    playStatus: { default: false, type: Boolean },
+    mode: { default: 'zh', type: String },
     collected: { default: false, type: Boolean },
     total: Number
   },
@@ -158,12 +131,9 @@ export default {
       volumeUpIcon,
       animationData: null,
       isCollect: this.collected,
-      mode: 'zh',
       isVolumeUp: true,
       timer: null,
-      zhAudioContext: null,
-      enAudioContext: null,
-      collectDialogShow: false
+      isCurrent: false
     }
   },
   computed: {
@@ -172,30 +142,15 @@ export default {
     }
   },
   watch: {
-    currentIndex(val) {
-      if(this.index === val) {
-        setTimeout(this.handlePlay, 350)
+    playStatus(val) {
+      if (val) {
+        this.initImageScale()
+        this.initInterval()
+      } else {
+        clearInterval(this.timer)
+        this.isVolumeUp = true
       }
-    },
-    zhSrc(val) {
-      this.initZhAudioContext(val)
-    },
-    enSrc(val) {
-      this.initEnAudioContext(val)
     }
-  },
-  created() {
-    this.initZhAudioContext(this.zhSrc)
-    this.initEnAudioContext(this.enSrc)
-  },
-  mounted() {
-    if (this.index == 0) {
-      setTimeout(this.handlePlay, 800)
-    }
-  },
-  onHide() {
-    this.handleStop()
-    this.collectDialogShow = false
   },
   methods: {
     handleCollect() {
@@ -214,10 +169,7 @@ export default {
         })
         .catch(err => {
           if (err.statusCode === 403) {
-            Taro.showToast({
-              title: err.data.message,
-              icon: 'none'
-            })
+            Taro.eventCenter.trigger('showDialog', err.data.message, 'collect')
           }
         })
     },
@@ -228,42 +180,14 @@ export default {
       })
     },
     handleSwitchMode() {
-      this.mode = this.mode === 'zh' ? 'en' : 'zh'
-      setTimeout(this.handlePlay, 350)
+      Taro.eventCenter.trigger('switchMode')
     },
     handlePlay() {
-      let context = this.mode === 'zh' ? this.zhAudioContext : this.enAudioContext
-      context.src && context.play()
+      Taro.eventCenter.trigger('playAudio')
     },
     handleStop() {
       clearInterval(this.timer)
       this.isVolumeUp = true
-    },
-    initZhAudioContext(src) {
-      let zhAudioContext = Taro.createInnerAudioContext()
-      zhAudioContext.src = src
-
-      zhAudioContext.onPlay(() => {
-        this.initImageScale()
-        this.initInterval()
-      })
-      zhAudioContext.onEnded(() => {
-        this.handleStop()
-      })
-      this.zhAudioContext = zhAudioContext
-    },
-    initEnAudioContext(src) {
-      let enAudioContext = Taro.createInnerAudioContext()
-      enAudioContext.src = src
-
-      enAudioContext.onPlay(() => {
-        this.initImageScale()
-        this.initInterval()
-      })
-      enAudioContext.onEnded(() => {
-        this.handleStop()
-      })
-      this.enAudioContext = enAudioContext
     },
     initImageScale() {
       let animation = Taro.createAnimation({
