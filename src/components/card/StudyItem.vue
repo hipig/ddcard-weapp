@@ -127,8 +127,7 @@ export default {
     },
     isShowAnswer(val) {
       if(val) {
-        this.animationData = null
-        Taro.eventCenter.trigger('cardLearned', !this.isStudied)
+        this.handlePlay(true)
       }
     },
     playStatus(val) {
@@ -136,16 +135,16 @@ export default {
         this.initImageScale()
         this.initInterval()
       } else {
-        clearInterval(this.timer)
-        this.isVolumeUp = true
+        this.handleStop()
       }
     }
   },
   methods: {
-    handlePlay() {
-      Taro.eventCenter.trigger('playLearnAudio')
+    handlePlay(isForce = false) {
+      Taro.eventCenter.trigger('playLearnAudio', isForce)
     },
     handleStop() {
+      this.animationData = null
       clearInterval(this.timer)
       this.isVolumeUp = true
     },
@@ -162,6 +161,7 @@ export default {
     },
     handleShowAnswer() {
       this.isShowAnswer = !this.isShowAnswer
+
     },
     initImageScale() {
       let animation = Taro.createAnimation({

@@ -82,11 +82,13 @@ export default {
     this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
     // 获取传过来的 mode
     this.mode = Taro.getCurrentInstance().router.params.mode || 'zh'
-    this.getCards()
+    this.getCards(() => {
+      this.playAudio()
+    })
   },
   mounted() {
-    Taro.eventCenter.on('playLearnAudio', () => {
-      this.playAudio()
+    Taro.eventCenter.on('playLearnAudio', (isForce) => {
+      this.playAudio(isForce)
     })
     Taro.eventCenter.on('cardLearned', (isLearned) => {
       let currentCard = this.cards[this.currentIndex]
@@ -147,13 +149,12 @@ export default {
         title: parseInt(this.cards.length > 0 ? this.currentIndex + 1 : 0) + ' / ' + this.cards.length
       })
     },
-    playAudio() {
+    playAudio(isForce = false) {
       let currentCard = this.cards[this.currentIndex]
       let isLearned = this.mode === 'en' ? currentCard.en_is_learn : currentCard.zh_is_learn
-      if (!isLearned) {
+      if (!isLearned && !isForce) {
         return false
       }
-
       let src = this.mode === 'en' ? currentCard.en_audio_path_url : currentCard.zh_audio_path_url
       audioContext.src = src
 
