@@ -157,6 +157,7 @@ export default {
         showGroup(this.groupId)
           .then(res => {
             const { data } = res
+            this.title = data.zh_name
             this.cards = _.map(data.cards, (item) => {
               item.playStatus = false
               item.mode = 'zh'

@@ -95,11 +95,11 @@ export default {
     spell: String,
     color: { default: 'gray', type: String },
     icon: String,
-    src: String,
     studied: { default: false, type: Boolean },
     mode: { default: 'zh', type: String },
     index: { default: 0, type: Number },
     currentIndex: { default: 0, type: Number },
+    playStatus: { default: false, type: Boolean },
     total: Number
   },
   data () {
@@ -110,8 +110,7 @@ export default {
       isVolumeUp: true,
       timer: null,
       isStudied: this.studied,
-      isShowAnswer: this.studied,
-      audioContext: null
+      isShowAnswer: this.studied
     }
   },
   computed: {
@@ -129,22 +128,22 @@ export default {
     isShowAnswer(val) {
       if(val) {
         this.animationData = null
-        setTimeout(this.handlePlay, 350)
+        Taro.eventCenter.trigger('cardLearned', !this.isStudied)
       }
     },
-    src(val) {
-      this.initAudioContext(val)
-    },
-  },
-  created () {
-    this.initAudioContext(this.src)
-  },
-  beforeDestroy() {
-    this.handleStop()
+    playStatus(val) {
+      if (val) {
+        this.initImageScale()
+        this.initInterval()
+      } else {
+        clearInterval(this.timer)
+        this.isVolumeUp = true
+      }
+    }
   },
   methods: {
     handlePlay() {
-      this.audioContext.play()
+      Taro.eventCenter.trigger('playLearnAudio')
     },
     handleStop() {
       clearInterval(this.timer)
@@ -157,25 +156,12 @@ export default {
       query
         .then((res) => {
           if (res.statusCode === 200 || res.statusCode === 201 || res.statusCode === 204) {
-            this.isStudied = !this.isStudied
+            Taro.eventCenter.trigger('cardLearned', !this.isStudied)
           }
         })
     },
     handleShowAnswer() {
       this.isShowAnswer = !this.isShowAnswer
-    },
-    initAudioContext(src) {
-      let audioContext = Taro.createInnerAudioContext()
-      audioContext.src = src
-
-      audioContext.onPlay(() => {
-        this.initImageScale()
-        this.initInterval()
-      })
-      audioContext.onEnded(() => {
-        this.handleStop()
-      })
-      this.audioContext = audioContext
     },
     initImageScale() {
       let animation = Taro.createAnimation({

@@ -28,6 +28,7 @@
             :mode="mode"
             :index="index"
             :current-index="currentIndex"
+            :play-status="item.playStatus || false"
             :total="cards.length"/>
         </swiper-item>
       </swiper>
@@ -45,6 +46,8 @@ import checkOnIcon from "../../assets/img/icon/check-on.svg"
 
 import { showGroup } from "../../api/cardGroup"
 import { getCollectRecords } from "../../api/collectRecord"
+
+const audioContext = Taro.createInnerAudioContext()
 
 export default {
   name: "Study",
@@ -71,6 +74,9 @@ export default {
       this.setNavigationBarTitle()
     }
   },
+  onHide() {
+    audioContext.destroy()
+  },
   onShow() {
     // 获取传过来的 group_id
     this.groupId = parseInt(Taro.getCurrentInstance().router.params.group_id) || 0
@@ -78,21 +84,42 @@ export default {
     this.mode = Taro.getCurrentInstance().router.params.mode || 'zh'
     this.getCards()
   },
+  mounted() {
+    Taro.eventCenter.on('playLearnAudio', () => {
+      this.playAudio()
+    })
+    Taro.eventCenter.on('cardLearned', (isLearned) => {
+      let currentCard = this.cards[this.currentIndex]
+      this.$set(currentCard, this.mode === 'zh' ? 'zh_is_learn' : 'en_is_learn', isLearned)
+      this.playAudio()
+    })
+  },
   methods: {
     getCards(callback = null) {
       if (this.groupId) {
         showGroup(this.groupId)
         .then(res => {
-          this.allCards = res.data.cards
-          this.cards = res.data.cards
+          const { data } = res
+          let cards = _.map(data.cards, (item) => {
+            item.playStatus = false
+            return item
+          })
+          this.allCards = cards
+          this.cards = cards
 
           callback && callback(res)
         })
       } else {
         getCollectRecords()
           .then(res => {
-            this.allCards = _.map(res.data, 'card')
-            this.cards = _.map(res.data, 'card')
+            const { data } = res
+            let cards = _.map(data, (item) => {
+              let card = item.card
+              card.playStatus = false
+              return card
+            })
+            this.allCards = cards
+            this.cards = cards
 
             callback && callback(res)
           })
@@ -100,6 +127,7 @@ export default {
     },
     handleChange(e) {
       this.currentIndex = e.detail.current
+      this.playAudio()
     },
     handleFilter() {
       this.getCards(() => {
@@ -118,6 +146,40 @@ export default {
       Taro.setNavigationBarTitle({
         title: parseInt(this.cards.length > 0 ? this.currentIndex + 1 : 0) + ' / ' + this.cards.length
       })
+    },
+    playAudio() {
+      let currentCard = this.cards[this.currentIndex]
+      let isLearned = this.mode === 'en' ? currentCard.en_is_learn : currentCard.zh_is_learn
+      if (!isLearned) {
+        return false
+      }
+
+      let src = this.mode === 'en' ? currentCard.en_audio_path_url : currentCard.zh_audio_path_url
+      audioContext.src = src
+
+      let that = this
+      audioContext.offPlay()
+      audioContext.onPlay(() => {
+        that.$set(that.cards[that.currentIndex], 'playStatus', true)
+      })
+
+      audioContext.offStop()
+      audioContext.onStop(() => {
+        that.$set(that.cards[that.currentIndex], 'playStatus', false)
+      })
+
+      audioContext.offEnded()
+      audioContext.onEnded(() => {
+        that.$set(that.cards[that.currentIndex], 'playStatus', false)
+      })
+
+      audioContext.onError(res => {
+        console.log(res)
+      })
+
+      setTimeout(() => {
+        audioContext.play()
+      }, 200)
     }
   }
 }
