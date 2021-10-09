@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '识字卡'
+  navigationBarTitleText: '嘟嘟早教卡'
 }

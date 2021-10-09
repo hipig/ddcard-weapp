@@ -77,6 +77,13 @@ export default {
   onHide() {
     this.closeLockDialog()
   },
+  onShareAppMessage() {
+    return {
+      title: '嘟嘟早教卡',
+      path: `/pages/index/index`,
+      imageUrl: ''
+    }
+  },
   computed: {
     ...mapGetters({
       'userInfo': 'auth/userInfo',

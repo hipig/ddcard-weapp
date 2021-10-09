@@ -127,7 +127,7 @@ export default {
   },
   onShareAppMessage() {
     return {
-      title: '嘟嘟识字卡',
+      title: '嘟嘟早教卡',
       path: `/pages/index/index`,
       imageUrl: ''
     }

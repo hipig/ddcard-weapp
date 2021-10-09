@@ -90,6 +90,13 @@ export default {
   onHide() {
     clearInterval(this.timer)
   },
+  onShareAppMessage() {
+    return {
+      title: '嘟嘟早教卡',
+      path: `/pages/index/index`,
+      imageUrl: ''
+    }
+  },
   methods: {
     ...mapActions({
       'getCumulativeTimes': 'online/getCumulativeTimes'
